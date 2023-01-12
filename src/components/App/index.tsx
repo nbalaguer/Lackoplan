@@ -5,7 +5,11 @@ function App() {
   const duration = useAppStore((state) => state.duration)
 
   return (
-    <div className="">App {duration}</div>
+    <>
+    <div>header</div>
+    <main className="">App {duration}</main>
+    <div>footer</div>
+    </>
   )
 }
 
