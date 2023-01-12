@@ -1,8 +1,11 @@
 import React from 'react'
+import { useAppStore } from 'store'
 
 function App() {
+  const duration = useAppStore((state) => state.duration)
+
   return (
-    <div>App</div>
+    <div className="">App {duration}</div>
   )
 }
 
