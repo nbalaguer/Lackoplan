@@ -10,6 +10,8 @@ body {
   min-height: 100%;
   display: grid;
   grid-template-rows: 1fr;
+
+  @apply bg-slate-800 text-contrast-dark;
 }
 
 #root {

@@ -284,5 +284,5 @@ const theme = {
     evoker: "#33937F",
     contrast: { dark: "#FFFFFF", light: "#000000" },
   },
-};
-export default theme;
+}
+export default theme
