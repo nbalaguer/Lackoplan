@@ -19,7 +19,11 @@ module.exports = {
         demonhunter: "#A330C9",
         deathknight: "#C41E3A",
         evoker: "#33937F",
-      }
+        contrast: {
+          dark: "#FFFFFF",
+          light: "#000000",
+        },
+      },
     },
   },
   plugins: [],
