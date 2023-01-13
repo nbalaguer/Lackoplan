@@ -1,5 +1,5 @@
-import classNames from 'classnames'
-import React from 'react'
+import classNames from "classnames"
+import React from "react"
 
 const classConfig = Object.freeze({
   mini: "w-4",
@@ -8,16 +8,13 @@ const classConfig = Object.freeze({
   full: "w-full",
 })
 
-function WowheadIcon(props: Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src"> & {
-  name: string
-  size?: keyof typeof classConfig
-}) {
-  const {
-    name,
-    size = "medium",
-    className,
-    ...rest
-  } = props
+function WowheadIcon(
+  props: Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src"> & {
+    name: string
+    size?: keyof typeof classConfig
+  }
+) {
+  const { name, size = "medium", className, ...rest } = props
 
   return (
     <img

@@ -3,13 +3,13 @@ import type { Ability } from "types"
 
 const modifiers = {
   setCooldown(cd: number) {
-    return (ability: Ability) => ability.cooldown = cd
+    return (ability: Ability) => (ability.cooldown = cd)
   },
   addCooldown(cd: number) {
-    return (ability: Ability) => ability.cooldown = ability.cooldown + cd
+    return (ability: Ability) => (ability.cooldown = ability.cooldown + cd)
   },
   multiplyCooldown(cd: number) {
-    return (ability: Ability) => ability.cooldown = ability.cooldown * cd
+    return (ability: Ability) => (ability.cooldown = ability.cooldown * cd)
   },
 }
 
@@ -97,10 +97,12 @@ const abilities: {
       shortName: "Chi-ji",
       cooldown: 60 * 3,
       icon: "inv_pet_cranegod",
-      modifiers: [{
-        icon: "inv_pet_jadeserpentpet",
-        process: modifiers.addCooldown(-60 * 2),
-      }],
+      modifiers: [
+        {
+          icon: "inv_pet_jadeserpentpet",
+          process: modifiers.addCooldown(-60 * 2),
+        },
+      ],
     },
   ],
   [CLASSES.DRUID]: [
@@ -109,10 +111,12 @@ const abilities: {
       shortName: "Tranq",
       cooldown: 60 * 3,
       icon: "spell_nature_tranquility",
-      modifiers: [{
-        icon: "ability_druid_dreamstate",
-        process: modifiers.addCooldown(-60),
-      }],
+      modifiers: [
+        {
+          icon: "ability_druid_dreamstate",
+          process: modifiers.addCooldown(-60),
+        },
+      ],
     },
     {
       name: "Tree",

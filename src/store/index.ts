@@ -12,7 +12,11 @@ type AppStore = {
   removePlayer: (playerId: string) => void
   toggleAbility: (playerId: string, abilityId: string) => void
   changePlayerName: (playerId: string, name: string) => void
-  toggleAbilityModifier: (playerId: string, abilityId: string, modifierIndex: number) => void
+  toggleAbilityModifier: (
+    playerId: string,
+    abilityId: string,
+    modifierIndex: number
+  ) => void
 }
 
 export const useAppStore = create<AppStore>()((set) => ({
@@ -21,49 +25,68 @@ export const useAppStore = create<AppStore>()((set) => ({
   casts: [],
 
   // actions
-  addPlayer: (player: Player) => set((state) => deepmerge(state, {players: [player]})),
+  addPlayer: (player: Player) =>
+    set((state) => deepmerge(state, { players: [player] })),
 
-  removePlayer: (playerId: string) => set((state) => {
-    const nextState = _cloneDeep(state)
+  removePlayer: (playerId: string) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
 
-    nextState.players = nextState.players.filter(player => player.id !== playerId)
+      nextState.players = nextState.players.filter(
+        (player) => player.id !== playerId
+      )
 
-    return nextState
-  }),
+      return nextState
+    }),
 
-  toggleAbility: (playerId: string, abilityId: string) => set((state) => {
-    const nextState = _cloneDeep(state)
-    const player = nextState.players.find(player => player.id === playerId)
-    if (!player) return state
-    const ability = player.abilities.find(ability => ability.id === abilityId)
-    if (!ability) return state
+  toggleAbility: (playerId: string, abilityId: string) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
+      const player = nextState.players.find((player) => player.id === playerId)
+      if (!player) return state
+      const ability = player.abilities.find(
+        (ability) => ability.id === abilityId
+      )
+      if (!ability) return state
 
-    ability.isActive = !ability.isActive
+      ability.isActive = !ability.isActive
 
-    return nextState
-  }),
+      return nextState
+    }),
 
-  changePlayerName: (playerId: string, name: string) => set((state) => {
-    const nextState = _cloneDeep(state)
-    const player = nextState.players.find(player => player.id === playerId)
-    if (!player) return state
+  changePlayerName: (playerId: string, name: string) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
+      const player = nextState.players.find((player) => player.id === playerId)
+      if (!player) return state
 
-    player.name = name
+      player.name = name
 
-    return nextState
-  }),
+      return nextState
+    }),
 
-  toggleAbilityModifier: (playerId: string, abilityId: string, modifierIndex: number) => set((state) => {
-    const nextState = _cloneDeep(state)
-    const player = nextState.players.find(player => player.id === playerId)
-    if (!player) return state
-    const playerAbility = player.abilities.find(ability => ability.id === abilityId)
-    if (!playerAbility) return state
+  toggleAbilityModifier: (
+    playerId: string,
+    abilityId: string,
+    modifierIndex: number
+  ) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
+      const player = nextState.players.find((player) => player.id === playerId)
+      if (!player) return state
+      const playerAbility = player.abilities.find(
+        (ability) => ability.id === abilityId
+      )
+      if (!playerAbility) return state
 
-    playerAbility.activeModifiers[modifierIndex] = !playerAbility.activeModifiers[modifierIndex]
-    applyModifiers(playerAbility)
-    playerAbility.castTimes = getTimeFractions(playerAbility.ability.cooldown, state.duration)
+      playerAbility.activeModifiers[modifierIndex] =
+        !playerAbility.activeModifiers[modifierIndex]
+      applyModifiers(playerAbility)
+      playerAbility.castTimes = getTimeFractions(
+        playerAbility.ability.cooldown,
+        state.duration
+      )
 
-    return nextState
-  }),
+      return nextState
+    }),
 }))

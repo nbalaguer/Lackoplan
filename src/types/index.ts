@@ -11,7 +11,7 @@ export type Ability = {
 }
 
 export type AbilityModifier = {
-  icon: string,
+  icon: string
   process: (ability: Ability) => void
 }
 

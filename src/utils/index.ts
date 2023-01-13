@@ -1,10 +1,14 @@
 import Color from "color"
-import {v4 as uuid} from 'uuid'
+import { v4 as uuid } from "uuid"
 import type { PlayerAbility, Class, Player } from "types"
 import abilities from "config/abilities"
-import _cloneDeep from 'lodash/cloneDeep'
+import _cloneDeep from "lodash/cloneDeep"
 
-export function getAccessibleValue(color: string, returnIfLight: string, returnIfDark: string) {
+export function getAccessibleValue(
+  color: string,
+  returnIfLight: string,
+  returnIfDark: string
+) {
   return Color(color).luminosity() > 0.179 ? returnIfDark : returnIfLight
 }
 
@@ -23,7 +27,7 @@ export function createPlayer(playerClass: Class): Player {
       originalAbility: _cloneDeep(ability),
       isActive: false,
       activeModifiers: ability.modifiers.map(() => false),
-      castTimes: []
+      castTimes: [],
     })),
   }
 }
@@ -42,5 +46,7 @@ export function applyModifiers(playerAbility: PlayerAbility) {
 }
 
 export function getTimeFractions(timeSlice: number, totalTime: number) {
-  return [...Array(Math.floor(totalTime / timeSlice) + 1)].map((_, i) => (timeSlice * i) / totalTime)
+  return [...Array(Math.floor(totalTime / timeSlice) + 1)].map(
+    (_, i) => (timeSlice * i) / totalTime
+  )
 }
