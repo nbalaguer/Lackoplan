@@ -2,13 +2,30 @@ import { CLASSES } from "config/constants"
 
 export type Class = (typeof CLASSES)[keyof typeof CLASSES]
 
-export interface Ability {
+export type Ability = {
   name: string
   shortName: string
   cooldown: number // seconds
   icon: string
+  modifiers: AbilityModifier[]
 }
 
-export interface AbilityWithModifiers extends Ability {
-  modifiers: ((x: number) => number)[]
+export type AbilityModifier = {
+  icon: string,
+  process: (ability: Ability) => Ability
+}
+
+export type PlayerAbility = {
+  id: string
+  ability: Ability
+  isActive: boolean
+  activeModifiers: boolean[]
+  castTimes: number[]
+}
+
+export type Player = {
+  id: string
+  name: string
+  class: Class
+  abilities: PlayerAbility[]
 }

@@ -22,3 +22,15 @@ body {
 main {
   grid-row: 2;
 }
+
+.os-scrollbar.os-scrollbar-vertical {
+  width: 8px;
+}
+
+.os-theme-light.os-scrollbar > .os-scrollbar-track > .os-scrollbar-handle {
+  background: rgba(248, 250, 252, 0.3);
+}
+
+.os-theme-light.os-scrollbar:hover > .os-scrollbar-track > .os-scrollbar-handle {
+  background: rgba(248, 250, 252, 0.4);
+}

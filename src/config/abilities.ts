@@ -1,20 +1,21 @@
 import { CLASSES } from "config/constants"
-import type { AbilityWithModifiers } from "types"
+import type { Ability } from "types"
+import deepmerge from 'deepmerge'
 
 const modifiers = {
-  setCooldown(x: number) {
-    return () => x
+  setCooldown(cd: number) {
+    return (ability: Ability) => deepmerge<Ability>(ability, {cooldown: cd})
   },
-  addCooldown(x: number) {
-    return (cd: number) => cd + x
+  addCooldown(cd: number) {
+    return (ability: Ability) => deepmerge<Ability>(ability, {cooldown: ability.cooldown + cd})
   },
-  multiplyCooldown(x: number) {
-    return (cd: number) => cd * x
+  multiplyCooldown(cd: number) {
+    return (ability: Ability) => deepmerge<Ability>(ability, {cooldown: ability.cooldown * cd})
   },
 }
 
 const abilities: {
-  [s in (typeof CLASSES)[keyof typeof CLASSES]]: AbilityWithModifiers[]
+  [s in (typeof CLASSES)[keyof typeof CLASSES]]: Ability[]
 } = Object.freeze({
   [CLASSES.WARRIOR]: [
     {
@@ -97,7 +98,10 @@ const abilities: {
       shortName: "Chi-ji",
       cooldown: 60 * 3,
       icon: "inv_pet_cranegod",
-      modifiers: [modifiers.setCooldown(60)],
+      modifiers: [{
+        icon: "inv_pet_jadeserpentpet",
+        process: modifiers.addCooldown(-60 * 2),
+      }],
     },
   ],
   [CLASSES.DRUID]: [
@@ -106,7 +110,10 @@ const abilities: {
       shortName: "Tranq",
       cooldown: 60 * 3,
       icon: "spell_nature_tranquility",
-      modifiers: [modifiers.setCooldown(60 * 2)],
+      modifiers: [{
+        icon: "ability_druid_dreamstate",
+        process: modifiers.addCooldown(-60),
+      }],
     },
     {
       name: "Tree",
