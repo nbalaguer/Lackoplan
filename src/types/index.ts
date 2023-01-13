@@ -12,12 +12,13 @@ export type Ability = {
 
 export type AbilityModifier = {
   icon: string,
-  process: (ability: Ability) => Ability
+  process: (ability: Ability) => void
 }
 
 export type PlayerAbility = {
   id: string
   ability: Ability
+  readonly originalAbility: Ability
   isActive: boolean
   activeModifiers: boolean[]
   castTimes: number[]

@@ -1,16 +1,15 @@
 import { CLASSES } from "config/constants"
 import type { Ability } from "types"
-import deepmerge from 'deepmerge'
 
 const modifiers = {
   setCooldown(cd: number) {
-    return (ability: Ability) => deepmerge<Ability>(ability, {cooldown: cd})
+    return (ability: Ability) => ability.cooldown = cd
   },
   addCooldown(cd: number) {
-    return (ability: Ability) => deepmerge<Ability>(ability, {cooldown: ability.cooldown + cd})
+    return (ability: Ability) => ability.cooldown = ability.cooldown + cd
   },
   multiplyCooldown(cd: number) {
-    return (ability: Ability) => deepmerge<Ability>(ability, {cooldown: ability.cooldown * cd})
+    return (ability: Ability) => ability.cooldown = ability.cooldown * cd
   },
 }
 

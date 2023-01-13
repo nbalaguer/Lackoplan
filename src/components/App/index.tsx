@@ -1,6 +1,6 @@
 import React from "react"
 import Header from "components/organisms/Header"
-import ClassPicker from "components/organisms/ClassPicker"
+import PlayerPicker from "components/organisms/PlayerPicker"
 import Timeline from "components/organisms/Timeline"
 
 function App() {
@@ -8,7 +8,7 @@ function App() {
     <>
       <Header />
       <main className="grid grid-cols-[auto_1fr_auto]">
-        <ClassPicker />
+        <PlayerPicker />
         <Timeline />
         <div>3</div>
       </main>

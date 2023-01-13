@@ -9,7 +9,7 @@ function PlayerList() {
   const playerIds = useAppStore((state) => state.players.map(player => player.id), shallow)
 
   return (
-    <div className="relative">
+    <div className="flex-grow relative">
       <div className="absolute inset-0">
         <OverlayScrollbarsComponent
           element="div"

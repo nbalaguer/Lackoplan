@@ -4,6 +4,8 @@ import { useAppStore } from 'store'
 import PlayerAbility from '../PlayerAbility'
 import {motion} from 'framer-motion'
 import PlayerHeader from '../PlayerHeader'
+import theme from 'config/theme'
+import Color from 'color'
 
 type PlayerProps = {
   playerId: string
@@ -46,7 +48,10 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
       transition={{
         opacity: {duration: 0.1},
       }}
-      className="p-2 space-y-2 border-slate-700 border-2"
+      style={{
+        borderColor: theme.colors[player.class]
+      }}
+      className={`p-2 space-y-2 border-l-4`}
       ref={ref}
     >
       <PlayerHeader
