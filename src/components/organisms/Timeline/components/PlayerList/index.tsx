@@ -2,6 +2,7 @@ import React from "react"
 import { useAppStore } from "store"
 import { shallow } from "zustand/shallow"
 import Player from "./components/Player"
+import { LayoutGroup } from "framer-motion"
 
 function PlayerList() {
   const playerIds = useAppStore(
@@ -11,9 +12,11 @@ function PlayerList() {
 
   return (
     <div className="flex flex-grow flex-col justify-end">
-      {playerIds.map((playerId) => {
-        return <Player key={playerId} playerId={playerId} />
-      })}
+      <LayoutGroup>
+        {playerIds.map((playerId) => {
+          return <Player key={playerId} playerId={playerId} />
+        })}
+      </LayoutGroup>
     </div>
   )
 }

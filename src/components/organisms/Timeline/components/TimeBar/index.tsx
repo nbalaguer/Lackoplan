@@ -1,10 +1,10 @@
 import React from "react"
 import { useAppStore } from "store"
-import { getTimeFractions } from "utils"
+import { getCastTimes } from "utils"
 
 function TimeBar() {
   const duration = useAppStore((state) => state.duration)
-  const minutes = getTimeFractions(60, duration)
+  const minutes = getCastTimes(60, duration)
 
   return (
     <div>
@@ -12,7 +12,7 @@ function TimeBar() {
       <div
         className="flex items-center justify-between bg-slate-900 text-slate-500"
         style={{
-          width: `calc(0.6rem + ${minutes[minutes.length - 1] * 100 + "%"})`,
+          width: `calc(0.6rem + ${(minutes[minutes.length - 1] / duration) * 100}%)`,
           marginLeft: "-0.3em",
         }}
       >

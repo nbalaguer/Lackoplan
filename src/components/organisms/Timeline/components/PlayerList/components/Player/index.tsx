@@ -1,38 +1,50 @@
+import React from "react"
 import Color from "color"
 import theme from "config/theme"
-import React from "react"
 import { useAppStore } from "store"
+import _isEqual from 'lodash/isEqual'
+import AbilitySequence from "../AbilitySequence"
+import {AnimatePresence, motion} from 'framer-motion'
 
 function Player(props: { playerId: string }) {
   const { playerId } = props
 
-  const player = useAppStore((state) =>
-    state.players.find((player) => player.id === playerId)
+  const playerData = useAppStore((state) => {
+      const player = state.players.find((player) => player.id === playerId)
+      if (!player) return
+      return {
+        name: player.name,
+        class: player.class,
+        abilityData: player.abilities.map(ability => ({id: ability.id, isActive: ability.isActive}))
+      }
+    },
+    _isEqual
   )
 
-  if (!player) return null
+  if (!playerData) return null
 
   return (
-    <div
-      className="px-2 py-0.5"
+    <motion.div
+      layout
+      transition={{duration: 0.2}}
+      className="py-0.5"
       style={{
-        backgroundColor: Color(theme.colors[player.class]).alpha(0.2).string(),
+        backgroundColor: Color(theme.colors[playerData.class]).alpha(0.2).string(),
       }}
     >
-      <div>{player.name}</div>
+      <motion.div layout>{playerData.name}</motion.div>
       <div>
-        {player.abilities
-          .filter((ability) => ability.isActive)
-          .map((playerAbility) => {
-            return (
-              <div key={playerAbility.id}>
-                {playerAbility.ability.name}
-                {playerAbility.castTimes.map((c) => +c.toFixed(2) * 100 + " ")}
-              </div>
-            )
-          })}
+        <AnimatePresence>
+          {playerData.abilityData
+            .filter((ability) => ability.isActive)
+            .map((ability) => {
+              return (
+                <AbilitySequence key={ability.id} playerId={playerId} abilityId={ability.id} />
+              )
+            })}
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
   )
 }
 

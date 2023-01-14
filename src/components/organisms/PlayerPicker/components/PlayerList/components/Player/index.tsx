@@ -5,7 +5,7 @@ import PlayerAbility from "../PlayerAbility"
 import { motion } from "framer-motion"
 import PlayerHeader from "../PlayerHeader"
 import theme from "config/theme"
-import Color from "color"
+import _isEqual from 'lodash/isEqual'
 
 type PlayerProps = {
   playerId: string
@@ -18,7 +18,8 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
   const playerRef = useRef<Player>()
 
   const playerState = useAppStore((state) =>
-    state.players.find((player) => player.id === playerId)
+    state.players.find((player) => player.id === playerId),
+    _isEqual
   )
   const removePlayer = useAppStore((state) => state.removePlayer)
   const toggleAbility = useAppStore((state) => state.toggleAbility)

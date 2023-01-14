@@ -45,8 +45,8 @@ export function applyModifiers(playerAbility: PlayerAbility) {
   playerAbility.ability = modifiedAbility
 }
 
-export function getTimeFractions(timeSlice: number, totalTime: number) {
+export function getCastTimes(timeSlice: number, totalTime: number) {
   return [...Array(Math.floor(totalTime / timeSlice) + 1)].map(
-    (_, i) => (timeSlice * i) / totalTime
+    (_, i) => timeSlice * i
   )
 }
