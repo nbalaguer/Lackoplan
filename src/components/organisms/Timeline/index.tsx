@@ -2,6 +2,7 @@ import React from "react"
 import PlayerList from "./components/PlayerList"
 import TimeGrid from "./components/TimeGrid"
 import TimeBar from "./components/TimeBar"
+import FightPanel from "./components/FightPanel"
 
 function Timeline() {
   return (
@@ -10,7 +11,7 @@ function Timeline() {
         <TimeGrid />
         <PlayerList />
         <TimeBar />
-        <div>CastsArea</div>
+        <FightPanel />
       </div>
     </div>
   )
