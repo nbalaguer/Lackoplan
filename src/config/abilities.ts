@@ -33,15 +33,22 @@ const abilities: {
       icon: "spell_holy_auramastery",
       modifiers: [],
     },
+    {
+      name: "Avenging Wrath",
+      shortName: "Wings",
+      cooldown: 60 * 2,
+      icon: "spell_holy_avenginewrath",
+      modifiers: [],
+    },
   ],
   [CLASSES.HUNTER]: [],
   [CLASSES.ROGUE]: [],
   [CLASSES.PRIEST]: [
     {
-      name: "Spirit Shell",
-      shortName: "SS",
+      name: "Evangelism",
+      shortName: "Evang",
       cooldown: 60 * 1.5,
-      icon: "ability_shaman_astralshift",
+      icon: "spell_holy_divineillumination",
       modifiers: [],
     },
     {
@@ -54,7 +61,7 @@ const abilities: {
     {
       name: "Divine Hymn",
       shortName: "Hymn",
-      cooldown: 60 * 3.5,
+      cooldown: 60 * 3,
       icon: "spell_holy_divinehymn",
       modifiers: [],
     },
@@ -63,7 +70,15 @@ const abilities: {
       shortName: "Salvation",
       cooldown: 60 * 4.5,
       icon: "ability_priest_archangel",
-      modifiers: [],
+      modifiers: [
+        {
+          icon: "ability_priest_ascension",
+          process: (ability: Ability) => {
+            modifiers.setCooldown(60 * 2)(ability)
+            ability.icon = "ability_priest_ascension"
+          }
+        }
+      ],
     },
   ],
   [CLASSES.SHAMAN]: [
@@ -75,10 +90,17 @@ const abilities: {
       modifiers: [],
     },
     {
-      name: "Tide Totem",
+      name: "Healing Tide Totem",
       shortName: "Tide",
       cooldown: 60 * 3,
       icon: "ability_shaman_healingtide",
+      modifiers: [],
+    },
+    {
+      name: "Ascendance",
+      shortName: "Asc",
+      cooldown: 60 * 3,
+      icon: "spell_fire_elementaldevastation",
       modifiers: [],
     },
   ],
@@ -133,7 +155,15 @@ const abilities: {
       modifiers: [],
     },
   ],
-  [CLASSES.DEMONHUNTER]: [],
+  [CLASSES.DEMONHUNTER]: [
+    {
+      name: "Darkness",
+      shortName: "Dark",
+      cooldown: 60 * 3,
+      icon: "ability_demonhunter_darkness",
+      modifiers: [],
+    },
+  ],
   [CLASSES.DEATHKNIGHT]: [
     {
       name: "Anti-Magic Zone",
@@ -143,7 +173,20 @@ const abilities: {
       modifiers: [],
     },
   ],
-  [CLASSES.EVOKER]: [],
+  [CLASSES.EVOKER]: [
+    {
+      name: "Rewind",
+      shortName: "Rewind",
+      cooldown: 60 * 4,
+      icon: "ability_evoker_rewind",
+      modifiers: [
+        {
+          icon: "ability_evoker_rewind",
+          process: modifiers.addCooldown(-60),
+        }
+      ]
+    }
+  ],
 })
 
 export default abilities
