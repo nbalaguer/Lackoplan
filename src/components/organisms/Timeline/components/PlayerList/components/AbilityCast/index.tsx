@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect } from 'react'
-import WowheadIcon from 'components/atoms/WowheadIcon'
-import { motion, useMotionValue, useSpring } from 'framer-motion'
-import { getPlayerAbilityFromStore, useAppStore } from 'store'
-import useMouseOffset from 'hooks/useMouseOffset'
+import React, { useCallback, useEffect } from "react"
+import WowheadIcon from "components/atoms/WowheadIcon"
+import { motion, useMotionValue, useSpring } from "framer-motion"
+import { getPlayerAbilityFromStore, useAppStore } from "store"
+import useMouseOffset from "hooks/useMouseOffset"
 
 function AbilityCast(props: {
   playerId: string
@@ -10,12 +10,7 @@ function AbilityCast(props: {
   castIndex: number
   containerRef: React.RefObject<HTMLDivElement>
 }) {
-  const {
-    playerId,
-    abilityId,
-    castIndex,
-    containerRef,
-  } = props
+  const { playerId, abilityId, castIndex, containerRef } = props
 
   const updateCastTime = useAppStore((state) => state.updateCastTime)
   const duration = useAppStore((state) => state.duration)
@@ -33,16 +28,30 @@ function AbilityCast(props: {
   })
 
   useEffect(() => {
-    const playerAbility = getPlayerAbilityFromStore(useAppStore.getState(), playerId, abilityId)
+    const playerAbility = getPlayerAbilityFromStore(
+      useAppStore.getState(),
+      playerId,
+      abilityId
+    )
     if (!playerAbility) return
     leftSpring.jump((playerAbility.castTimes[castIndex] / duration) * 100 + "%")
 
     useAppStore.subscribe((state, prevState) => {
-      const playerAbility = getPlayerAbilityFromStore(state, playerId, abilityId)
-      const prevPlayerAbility = getPlayerAbilityFromStore(prevState, playerId, abilityId)
+      const playerAbility = getPlayerAbilityFromStore(
+        state,
+        playerId,
+        abilityId
+      )
+      const prevPlayerAbility = getPlayerAbilityFromStore(
+        prevState,
+        playerId,
+        abilityId
+      )
       if (!playerAbility || !prevPlayerAbility) return
-      const cooldownChanged = playerAbility.ability.cooldown !== prevPlayerAbility.ability.cooldown
-      const newSpringValue = ((playerAbility.castTimes[castIndex] / duration) * 100) + "%"
+      const cooldownChanged =
+        playerAbility.ability.cooldown !== prevPlayerAbility.ability.cooldown
+      const newSpringValue =
+        (playerAbility.castTimes[castIndex] / duration) * 100 + "%"
       if (cooldownChanged) {
         leftSpring.jump(newSpringValue)
       } else {
@@ -51,16 +60,23 @@ function AbilityCast(props: {
     })
   }, [abilityId, castIndex, duration, leftSpring, playerId])
 
-  const handleMouseOffset = useCallback((offsetX: number) => {
-    const currentPlayerAbility = getPlayerAbilityFromStore(useAppStore.getState(), playerId, abilityId)
-    if (!containerRef.current || !currentPlayerAbility) return
+  const handleMouseOffset = useCallback(
+    (offsetX: number) => {
+      const currentPlayerAbility = getPlayerAbilityFromStore(
+        useAppStore.getState(),
+        playerId,
+        abilityId
+      )
+      if (!containerRef.current || !currentPlayerAbility) return
 
-    const containerWidth = containerRef.current.clientWidth
-    const currentCastTime = currentPlayerAbility.castTimes[castIndex]
-    const newCastTime = currentCastTime + duration * (offsetX / containerWidth)
-    updateCastTime(playerId, abilityId, castIndex, newCastTime)
-
-  }, [abilityId, castIndex, containerRef, duration, playerId, updateCastTime])
+      const containerWidth = containerRef.current.clientWidth
+      const currentCastTime = currentPlayerAbility.castTimes[castIndex]
+      const newCastTime =
+        currentCastTime + duration * (offsetX / containerWidth)
+      updateCastTime(playerId, abilityId, castIndex, newCastTime)
+    },
+    [abilityId, castIndex, containerRef, duration, playerId, updateCastTime]
+  )
 
   const start = useMouseOffset(handleMouseOffset)
 
@@ -78,7 +94,7 @@ function AbilityCast(props: {
         duration: 0.2,
       }}
       style={{
-        left: leftSpring
+        left: leftSpring,
       }}
     >
       <WowheadIcon

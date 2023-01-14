@@ -48,7 +48,11 @@ export const useAppStore = create<AppStore>()((set) => ({
   toggleAbility: (playerId: string, abilityId: string) =>
     set((state) => {
       const nextState = _cloneDeep(state)
-      const playerAbility = getPlayerAbilityFromStore(nextState, playerId, abilityId)
+      const playerAbility = getPlayerAbilityFromStore(
+        nextState,
+        playerId,
+        abilityId
+      )
       if (!playerAbility) return state
 
       playerAbility.isActive = !playerAbility.isActive
@@ -81,7 +85,11 @@ export const useAppStore = create<AppStore>()((set) => ({
   ) =>
     set((state) => {
       const nextState = _cloneDeep(state)
-      const playerAbility = getPlayerAbilityFromStore(nextState, playerId, abilityId)
+      const playerAbility = getPlayerAbilityFromStore(
+        nextState,
+        playerId,
+        abilityId
+      )
       if (!playerAbility) return state
 
       playerAbility.activeModifiers[modifierIndex] =
@@ -99,11 +107,15 @@ export const useAppStore = create<AppStore>()((set) => ({
     playerId: string,
     abilityId: string,
     castIndex: number,
-    newCastTime: number,
+    newCastTime: number
   ) =>
     set((state) => {
       const nextState = _cloneDeep(state)
-      const playerAbility = getPlayerAbilityFromStore(nextState, playerId, abilityId)
+      const playerAbility = getPlayerAbilityFromStore(
+        nextState,
+        playerId,
+        abilityId
+      )
       if (!playerAbility) return state
       playerAbility.castTimes[castIndex] = newCastTime
       nudgeCastTimesLeft(playerAbility, castIndex)
@@ -116,9 +128,11 @@ function nudgeCastTimesLeft(playerAbility: PlayerAbility, from: number) {
   if (from === 0) return
   for (let i = from - 1; i >= 0; i--) {
     const cooldown = playerAbility.ability.cooldown
-    const timeDifference = playerAbility.castTimes[i + 1] - playerAbility.castTimes[i]
+    const timeDifference =
+      playerAbility.castTimes[i + 1] - playerAbility.castTimes[i]
     if (timeDifference < cooldown) {
-      playerAbility.castTimes[i] = playerAbility.castTimes[i] - (cooldown - timeDifference)
+      playerAbility.castTimes[i] =
+        playerAbility.castTimes[i] - (cooldown - timeDifference)
     }
   }
 }
@@ -132,24 +146,38 @@ function adjustCastTimes(playerAbility: PlayerAbility, duration: number) {
     const prevCastTime = playerAbility.castTimes[index]
     const timeDifference = castTime - prevCastTime
     if (timeDifference < cooldown) {
-      playerAbility.castTimes[index + 1] = castTime + (cooldown - timeDifference)
+      playerAbility.castTimes[index + 1] =
+        castTime + (cooldown - timeDifference)
     }
   })
 
-  playerAbility.castTimes = playerAbility.castTimes.filter(castTime => castTime <= duration + 5)
+  playerAbility.castTimes = playerAbility.castTimes.filter(
+    (castTime) => castTime <= duration + 5
+  )
 
-  if (duration - 5 - playerAbility.castTimes[playerAbility.castTimes.length - 1] >= cooldown) {
+  if (
+    duration -
+      5 -
+      playerAbility.castTimes[playerAbility.castTimes.length - 1] >=
+    cooldown
+  ) {
     playerAbility.castTimes.push(duration - 5)
   }
 }
 
 export function getPlayerFromStore(state: AppStore, playerId: string) {
-  return state.players.find(player => player.id === playerId)
+  return state.players.find((player) => player.id === playerId)
 }
 
-export function getPlayerAbilityFromStore(state: AppStore, playerId: string, abilityId: string) {
+export function getPlayerAbilityFromStore(
+  state: AppStore,
+  playerId: string,
+  abilityId: string
+) {
   const player = getPlayerFromStore(state, playerId)
   if (!player) return
-  const playerAbility = player.abilities.find(ability => ability.id === abilityId)
+  const playerAbility = player.abilities.find(
+    (ability) => ability.id === abilityId
+  )
   return playerAbility
 }

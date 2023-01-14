@@ -12,7 +12,9 @@ function TimeBar() {
       <div
         className="flex items-center justify-between bg-slate-900 text-slate-500"
         style={{
-          width: `calc(0.6rem + ${(minutes[minutes.length - 1] / duration) * 100}%)`,
+          width: `calc(0.6rem + ${
+            (minutes[minutes.length - 1] / duration) * 100
+          }%)`,
           marginLeft: "-0.3em",
         }}
       >
