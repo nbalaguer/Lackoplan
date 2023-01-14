@@ -23,6 +23,7 @@ type AppStore = {
     castIndex: number,
     newCastTime: number
   ) => void
+  setDuration: (duration: number) => void
 }
 
 export const useAppStore = create<AppStore>()((set) => ({
@@ -31,6 +32,7 @@ export const useAppStore = create<AppStore>()((set) => ({
   casts: [],
 
   // actions
+  setDuration: (duration: number) => set((state) => deepmerge(state, {duration})),
   addPlayer: (player: Player) =>
     set((state) => deepmerge(state, { players: [player] })),
 
