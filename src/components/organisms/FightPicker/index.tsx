@@ -7,9 +7,14 @@ type FightForm = {
 }
 
 function FightPicker() {
+  const duration = useAppStore((state) => state.duration)
   const setDuration = useAppStore((state) => state.setDuration)
 
-  const {register, handleSubmit} = useForm<FightForm>()
+  const {register, handleSubmit} = useForm<FightForm>({
+    defaultValues: {
+      duration: Math.floor(duration / 60) + ":" + String(duration % 60).padStart(2, "0")
+    }
+  })
 
   const onSubmit = useCallback((values: FightForm) => {
     const [minutes, seconds] = values.duration.split(":")

@@ -35,7 +35,7 @@ function Player(props: { playerId: string }) {
           .string(),
       }}
     >
-      <motion.div layout>{playerData.name}</motion.div>
+      <motion.div layout className="px-2 font-medium text-xs">{playerData.name}</motion.div>
       <div>
         <AnimatePresence>
           {playerData.abilityData

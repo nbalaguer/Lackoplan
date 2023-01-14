@@ -22,7 +22,7 @@ function AbilityCast(props: {
 
   const leftMotionValue = useMotionValue("0%")
   const leftSpring = useSpring(leftMotionValue, {
-    damping: 30,
+    damping: 50,
     mass: 0.3,
     stiffness: 2000,
   })
