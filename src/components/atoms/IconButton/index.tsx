@@ -2,11 +2,13 @@ import React from "react"
 import { FiEdit2 as EditIcon } from "react-icons/fi"
 import { FiCheck as CheckIcon } from "react-icons/fi"
 import { MdClose as CloseIcon } from "react-icons/md"
+import { MdAdd as AddIcon } from "react-icons/md"
 
 const iconTypes = Object.freeze({
   edit: <EditIcon size={14} />,
   close: <CloseIcon size={14} />,
   check: <CheckIcon size={14} />,
+  add: <AddIcon size={14} />,
 })
 
 function IconButton(props: {

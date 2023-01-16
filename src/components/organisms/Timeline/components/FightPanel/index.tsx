@@ -1,39 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import _isEqual from 'lodash/isEqual'
+import { useAppStore } from 'store'
 
 function FightPanel() {
 
-  const [imageUrl, setImageUrl] = useState<string>()
-
-  useEffect(() => {
-    async function onPaste(event: KeyboardEvent) {
-      const {code, ctrlKey} = event
-      if (code === "KeyV" && ctrlKey) {
-        try {
-          const items = await navigator.clipboard.read()
-          const imageBlob = await items[0].getType("image/png")
-          const reader = new FileReader()
-          reader.readAsDataURL(imageBlob)
-          reader.onload = function() {
-            const imageBase64Url = reader.result as string
-            setImageUrl(imageBase64Url)
-          }
-        }
-        catch (error) {
-          console.error(error)
-        }
-      }
-    }
-
-    window.addEventListener("keydown", onPaste)
-
-    return () => window.removeEventListener("keydown", onPaste)
-  }, [])
+  const overlays = useAppStore((state) => state.overlays.slice(1), _isEqual)
 
   return (
     <div className="min-h-[300px] relative">
-      {imageUrl && (
-        <img src={imageUrl} alt="" className="absolute top-0 left-0 w-full h-full opacity-40" />
-      )}
+      {overlays.filter((overlay) => !!overlay).map((overlay, index) => {
+        return (
+          <img key={index} src={overlay} alt="" className="absolute top-0 left-0 w-full h-full opacity-30" />
+        )
+      })}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, {useCallback} from 'react'
 import { useForm } from 'react-hook-form'
 import { useAppStore } from 'store'
+import OverlayConfig from './components/OverlayConfig'
 
 type FightForm = {
   duration: string
@@ -22,15 +23,15 @@ function FightPicker() {
   }, [setDuration])
 
   return (
-    <div>
-      <div className="p-3 border-b-2 border-slate-700">
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <label className="space-y-1">
-            <div className="text-sm">Fight duration</div>
-            <input {...register("duration")} className="px-2 text-black" />
-          </label>
-        </form>
-      </div>
+    <div className="flex flex-col border-l-2 border-slate-700">
+      <form onSubmit={handleSubmit(onSubmit)} className="p-3 border-b-2 border-slate-700">
+        <label className="space-y-1">
+          <div className="text-sm">Fight duration</div>
+          <input {...register("duration")} className="px-2 text-black" />
+        </label>
+      </form>
+      <div className="flex-grow p-3 border-b-2 border-slate-700"></div>
+      <OverlayConfig />
     </div>
   )
 }

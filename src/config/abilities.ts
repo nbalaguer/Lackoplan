@@ -126,6 +126,13 @@ const abilities: {
         },
       ],
     },
+    {
+      name: "Mana Tea",
+      shortName: "Tea",
+      cooldown: 60 * 1.5,
+      icon: "monk_ability_cherrymanatea",
+      modifiers: [],
+    },
   ],
   [CLASSES.DRUID]: [
     {

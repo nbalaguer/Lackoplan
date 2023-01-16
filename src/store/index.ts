@@ -8,6 +8,7 @@ type AppStore = {
   duration: number // seconds
   players: Player[]
   casts: PlayerAbility[]
+  overlays: string[]
   addPlayer: (player: Player) => void
   removePlayer: (playerId: string) => void
   toggleAbility: (playerId: string, abilityId: string) => void
@@ -24,15 +25,24 @@ type AppStore = {
     newCastTime: number
   ) => void
   setDuration: (duration: number) => void
+  setOverlay: (index: number, url: string) => void
 }
 
 export const useAppStore = create<AppStore>()((set) => ({
   duration: 60 * 9 + 17,
   players: [],
   casts: [],
+  overlays: ["", "", ""],
 
   // actions
   setDuration: (duration: number) => set((state) => deepmerge(state, {duration})),
+
+  setOverlay: (index: number, url: string) => set((state) => {
+    const newState = _cloneDeep(state)
+    newState.overlays[index] = url
+    return newState
+  }),
+
   addPlayer: (player: Player) =>
     set((state) => deepmerge(state, { players: [player] })),
 

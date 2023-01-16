@@ -10,8 +10,11 @@ function PlayerList() {
     shallow
   )
 
+  const overlay = useAppStore((state) => state.overlays[0])
+
   return (
-    <div className="flex flex-grow flex-col justify-end">
+    <div className="relative flex flex-grow flex-col justify-end">
+      {!!overlay && <img src={overlay} alt="" className="absolute top-0 left-0 w-full h-full opacity-20" />}
       <LayoutGroup>
         {playerIds.map((playerId) => {
           return <Player key={playerId} playerId={playerId} />
