@@ -1,6 +1,7 @@
-import React, {useCallback} from 'react'
+import React, {useCallback, useEffect} from 'react'
 import { useForm } from 'react-hook-form'
 import { useAppStore } from 'store'
+import { getTimeString, parseTimeString } from 'utils'
 import OverlayConfig from './components/OverlayConfig'
 
 type FightForm = {
@@ -11,15 +12,25 @@ function FightPicker() {
   const duration = useAppStore((state) => state.duration)
   const setDuration = useAppStore((state) => state.setDuration)
 
-  const {register, handleSubmit} = useForm<FightForm>({
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    setValue,
+  } = useForm<FightForm>({
     defaultValues: {
-      duration: Math.floor(duration / 60) + ":" + String(duration % 60).padStart(2, "0")
+      duration: getTimeString(duration)
     }
   })
 
+  useEffect(() => {
+    if (duration !== Number(getValues().duration)) {
+      setValue("duration", getTimeString(duration))
+    }
+  }, [duration, getValues, setValue])
+
   const onSubmit = useCallback((values: FightForm) => {
-    const [minutes, seconds] = values.duration.split(":")
-    setDuration(parseInt(minutes) * 60 + parseInt(seconds))
+    setDuration(parseTimeString(values.duration))
   }, [setDuration])
 
   return (

@@ -36,3 +36,8 @@ main {
   > .os-scrollbar-handle {
   background: rgba(248, 250, 252, 0.4);
 }
+
+#modals-portal {
+  position: relative;
+  z-index: 1000;
+}

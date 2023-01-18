@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React from "react"
 import WowheadIcon from "components/atoms/WowheadIcon"
 import { useAppStore } from "store"
 import _isEqual from "lodash/isEqual"
@@ -7,8 +7,6 @@ import { motion } from "framer-motion"
 
 function AbilitySequence(props: { playerId: string; abilityId: string }) {
   const { playerId, abilityId } = props
-
-  const containerRef = useRef<HTMLDivElement>(null)
 
   const abilityData = useAppStore((state) => {
     const player = state.players.find((player) => player.id === playerId)
@@ -26,7 +24,7 @@ function AbilitySequence(props: { playerId: string; abilityId: string }) {
   if (!abilityData) return null
 
   return (
-    <motion.div layout ref={containerRef} className="relative flex select-none">
+    <motion.div layout className="relative flex select-none">
       <WowheadIcon name={abilityData.icon} className="invisible" size="small" />
       {[...Array(abilityData.numCasts)].map((_, index) => {
         return (
@@ -35,7 +33,6 @@ function AbilitySequence(props: { playerId: string; abilityId: string }) {
             playerId={playerId}
             abilityId={abilityId}
             castIndex={index}
-            containerRef={containerRef}
           />
         )
       })}

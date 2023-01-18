@@ -8,8 +8,6 @@ function OverlayConfig() {
   const setOverlay = useAppStore((state) => state.setOverlay)
   const overlays = useAppStore((state) => state.overlays, _isEqual)
 
-  console.log("overlays render")
-
   return (
     <div className="p-3 space-y-3">
       <div className="flex justify-between items-center">
@@ -18,10 +16,10 @@ function OverlayConfig() {
       <div className="space-y-3">
         {overlays.map((overlay, index) => {
           return (
-            <>
+            <React.Fragment key={index}>
               {index === 1 && <div className="border-b-2 border-slate-600" />}
-              <Overlay src={overlay} key={index} onOverlay={(src) => setOverlay(index, src)} />
-            </>
+              <Overlay src={overlay} onOverlay={(src) => setOverlay(index, src)} />
+            </React.Fragment>
           )
         })}
       </div>

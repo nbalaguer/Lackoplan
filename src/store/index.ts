@@ -1,7 +1,7 @@
 import deepmerge from "deepmerge"
 import _cloneDeep from "lodash/cloneDeep"
-import type { PlayerAbility, Player } from "types"
-import { applyModifiers, getCastTimes } from "utils"
+import type { PlayerAbility, Player, ExportableProps } from "types"
+import { applyModifiers, createPlayer, getCastTimes } from "utils"
 import { create } from "zustand"
 
 type AppStore = {
@@ -9,6 +9,8 @@ type AppStore = {
   players: Player[]
   casts: PlayerAbility[]
   overlays: string[]
+  exportState: () => ExportableProps
+  importState: (stateConfig: ExportableProps) => void
   addPlayer: (player: Player) => void
   removePlayer: (playerId: string) => void
   toggleAbility: (playerId: string, abilityId: string) => void
@@ -28,13 +30,19 @@ type AppStore = {
   setOverlay: (index: number, url: string) => void
 }
 
-export const useAppStore = create<AppStore>()((set) => ({
+export const useAppStore = create<AppStore>()((set, get) => ({
   duration: 60 * 9 + 17,
   players: [],
   casts: [],
   overlays: ["", "", ""],
 
-  // actions
+  exportState: () => {
+    const currentState = get()
+    return getExportData(currentState)
+  },
+
+  importState: (stateConfig: ExportableProps) => set((state) => constructState(state, stateConfig)),
+
   setDuration: (duration: number) => set((state) => deepmerge(state, {duration})),
 
   setOverlay: (index: number, url: string) => set((state) => {
@@ -175,6 +183,50 @@ function adjustCastTimes(playerAbility: PlayerAbility, duration: number) {
   ) {
     playerAbility.castTimes.push(duration - 5)
   }
+}
+
+function getExportData(state: AppStore): ExportableProps {
+  const duration = state.duration
+  const overlays = state.overlays
+  const players = state.players.map(player => ({
+    name: player.name,
+    class: player.class,
+    abilities: player.abilities.map(playerAbility => ({
+      isActive: playerAbility.isActive,
+      activeModifiers: playerAbility.activeModifiers,
+      castTimes: playerAbility.castTimes,
+    }))
+  }))
+
+  return {
+    duration,
+    players,
+    overlays
+  }
+}
+
+function constructState(state: AppStore, stateConfig: ExportableProps): AppStore {
+  console.log(stateConfig)
+
+  const newState = _cloneDeep(state)
+
+  newState.duration = stateConfig.duration
+  newState.overlays = stateConfig.overlays
+
+  newState.players = stateConfig.players.map((playerConfig) => {
+    const player = createPlayer(playerConfig.class)
+    player.name = playerConfig.name
+    player.abilities.forEach((playerAbility, index) => {
+      const abilityConfig = playerConfig.abilities[index]
+      playerAbility.isActive = abilityConfig.isActive
+      playerAbility.castTimes = abilityConfig.castTimes
+      playerAbility.activeModifiers = abilityConfig.activeModifiers
+      applyModifiers(playerAbility)
+    })
+    return player
+  })
+
+  return newState
 }
 
 export function getPlayerFromStore(state: AppStore, playerId: string) {

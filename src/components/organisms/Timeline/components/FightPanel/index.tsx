@@ -10,7 +10,7 @@ function FightPanel() {
     <div className="min-h-[300px] relative">
       {overlays.filter((overlay) => !!overlay).map((overlay, index) => {
         return (
-          <img key={index} src={overlay} alt="" className="absolute top-0 left-0 w-full h-full opacity-30" />
+          <img key={index} src={overlay} alt="" className="absolute top-0 left-0 w-full h-full opacity-30 -z-10" />
         )
       })}
     </div>

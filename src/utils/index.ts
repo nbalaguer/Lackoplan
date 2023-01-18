@@ -50,3 +50,12 @@ export function getCastTimes(timeSlice: number, totalTime: number) {
     (_, i) => timeSlice * i
   )
 }
+
+export function parseTimeString(timeString: string) {
+  const [minutes, seconds] = timeString.split(":")
+  return (parseInt(minutes) || 0) * 60 + (parseInt(seconds) || 0)
+}
+
+export function getTimeString(time: number) {
+  return `${Math.floor(time / 60)}:${String(Math.floor(time % 60)).padStart(2, "0")}`
+}

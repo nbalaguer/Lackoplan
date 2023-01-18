@@ -30,3 +30,17 @@ export type Player = {
   class: Class
   abilities: PlayerAbility[]
 }
+
+export type ExportableProps = {
+  duration: number
+  players: {
+    name: string
+    class: Class
+    abilities: {
+      isActive: boolean
+      activeModifiers: boolean[]
+      castTimes: number[]
+    }[]
+  }[]
+  overlays: string[]
+}

@@ -3,14 +3,16 @@ import WowheadIcon from "components/atoms/WowheadIcon"
 import { motion, useMotionValue, useSpring } from "framer-motion"
 import { getPlayerAbilityFromStore, useAppStore } from "store"
 import useMouseOffset from "hooks/useMouseOffset"
+import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
 
 function AbilityCast(props: {
   playerId: string
   abilityId: string
   castIndex: number
-  containerRef: React.RefObject<HTMLDivElement>
 }) {
-  const { playerId, abilityId, castIndex, containerRef } = props
+  const { playerId, abilityId, castIndex } = props
+
+  const {panelRef} = useTimelineContext()
 
   const updateCastTime = useAppStore((state) => state.updateCastTime)
   const duration = useAppStore((state) => state.duration)
@@ -67,15 +69,15 @@ function AbilityCast(props: {
         playerId,
         abilityId
       )
-      if (!containerRef.current || !currentPlayerAbility) return
+      if (!panelRef.current || !currentPlayerAbility) return
 
-      const containerWidth = containerRef.current.clientWidth
+      const containerWidth = panelRef.current.clientWidth
       const currentCastTime = currentPlayerAbility.castTimes[castIndex]
       const newCastTime =
         currentCastTime + duration * (offsetX / containerWidth)
       updateCastTime(playerId, abilityId, castIndex, newCastTime)
     },
-    [abilityId, castIndex, containerRef, duration, playerId, updateCastTime]
+    [abilityId, castIndex, panelRef, duration, playerId, updateCastTime]
   )
 
   const start = useMouseOffset(handleMouseOffset)
