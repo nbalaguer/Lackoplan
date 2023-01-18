@@ -14,7 +14,13 @@ function PlayerList() {
 
   return (
     <div className="relative flex flex-grow flex-col justify-end">
-      {!!overlay && <img src={overlay} alt="" className="absolute top-0 left-0 w-full h-full opacity-20 -z-10" />}
+      {!!overlay && (
+        <img
+          src={overlay}
+          alt=""
+          className="absolute top-0 left-0 -z-10 h-full w-full opacity-20"
+        />
+      )}
       <LayoutGroup>
         {playerIds.map((playerId) => {
           return <Player key={playerId} playerId={playerId} />

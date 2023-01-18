@@ -12,7 +12,7 @@ function AbilityCast(props: {
 }) {
   const { playerId, abilityId, castIndex } = props
 
-  const {panelRef} = useTimelineContext()
+  const { panelRef } = useTimelineContext()
 
   const updateCastTime = useAppStore((state) => state.updateCastTime)
   const duration = useAppStore((state) => state.duration)

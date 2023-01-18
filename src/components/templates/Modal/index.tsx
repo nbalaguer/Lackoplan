@@ -1,7 +1,7 @@
-import React from 'react'
-import {motion, AnimatePresence, Variants} from 'framer-motion'
-import Portal from 'components/templates/Portal'
-import classNames from 'classnames'
+import React from "react"
+import { motion, AnimatePresence, Variants } from "framer-motion"
+import Portal from "components/templates/Portal"
+import classNames from "classnames"
 
 const overlayVariants: Variants = {
   enter: {
@@ -34,7 +34,7 @@ const modalVariants: Variants = {
     transition: {
       duration: 0.2,
     },
-  }
+  },
 }
 
 function Modal(props: {
@@ -43,12 +43,7 @@ function Modal(props: {
   isOpen: boolean
   onCloseRequest: () => void
 }) {
-  const {
-    children,
-    isOpen,
-    onCloseRequest,
-    className,
-  } = props
+  const { children, isOpen, onCloseRequest, className } = props
 
   return (
     <Portal>
@@ -59,9 +54,19 @@ function Modal(props: {
             animate="enter"
             exit="exit"
             initial="exit"
-            className="bg-slate-900/50 fixed inset-0 grid place-items-center overflow-auto p-6" onClick={onCloseRequest}
+            className="fixed inset-0 grid place-items-center overflow-auto bg-slate-900/50 p-6"
+            onClick={onCloseRequest}
           >
-            <motion.div variants={modalVariants} className={classNames("bg-slate-800 text-slate-100 flex flex-col", className)} onClick={(e) => {e.stopPropagation()}}>
+            <motion.div
+              variants={modalVariants}
+              className={classNames(
+                "flex flex-col bg-slate-800 text-slate-100",
+                className
+              )}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
               {children}
             </motion.div>
           </motion.div>

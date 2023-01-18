@@ -1,4 +1,4 @@
-import React, {useMemo, useContext} from 'react'
+import React, { useMemo, useContext } from "react"
 
 type TimelineContextType = {
   panelRef: React.RefObject<HTMLDivElement>
@@ -10,15 +10,11 @@ export function TimelineContextProvider(props: {
   panelRef: React.RefObject<HTMLDivElement>
   children: React.ReactNode
 }) {
-
-  const {
-    panelRef,
-    children,
-  } = props
+  const { panelRef, children } = props
 
   const contextValue = useMemo(() => {
     return {
-      panelRef
+      panelRef,
     }
   }, [panelRef])
 
@@ -33,7 +29,9 @@ function useTimelineContext() {
   const timelineContext = useContext(TimelineContext)
 
   if (!timelineContext) {
-    throw new Error("useTimelineContext must be used within <TimelineContextProvider>")
+    throw new Error(
+      "useTimelineContext must be used within <TimelineContextProvider>"
+    )
   }
 
   return timelineContext

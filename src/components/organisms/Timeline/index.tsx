@@ -7,7 +7,6 @@ import { TimelineContextProvider } from "./context/useTimelineContext"
 import Toolbar from "./components/Toolbar"
 
 function Timeline() {
-
   const panelRef = useRef<HTMLDivElement>(null)
 
   return (

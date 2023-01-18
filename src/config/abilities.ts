@@ -76,8 +76,8 @@ const abilities: {
           process: (ability: Ability) => {
             modifiers.setCooldown(60 * 2)(ability)
             ability.icon = "ability_priest_ascension"
-          }
-        }
+          },
+        },
       ],
     },
   ],
@@ -190,9 +190,9 @@ const abilities: {
         {
           icon: "ability_evoker_rewind",
           process: modifiers.addCooldown(-60),
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
 })
 

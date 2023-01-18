@@ -57,5 +57,8 @@ export function parseTimeString(timeString: string) {
 }
 
 export function getTimeString(time: number) {
-  return `${Math.floor(time / 60)}:${String(Math.floor(time % 60)).padStart(2, "0")}`
+  return `${Math.floor(time / 60)}:${String(Math.floor(time % 60)).padStart(
+    2,
+    "0"
+  )}`
 }

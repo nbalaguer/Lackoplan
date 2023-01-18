@@ -11,7 +11,13 @@ function ClassList() {
       {Object.values(CLASSES).map((classKey) => {
         const hasAbilities = !!abilities[classKey].length
         if (hasAbilities) return <Class key={classKey} classKey={classKey} />
-        return <WowheadIcon key={classKey} name={classIcons[classKey]} className="opacity-30" />
+        return (
+          <WowheadIcon
+            key={classKey}
+            name={classIcons[classKey]}
+            className="opacity-30"
+          />
+        )
       })}
     </div>
   )
