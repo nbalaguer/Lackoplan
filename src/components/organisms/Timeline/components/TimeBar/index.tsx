@@ -10,6 +10,7 @@ function TimeBar() {
     <div>
       <div className="h-px bg-slate-500" />
       <div className="relative text-slate-500">
+        <span className="invisible">sizer</span>
         {minutes.map((castTime, i) => {
           return (
             <span

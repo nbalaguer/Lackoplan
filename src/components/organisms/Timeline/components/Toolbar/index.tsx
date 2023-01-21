@@ -1,5 +1,5 @@
 import React from "react"
-import ExportMDTString from "./components/ExportMDTString"
+import ExportMRTString from "./components/ExportMRTString"
 import ExportString from "./components/ExportString"
 import ImportString from "./components/ImportString"
 
@@ -10,7 +10,7 @@ function Toolbar() {
       <div className="space-x-2">
         <ImportString />
         <ExportString />
-        <ExportMDTString />
+        <ExportMRTString />
       </div>
     </div>
   )
