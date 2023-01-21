@@ -9,7 +9,7 @@ type AppStore = {
   players: Player[]
   casts: PlayerAbility[]
   overlays: string[]
-  exportState: () => ExportableProps
+  exportState: (includeOverlays?: boolean) => ExportableProps
   importState: (stateConfig: ExportableProps) => void
   addPlayer: (player: Player) => void
   removePlayer: (playerId: string) => void
@@ -36,9 +36,9 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   casts: [],
   overlays: ["", "", ""],
 
-  exportState: () => {
+  exportState: (includeOverlays = false) => {
     const currentState = get()
-    return getExportData(currentState)
+    return getExportData(currentState, includeOverlays)
   },
 
   importState: (stateConfig: ExportableProps) =>
@@ -188,9 +188,7 @@ function adjustCastTimes(playerAbility: PlayerAbility, duration: number) {
   }
 }
 
-function getExportData(state: AppStore): ExportableProps {
-  const duration = state.duration
-  const overlays = state.overlays
+function getExportData(state: AppStore, includeOverlays: boolean): ExportableProps {
   const players = state.players.map((player) => ({
     name: player.name,
     class: player.class,
@@ -202,9 +200,9 @@ function getExportData(state: AppStore): ExportableProps {
   }))
 
   return {
-    duration,
+    duration: state.duration,
     players,
-    overlays,
+    overlays: includeOverlays ? state.overlays : ["", "", ""],
   }
 }
 
@@ -216,8 +214,11 @@ function constructState(
 
   const newState = _cloneDeep(state)
 
+  if (stateConfig.overlays.some(overlay => !!overlay)) {
+    newState.overlays = stateConfig.overlays
+  }
+
   newState.duration = stateConfig.duration
-  newState.overlays = stateConfig.overlays
 
   newState.players = stateConfig.players.map((playerConfig) => {
     const player = createPlayer(playerConfig.class)
