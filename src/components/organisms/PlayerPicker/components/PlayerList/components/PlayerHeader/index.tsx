@@ -13,8 +13,9 @@ function PlayerHeader(props: {
   player: Player
   onRemove: () => void
   onChangeName: (newName: string) => void
+  onToggle: () => void
 }) {
-  const { player, onRemove, onChangeName } = props
+  const { player, onRemove, onChangeName, onToggle } = props
 
   const inputRef = useRef<HTMLInputElement>()
   const [isEditing, setIsEditing] = useState(false)
@@ -72,6 +73,10 @@ function PlayerHeader(props: {
           )}
         </motion.span>
       </span>
+      {player.isActive
+        ? <IconButton type="show" onClick={onToggle} />
+        : <IconButton type="hide" onClick={onToggle} />
+      }
       <IconButton type="close" onClick={onRemove} />
     </div>
   )

@@ -28,13 +28,14 @@ export function MRTWrapStringWithClassColor(playerClass: Class, string: string) 
 export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
 
   const {
-    castTimeGroupThreshold = 10,
+    castTimeGroupThreshold = 5,
     groupBy = "none"
   } = config
 
   const currentState = useAppStore.getState()
   const castEvents = currentState
     .players
+    .filter(player => player.isActive)
     .map(player => player
       .abilities
       .filter(ability => ability.isActive)

@@ -29,6 +29,7 @@ export type Player = {
   name: string
   class: Class
   abilities: PlayerAbility[]
+  isActive: boolean
 }
 
 export type ExportableProps = {
@@ -36,6 +37,7 @@ export type ExportableProps = {
   players: {
     name: string
     class: Class
+    isActive: boolean
     abilities: {
       isActive: boolean
       activeModifiers: boolean[]

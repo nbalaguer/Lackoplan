@@ -1,6 +1,6 @@
 import React, { useCallback, useRef, forwardRef } from "react"
 import type { Player } from "types"
-import { useAppStore } from "store"
+import { getPlayerFromStore, useAppStore } from "store"
 import PlayerAbility from "../PlayerAbility"
 import { motion } from "framer-motion"
 import PlayerHeader from "../PlayerHeader"
@@ -18,12 +18,13 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
   const playerRef = useRef<Player>()
 
   const playerState = useAppStore(
-    (state) => state.players.find((player) => player.id === playerId),
+    (state) => getPlayerFromStore(state, playerId),
     _isEqual
   )
   const removePlayer = useAppStore((state) => state.removePlayer)
   const toggleAbility = useAppStore((state) => state.toggleAbility)
   const changePlayerName = useAppStore((state) => state.changePlayerName)
+  const togglePlayer = useAppStore((state) => state.togglePlayer)
 
   const player = playerState || playerRef.current
 
@@ -40,6 +41,11 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
     },
     [changePlayerName, player]
   )
+
+  const handleToggle = useCallback(() => {
+    if (!player) return
+    togglePlayer(player.id)
+  }, [player, togglePlayer])
 
   if (!player) return null
 
@@ -62,6 +68,7 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
         player={player}
         onRemove={handleRemove}
         onChangeName={handleChangeName}
+        onToggle={handleToggle}
       />
       <div className="grid grid-cols-4 items-start gap-2">
         {player.abilities.map((playerAbility) => {

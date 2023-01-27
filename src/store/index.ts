@@ -13,6 +13,7 @@ type AppStore = {
   importState: (stateConfig: ExportableProps) => void
   addPlayer: (player: Player) => void
   removePlayer: (playerId: string) => void
+  togglePlayer: (playerId: string) => void
   toggleAbility: (playerId: string, abilityId: string) => void
   changePlayerName: (playerId: string, name: string) => void
   toggleAbilityModifier: (
@@ -67,6 +68,14 @@ export const useAppStore = create<AppStore>()((set, get) => ({
 
       return nextState
     }),
+
+  togglePlayer: (playerId: string) => set((state) => {
+    const nextState = _cloneDeep(state)
+    const player = getPlayerFromStore(nextState, playerId)
+    if (!player) return state
+    player.isActive = !player.isActive
+    return nextState
+  }),
 
   toggleAbility: (playerId: string, abilityId: string) =>
     set((state) => {
@@ -191,6 +200,7 @@ function adjustCastTimes(playerAbility: PlayerAbility, duration: number) {
 function getExportData(state: AppStore, includeOverlays: boolean): ExportableProps {
   const players = state.players.map((player) => ({
     name: player.name,
+    isActive: player.isActive,
     class: player.class,
     abilities: player.abilities.map((playerAbility) => ({
       isActive: playerAbility.isActive,
@@ -223,6 +233,7 @@ function constructState(
   newState.players = stateConfig.players.map((playerConfig) => {
     const player = createPlayer(playerConfig.class)
     player.name = playerConfig.name
+    player.isActive = playerConfig.isActive
     player.abilities.forEach((playerAbility, index) => {
       const abilityConfig = playerConfig.abilities[index]
       playerAbility.isActive = abilityConfig.isActive

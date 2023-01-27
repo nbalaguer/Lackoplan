@@ -21,6 +21,7 @@ export function createPlayer(playerClass: Class): Player {
     id: uuid(),
     class: playerClass,
     name: playerClass,
+    isActive: true,
     abilities: abilities[playerClass].map((ability) => ({
       id: uuid(),
       ability: _cloneDeep(ability),
