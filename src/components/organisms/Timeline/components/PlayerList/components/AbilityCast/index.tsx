@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react"
 import WowheadIcon from "components/atoms/WowheadIcon"
-import { motion, useMotionValue, useSpring } from "framer-motion"
+import { motion, useSpring } from "framer-motion"
 import { getPlayerAbilityFromStore, useAppStore } from "store"
 import useMouseOffset from "hooks/useMouseOffset"
 import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
@@ -22,11 +22,10 @@ function AbilityCast(props: {
     return playerAbility.ability.icon
   })
 
-  const leftMotionValue = useMotionValue("0%")
-  const leftSpring = useSpring(leftMotionValue, {
+  const x = useSpring(0, {
+    bounce: 0,
+    stiffness: 1000,
     damping: 50,
-    mass: 0.3,
-    stiffness: 2000,
   })
 
   useEffect(() => {
@@ -35,8 +34,8 @@ function AbilityCast(props: {
       playerId,
       abilityId
     )
-    if (!playerAbility) return
-    leftSpring.jump((playerAbility.castTimes[castIndex] / duration) * 100 + "%")
+    if (!playerAbility || !panelRef.current) return
+    x.jump(panelRef.current.clientWidth * playerAbility.castTimes[castIndex] / duration)
 
     useAppStore.subscribe((state, prevState) => {
       const playerAbility = getPlayerAbilityFromStore(
@@ -49,18 +48,18 @@ function AbilityCast(props: {
         playerId,
         abilityId
       )
-      if (!playerAbility || !prevPlayerAbility) return
-      const cooldownChanged =
-        playerAbility.ability.cooldown !== prevPlayerAbility.ability.cooldown
-      const newSpringValue =
-        (playerAbility.castTimes[castIndex] / duration) * 100 + "%"
+      if (!playerAbility || !prevPlayerAbility || !panelRef.current) return
+
+      const cooldownChanged = playerAbility.ability.cooldown !== prevPlayerAbility.ability.cooldown
+      const newX = panelRef.current.clientWidth * playerAbility.castTimes[castIndex] / duration
+
       if (cooldownChanged) {
-        leftSpring.jump(newSpringValue)
+        x.jump(newX)
       } else {
-        leftSpring.set(newSpringValue)
+        x.set(newX)
       }
     })
-  }, [abilityId, castIndex, duration, leftSpring, playerId])
+  }, [abilityId, castIndex, duration, x, playerId, panelRef])
 
   const handleMouseOffset = useCallback(
     (offsetX: number) => {
@@ -84,7 +83,7 @@ function AbilityCast(props: {
 
   return (
     <motion.div
-      className="absolute top-0"
+      className="absolute top-0 left-0"
       onMouseDown={start}
       initial={{
         opacity: 0,
@@ -96,7 +95,7 @@ function AbilityCast(props: {
         duration: 0.2,
       }}
       style={{
-        left: leftSpring,
+        x,
       }}
     >
       <WowheadIcon
