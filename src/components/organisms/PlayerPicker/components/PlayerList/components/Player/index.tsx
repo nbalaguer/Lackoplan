@@ -61,7 +61,7 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
       style={{
         borderColor: theme.colors[player.class],
       }}
-      className={`space-y-2 border-l-4 p-2`}
+      className="space-y-2 border-l-4 pl-3"
       ref={ref}
     >
       <PlayerHeader

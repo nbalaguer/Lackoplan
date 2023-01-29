@@ -37,7 +37,7 @@ function PlayerHeader(props: {
 
   return (
     <div className="flex items-center justify-between">
-      <span className="flex flex-grow items-center gap-2">
+      <div className="flex flex-grow items-center gap-2 min-w-0">
         {isEditing ? (
           <form
             id={player.id}
@@ -54,7 +54,9 @@ function PlayerHeader(props: {
             />
           </form>
         ) : (
-          player.name
+          <span className="text-ellipsis overflow-hidden whitespace-nowrap">
+            {player.name}
+          </span>
         )}
         <motion.span layout transition={{ duration: 0.15 }} className="flex">
           {isEditing ? (
@@ -72,7 +74,7 @@ function PlayerHeader(props: {
             />
           )}
         </motion.span>
-      </span>
+      </div>
       {player.isActive
         ? <IconButton type="show" onClick={onToggle} />
         : <IconButton type="hide" onClick={onToggle} />
