@@ -62,7 +62,7 @@ function AbilityCast(props: {
   }, [abilityId, castIndex, duration, x, playerId, panelRef])
 
   const handleMouseOffset = useCallback(
-    (offsetX: number) => {
+    (event: MouseEvent, offsetX: number) => {
       const currentPlayerAbility = getPlayerAbilityFromStore(
         useAppStore.getState(),
         playerId,
@@ -74,7 +74,7 @@ function AbilityCast(props: {
       const currentCastTime = currentPlayerAbility.castTimes[castIndex]
       const newCastTime =
         currentCastTime + duration * (offsetX / containerWidth)
-      updateCastTime(playerId, abilityId, castIndex, newCastTime)
+      updateCastTime({playerId, abilityId, castIndex, newCastTime, constrain: event.ctrlKey, replicateLeft: event.shiftKey})
     },
     [abilityId, castIndex, panelRef, duration, playerId, updateCastTime]
   )

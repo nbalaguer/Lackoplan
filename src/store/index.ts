@@ -21,12 +21,14 @@ type AppStore = {
     abilityId: string,
     modifierIndex: number
   ) => void
-  updateCastTime: (
-    playerId: string,
-    abilityId: string,
-    castIndex: number,
+  updateCastTime: (options: {
+    playerId: string
+    abilityId: string
+    castIndex: number
     newCastTime: number
-  ) => void
+    constrain?: boolean
+    replicateLeft?: boolean
+  }) => void
   setDuration: (duration: number) => void
   setOverlay: (index: number, url: string) => void
 }
@@ -135,12 +137,14 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       return nextState
     }),
 
-  updateCastTime: (
-    playerId: string,
-    abilityId: string,
-    castIndex: number,
-    newCastTime: number
-  ) =>
+  updateCastTime: ({
+    playerId,
+    abilityId,
+    castIndex,
+    newCastTime,
+    constrain = false,
+    replicateLeft = false
+  }) =>
     set((state) => {
       const nextState = _cloneDeep(state)
       const playerAbility = getPlayerAbilityFromStore(
@@ -149,14 +153,43 @@ export const useAppStore = create<AppStore>()((set, get) => ({
         abilityId
       )
       if (!playerAbility) return state
-      playerAbility.castTimes[castIndex] = newCastTime
-      nudgeCastTimesLeft(playerAbility, castIndex)
-      adjustCastTimes(playerAbility, state.duration)
+
+      const duration = state.duration
+      updateCastTime(playerAbility, castIndex, newCastTime, duration, constrain)
+      adjustLeft(playerAbility, castIndex)
+      adjustRight(playerAbility, castIndex, duration, replicateLeft)
+
       return nextState
     }),
 }))
 
-function nudgeCastTimesLeft(playerAbility: PlayerAbility, from: number) {
+function updateCastTime(playerAbility: PlayerAbility, castIndex: number, newCastTime: number, duration: number, constrain: boolean) {
+  if (newCastTime < 0) {
+    playerAbility.castTimes[castIndex] = 0
+    return
+  }
+
+  if (newCastTime > duration) {
+    playerAbility.castTimes[castIndex] = duration
+    return
+  }
+
+  if (constrain) {
+    const cooldown = playerAbility.ability.cooldown
+    if (castIndex > 0 && newCastTime - playerAbility.castTimes[castIndex - 1] < cooldown) {
+      playerAbility.castTimes[castIndex] = playerAbility.castTimes[castIndex - 1] + cooldown
+      return
+    }
+    if (castIndex < playerAbility.castTimes.length - 1 && playerAbility.castTimes[castIndex + 1] - newCastTime < cooldown) {
+      playerAbility.castTimes[castIndex] = playerAbility.castTimes[castIndex + 1] - cooldown
+      return
+    }
+  }
+
+  playerAbility.castTimes[castIndex] = newCastTime
+}
+
+function adjustLeft(playerAbility: PlayerAbility, from: number) {
   if (from === 0) return
   for (let i = from - 1; i >= 0; i--) {
     const cooldown = playerAbility.ability.cooldown
@@ -169,7 +202,7 @@ function nudgeCastTimesLeft(playerAbility: PlayerAbility, from: number) {
   }
 }
 
-function adjustCastTimes(playerAbility: PlayerAbility, duration: number) {
+function adjustRight(playerAbility: PlayerAbility, castIndex: number, duration: number, replicateLeft: boolean) {
   const cooldown = playerAbility.ability.cooldown
 
   if (playerAbility.castTimes[0] < 0) playerAbility.castTimes[0] = 0
@@ -177,23 +210,19 @@ function adjustCastTimes(playerAbility: PlayerAbility, duration: number) {
   playerAbility.castTimes.slice(1).forEach((castTime, index) => {
     const prevCastTime = playerAbility.castTimes[index]
     const timeDifference = castTime - prevCastTime
-    if (timeDifference < cooldown) {
-      playerAbility.castTimes[index + 1] =
-        castTime + (cooldown - timeDifference)
+    if (timeDifference < cooldown || replicateLeft && index + 1 > castIndex) {
+      playerAbility.castTimes[index + 1] = playerAbility.castTimes[index] + cooldown
     }
   })
 
   playerAbility.castTimes = playerAbility.castTimes.filter(
-    (castTime) => castTime <= duration + 5
+    (castTime) => castTime < duration
   )
 
   if (
-    duration -
-      5 -
-      playerAbility.castTimes[playerAbility.castTimes.length - 1] >=
-    cooldown
+    duration - playerAbility.castTimes[playerAbility.castTimes.length - 1] > cooldown
   ) {
-    playerAbility.castTimes.push(duration - 5)
+    playerAbility.castTimes.push(duration)
   }
 }
 

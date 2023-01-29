@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 
-function useMouseOffset(callback: (offset: number) => void) {
-  const start = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+function useMouseOffset<T = HTMLDivElement>(callback: (event: MouseEvent, offset: number) => void) {
+  const start = useCallback<React.MouseEventHandler<T>>(
     (event) => {
       window.addEventListener("mousemove", handleMouseMove)
       window.addEventListener("mouseup", handleMouseUp)
@@ -12,7 +12,7 @@ function useMouseOffset(callback: (offset: number) => void) {
         const currentX = event.clientX
         const offsetX = currentX - startX
         if (offsetX > 2 || offsetX < -2) {
-          callback(offsetX)
+          callback(event, offsetX)
           startX = currentX
         }
       }
