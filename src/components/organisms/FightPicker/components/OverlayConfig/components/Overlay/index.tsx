@@ -16,7 +16,6 @@ function Overlay(props: { src: string; onOverlay: (src: string) => void }) {
       if (code === "KeyV" && ctrlKey) {
         try {
           const items = await navigator.clipboard.read()
-          console.log({ items })
           const imageBlob = await items[0].getType("image/png")
           const reader = new FileReader()
           reader.readAsDataURL(imageBlob)

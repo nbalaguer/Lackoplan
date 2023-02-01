@@ -249,7 +249,6 @@ function constructState(
   state: AppStore,
   stateConfig: ExportableProps
 ): AppStore {
-  console.log(stateConfig)
 
   const newState = _cloneDeep(state)
 
