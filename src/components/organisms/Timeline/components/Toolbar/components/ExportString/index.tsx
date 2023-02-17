@@ -32,7 +32,7 @@ function ExportString() {
       <button
         onClick={() => {
           setIsModalOpen(true)
-          setExportString(getExportString(false))
+          setExportString(getExportString(checked))
         }}
         className="border-2 border-slate-500 bg-slate-700 px-2 text-xs font-medium text-slate-200 transition-colors duration-100 hover:bg-slate-600"
       >
