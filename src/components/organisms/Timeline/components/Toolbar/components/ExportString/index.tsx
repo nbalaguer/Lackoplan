@@ -11,16 +11,24 @@ function ExportString() {
   const [checked, setChecked] = useState(false)
   const [exportString, setExportString] = useState("")
 
-  const getExportString = useCallback((includeOverlays: boolean) => {
-    const exportedState = exportState(includeOverlays)
-    return Base64.encode(JSON.stringify(exportedState))
-  }, [exportState])
+  const getExportString = useCallback(
+    (includeOverlays: boolean) => {
+      const exportedState = exportState(includeOverlays)
+      return Base64.encode(JSON.stringify(exportedState))
+    },
+    [exportState]
+  )
 
-  const handleExportOverlaysChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
-    const exportOverlayConfig = event.target.checked
-    setChecked(exportOverlayConfig)
-    setExportString(getExportString(exportOverlayConfig))
-  }, [getExportString])
+  const handleExportOverlaysChange = useCallback<
+    React.ChangeEventHandler<HTMLInputElement>
+  >(
+    (event) => {
+      const exportOverlayConfig = event.target.checked
+      setChecked(exportOverlayConfig)
+      setExportString(getExportString(exportOverlayConfig))
+    },
+    [getExportString]
+  )
 
   useEffect(() => {
     if (!isModalOpen || !inputRef.current) return
@@ -41,10 +49,15 @@ function ExportString() {
       <Modal
         isOpen={isModalOpen}
         onCloseRequest={() => setIsModalOpen(false)}
-        className="h-2/3 w-full max-w-screen-lg p-4 space-y-2"
+        className="h-2/3 w-full max-w-screen-lg space-y-2 p-4"
       >
         <div className="flex justify-end">
-          <Switch label="Include overlays" checked={checked} onChange={handleExportOverlaysChange} reverse />
+          <Switch
+            label="Include overlays"
+            checked={checked}
+            onChange={handleExportOverlaysChange}
+            reverse
+          />
         </div>
         <textarea
           ref={inputRef}

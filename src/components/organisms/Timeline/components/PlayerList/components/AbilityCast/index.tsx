@@ -35,7 +35,10 @@ function AbilityCast(props: {
       abilityId
     )
     if (!playerAbility || !panelRef.current) return
-    x.jump(panelRef.current.clientWidth * playerAbility.castTimes[castIndex] / duration)
+    x.jump(
+      (panelRef.current.clientWidth * playerAbility.castTimes[castIndex]) /
+        duration
+    )
 
     useAppStore.subscribe((state, prevState) => {
       const playerAbility = getPlayerAbilityFromStore(
@@ -50,8 +53,11 @@ function AbilityCast(props: {
       )
       if (!playerAbility || !prevPlayerAbility || !panelRef.current) return
 
-      const cooldownChanged = playerAbility.ability.cooldown !== prevPlayerAbility.ability.cooldown
-      const newX = panelRef.current.clientWidth * playerAbility.castTimes[castIndex] / duration
+      const cooldownChanged =
+        playerAbility.ability.cooldown !== prevPlayerAbility.ability.cooldown
+      const newX =
+        (panelRef.current.clientWidth * playerAbility.castTimes[castIndex]) /
+        duration
 
       if (cooldownChanged) {
         x.jump(newX)
@@ -74,7 +80,14 @@ function AbilityCast(props: {
       const currentCastTime = currentPlayerAbility.castTimes[castIndex]
       const newCastTime =
         currentCastTime + duration * (offsetX / containerWidth)
-      updateCastTime({playerId, abilityId, castIndex, newCastTime, constrain: event.ctrlKey, replicateLeft: event.shiftKey})
+      updateCastTime({
+        playerId,
+        abilityId,
+        castIndex,
+        newCastTime,
+        constrain: event.ctrlKey,
+        replicateLeft: event.shiftKey,
+      })
     },
     [abilityId, castIndex, panelRef, duration, playerId, updateCastTime]
   )

@@ -14,6 +14,7 @@ type AppStore = {
   addPlayer: (player: Player) => void
   removePlayer: (playerId: string) => void
   togglePlayer: (playerId: string) => void
+  movePlayer: (playerId: string, amount: number) => void
   toggleAbility: (playerId: string, abilityId: string) => void
   changePlayerName: (playerId: string, name: string) => void
   toggleAbilityModifier: (
@@ -71,13 +72,30 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       return nextState
     }),
 
-  togglePlayer: (playerId: string) => set((state) => {
-    const nextState = _cloneDeep(state)
-    const player = getPlayerFromStore(nextState, playerId)
-    if (!player) return state
-    player.isActive = !player.isActive
-    return nextState
-  }),
+  togglePlayer: (playerId: string) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
+      const player = getPlayerFromStore(nextState, playerId)
+      if (!player) return state
+      player.isActive = !player.isActive
+      return nextState
+    }),
+
+  movePlayer: (playerId: string, amount: number) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
+      const playerPosition = nextState.players.findIndex(player => player.id === playerId)
+
+      if (playerPosition < 0) return state
+
+      const player = getPlayerFromStore(nextState, playerId) as Player // If playerPosition exists, player exists. We're looking for the same Id
+      const newPlayerPosition = Math.max(0, playerPosition + amount)
+
+      nextState.players = nextState.players.filter(player => player.id !== playerId)
+      nextState.players.splice(newPlayerPosition, 0, player)
+
+      return nextState
+    }),
 
   toggleAbility: (playerId: string, abilityId: string) =>
     set((state) => {
@@ -143,7 +161,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     castIndex,
     newCastTime,
     constrain = false,
-    replicateLeft = false
+    replicateLeft = false,
   }) =>
     set((state) => {
       const nextState = _cloneDeep(state)
@@ -163,7 +181,13 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     }),
 }))
 
-function updateCastTime(playerAbility: PlayerAbility, castIndex: number, newCastTime: number, duration: number, constrain: boolean) {
+function updateCastTime(
+  playerAbility: PlayerAbility,
+  castIndex: number,
+  newCastTime: number,
+  duration: number,
+  constrain: boolean
+) {
   if (newCastTime < 0) {
     playerAbility.castTimes[castIndex] = 0
     return
@@ -176,12 +200,20 @@ function updateCastTime(playerAbility: PlayerAbility, castIndex: number, newCast
 
   if (constrain) {
     const cooldown = playerAbility.ability.cooldown
-    if (castIndex > 0 && newCastTime - playerAbility.castTimes[castIndex - 1] < cooldown) {
-      playerAbility.castTimes[castIndex] = playerAbility.castTimes[castIndex - 1] + cooldown
+    if (
+      castIndex > 0 &&
+      newCastTime - playerAbility.castTimes[castIndex - 1] < cooldown
+    ) {
+      playerAbility.castTimes[castIndex] =
+        playerAbility.castTimes[castIndex - 1] + cooldown
       return
     }
-    if (castIndex < playerAbility.castTimes.length - 1 && playerAbility.castTimes[castIndex + 1] - newCastTime < cooldown) {
-      playerAbility.castTimes[castIndex] = playerAbility.castTimes[castIndex + 1] - cooldown
+    if (
+      castIndex < playerAbility.castTimes.length - 1 &&
+      playerAbility.castTimes[castIndex + 1] - newCastTime < cooldown
+    ) {
+      playerAbility.castTimes[castIndex] =
+        playerAbility.castTimes[castIndex + 1] - cooldown
       return
     }
   }
@@ -202,7 +234,12 @@ function adjustLeft(playerAbility: PlayerAbility, from: number) {
   }
 }
 
-function adjustRight(playerAbility: PlayerAbility, castIndex: number, duration: number, replicateLeft: boolean) {
+function adjustRight(
+  playerAbility: PlayerAbility,
+  castIndex: number,
+  duration: number,
+  replicateLeft: boolean
+) {
   const cooldown = playerAbility.ability.cooldown
 
   if (playerAbility.castTimes[0] < 0) playerAbility.castTimes[0] = 0
@@ -210,8 +247,9 @@ function adjustRight(playerAbility: PlayerAbility, castIndex: number, duration: 
   playerAbility.castTimes.slice(1).forEach((castTime, index) => {
     const prevCastTime = playerAbility.castTimes[index]
     const timeDifference = castTime - prevCastTime
-    if (timeDifference < cooldown || replicateLeft && index + 1 > castIndex) {
-      playerAbility.castTimes[index + 1] = playerAbility.castTimes[index] + cooldown
+    if (timeDifference < cooldown || (replicateLeft && index + 1 > castIndex)) {
+      playerAbility.castTimes[index + 1] =
+        playerAbility.castTimes[index] + cooldown
     }
   })
 
@@ -220,13 +258,17 @@ function adjustRight(playerAbility: PlayerAbility, castIndex: number, duration: 
   )
 
   if (
-    duration - playerAbility.castTimes[playerAbility.castTimes.length - 1] > cooldown
+    duration - playerAbility.castTimes[playerAbility.castTimes.length - 1] >
+    cooldown
   ) {
     playerAbility.castTimes.push(duration)
   }
 }
 
-function getExportData(state: AppStore, includeOverlays: boolean): ExportableProps {
+function getExportData(
+  state: AppStore,
+  includeOverlays: boolean
+): ExportableProps {
   const players = state.players.map((player) => ({
     name: player.name,
     isActive: player.isActive,
@@ -249,10 +291,9 @@ function constructState(
   state: AppStore,
   stateConfig: ExportableProps
 ): AppStore {
-
   const newState = _cloneDeep(state)
 
-  if (stateConfig.overlays.some(overlay => !!overlay)) {
+  if (stateConfig.overlays.some((overlay) => !!overlay)) {
     newState.overlays = stateConfig.overlays
   }
 

@@ -4,11 +4,10 @@ import ExportString from "./components/ExportString"
 import ImportString from "./components/ImportString"
 import Time from "./components/Time"
 
-
 function Toolbar() {
   return (
     <div className="absolute top-0 left-0 z-30 flex w-full justify-between">
-      <div className="text-slate-400 text-sm">
+      <div className="text-sm text-slate-400">
         <Time />
       </div>
       <div className="space-x-2">

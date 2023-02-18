@@ -8,7 +8,7 @@ function TimeBar() {
   const duration = useAppStore((state) => state.duration)
   const minutes = getCastTimes(60, duration)
 
-  const {panelRef} = useTimelineContext()
+  const { panelRef } = useTimelineContext()
   const x = useSpring(0, {
     bounce: 0,
     stiffness: 8000,
@@ -33,8 +33,8 @@ function TimeBar() {
   return (
     <div>
       <motion.div
-        className="absolute top-0 left-0 w-0 h-full border-l-[1px] border-slate-700/75 border-dashed -z-10"
-        style={{x}}
+        className="absolute top-0 left-0 -z-10 h-full w-0 border-l-[1px] border-dashed border-slate-700/75"
+        style={{ x }}
       />
       <div className="h-px bg-slate-500" />
       <div className="relative text-slate-500">

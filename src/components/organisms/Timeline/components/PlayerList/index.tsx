@@ -6,7 +6,10 @@ import { LayoutGroup } from "framer-motion"
 
 function PlayerList() {
   const playerIds = useAppStore(
-    (state) => state.players.filter(player => player.isActive).map((player) => player.id),
+    (state) =>
+      state.players
+        .filter((player) => player.isActive)
+        .map((player) => player.id),
     shallow
   )
 

@@ -8,9 +8,11 @@ function ExportMRTString() {
   const [MRTString, setMRTString] = useState("")
   const [checked, setChecked] = useState(false)
 
-  const handleGroupingChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>((event) => {
+  const handleGroupingChange = useCallback<
+    React.ChangeEventHandler<HTMLInputElement>
+  >((event) => {
     const groupByConfig = event.target.checked ? "player" : "none"
-    setMRTString(MRTGetTimelineString({groupBy: groupByConfig}))
+    setMRTString(MRTGetTimelineString({ groupBy: groupByConfig }))
     setChecked(event.target.checked)
   }, [])
 
@@ -19,7 +21,7 @@ function ExportMRTString() {
       <button
         onClick={() => {
           setIsModalOpen(true)
-          setMRTString(MRTGetTimelineString({groupBy: "none"}))
+          setMRTString(MRTGetTimelineString({ groupBy: checked ? "player" : "none" }))
         }}
         className="border-2 border-slate-500 bg-slate-700 px-2 text-xs font-medium text-slate-200 transition-colors duration-100 hover:bg-slate-600"
       >
@@ -28,10 +30,15 @@ function ExportMRTString() {
       <Modal
         isOpen={isModalOpen}
         onCloseRequest={() => setIsModalOpen(false)}
-        className="h-2/3 w-full max-w-screen-lg p-4 space-y-2"
+        className="h-2/3 w-full max-w-screen-lg space-y-2 p-4"
       >
         <div className="flex justify-end">
-          <Switch label="Group by player" checked={checked} onChange={handleGroupingChange} reverse />
+          <Switch
+            label="Group by player"
+            checked={checked}
+            onChange={handleGroupingChange}
+            reverse
+          />
         </div>
         <textarea
           className="h-full border-2 border-slate-600 bg-transparent px-3 py-2 text-sm outline-none"

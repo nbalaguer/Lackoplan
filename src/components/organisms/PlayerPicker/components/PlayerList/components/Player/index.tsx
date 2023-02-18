@@ -6,13 +6,20 @@ import { motion } from "framer-motion"
 import PlayerHeader from "../PlayerHeader"
 import theme from "config/theme"
 import _isEqual from "lodash/isEqual"
+import PlayerActions from "../PlayerActions"
 
 type PlayerProps = {
   playerId: string
+  isFirst: boolean
+  isLast: boolean
 }
 
 const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
-  const { playerId } = props
+  const {
+    playerId,
+    isFirst,
+    isLast,
+  } = props
 
   // Ref for mantaining last player value before removing, so AnimatePresence works properly
   const playerRef = useRef<Player>()
@@ -25,27 +32,34 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
   const toggleAbility = useAppStore((state) => state.toggleAbility)
   const changePlayerName = useAppStore((state) => state.changePlayerName)
   const togglePlayer = useAppStore((state) => state.togglePlayer)
+  const movePlayer = useAppStore((state) => state.movePlayer)
 
   const player = playerState || playerRef.current
 
   const handleRemove = useCallback(() => {
     if (!player) return
     playerRef.current = player
-    removePlayer(player?.id)
-  }, [player, removePlayer])
+    removePlayer(playerId)
+  }, [player, playerId, removePlayer])
 
   const handleChangeName = useCallback(
     (newName: string) => {
-      if (!player) return
-      changePlayerName(player.id, newName)
+      changePlayerName(playerId, newName)
     },
-    [changePlayerName, player]
+    [changePlayerName, playerId]
   )
 
   const handleToggle = useCallback(() => {
-    if (!player) return
-    togglePlayer(player.id)
-  }, [player, togglePlayer])
+    togglePlayer(playerId)
+  }, [playerId, togglePlayer])
+
+  const handleMoveUp = useCallback(() => {
+    movePlayer(playerId, -1)
+  }, [movePlayer, playerId])
+
+  const handleMoveDown = useCallback(() => {
+    movePlayer(playerId, 1)
+  }, [movePlayer, playerId])
 
   if (!player) return null
 
@@ -61,16 +75,22 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
       style={{
         borderColor: theme.colors[player.class],
       }}
-      className="space-y-2 border-l-4 pl-3"
+      className="grid grid-cols-[auto_1fr] border-l-4 pl-3"
       ref={ref}
     >
       <PlayerHeader
         player={player}
-        onRemove={handleRemove}
         onChangeName={handleChangeName}
         onToggle={handleToggle}
       />
-      <div className="grid grid-cols-4 items-start gap-2">
+      <PlayerActions
+        onRemove={handleRemove}
+        disableMoveUp={isFirst}
+        onMoveUp={handleMoveUp}
+        disableMoveDown={isLast}
+        onMoveDown={handleMoveDown}
+      />
+      <div className="grid grid-cols-4 items-start gap-2 pr-2 pt-2">
         {player.abilities.map((playerAbility) => {
           return (
             <PlayerAbility

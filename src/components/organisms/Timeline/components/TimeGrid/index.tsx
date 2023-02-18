@@ -10,7 +10,7 @@ function TimeGrid() {
     <div className="-z-10">
       {getCastTimes(15, duration).map((castTime, index) => {
         const isMinute = index % 4 === 0
-        const isHalfMinute = !isMinute && (index % 2 === 0)
+        const isHalfMinute = !isMinute && index % 2 === 0
         return (
           <div
             key={castTime}

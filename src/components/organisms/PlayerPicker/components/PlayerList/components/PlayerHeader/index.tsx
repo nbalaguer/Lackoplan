@@ -11,11 +11,10 @@ type Form = {
 
 function PlayerHeader(props: {
   player: Player
-  onRemove: () => void
   onChangeName: (newName: string) => void
   onToggle: () => void
 }) {
-  const { player, onRemove, onChangeName, onToggle } = props
+  const { player, onToggle, onChangeName } = props
 
   const inputRef = useRef<HTMLInputElement>()
   const [isEditing, setIsEditing] = useState(false)
@@ -37,7 +36,7 @@ function PlayerHeader(props: {
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex flex-grow items-center gap-2 min-w-0">
+      <div className="flex min-w-0 flex-grow items-center gap-2">
         {isEditing ? (
           <form
             id={player.id}
@@ -54,7 +53,7 @@ function PlayerHeader(props: {
             />
           </form>
         ) : (
-          <span className="text-ellipsis overflow-hidden whitespace-nowrap">
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap">
             {player.name}
           </span>
         )}
@@ -75,11 +74,11 @@ function PlayerHeader(props: {
           )}
         </motion.span>
       </div>
-      {player.isActive
-        ? <IconButton type="show" onClick={onToggle} />
-        : <IconButton type="hide" onClick={onToggle} />
-      }
-      <IconButton type="close" onClick={onRemove} />
+      {player.isActive ? (
+        <IconButton type="show" onClick={onToggle} />
+      ) : (
+        <IconButton type="hide" onClick={onToggle} />
+      )}
     </div>
   )
 }
