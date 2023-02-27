@@ -16,4 +16,5 @@ export const classIcons: {
   [CLASSES.DEMONHUNTER]: "classicon_demonhunter",
   [CLASSES.DEATHKNIGHT]: "classicon_deathknight",
   [CLASSES.EVOKER]: "classicon_evoker",
+  [CLASSES.GENERAL]: "inv_cloth_broker_c_01_helm",
 }

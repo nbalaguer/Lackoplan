@@ -32,6 +32,29 @@ const modifiers = {
 const abilities: {
   [s in (typeof CLASSES)[keyof typeof CLASSES]]: Ability[]
 } = Object.freeze({
+  [CLASSES.GENERAL]: [
+    {
+      name: "Personal defensives",
+      shortName: "Personals",
+      cooldown: 60 * 2,
+      icon: "ability_thunderking_overcharge",
+      modifiers: [],
+    },
+    {
+      name: "Healthstone",
+      shortName: "Healthstone",
+      cooldown: 60 * 60,
+      icon: "warlock_-healthstone",
+      modifiers: [],
+    },
+    {
+      name: "Health Potion",
+      shortName: "Poti",
+      cooldown: 60 * 5,
+      icon: "inv_potion_51",
+      modifiers: [],
+    },
+  ],
   [CLASSES.WARRIOR]: [
     {
       name: "Rallying Cry",

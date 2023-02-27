@@ -19,6 +19,7 @@ module.exports = {
         demonhunter: "#A330C9",
         deathknight: "#C41E3A",
         evoker: "#33937F",
+        general: "#6079bf",
         contrast: {
           dark: "#FFFFFF",
           light: "#000000",

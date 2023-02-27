@@ -12,4 +12,5 @@ export const CLASSES = Object.freeze({
   DEMONHUNTER: "demonhunter",
   DEATHKNIGHT: "deathknight",
   EVOKER: "evoker",
+  GENERAL: "general",
 })
