@@ -31,7 +31,7 @@ export function MRTWrapStringWithClassColor(
 }
 
 export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
-  const { castTimeGroupThreshold = 5, groupBy = "none" } = config
+  const { castTimeGroupThreshold = 3, groupBy = "none" } = config
 
   const currentState = useAppStore.getState()
   const castEvents = currentState.players
