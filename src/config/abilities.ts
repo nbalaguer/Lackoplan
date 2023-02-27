@@ -112,7 +112,12 @@ const abilities: {
       shortName: "Revival",
       cooldown: 60 * 3,
       icon: "spell_monk_revival",
-      modifiers: [],
+      modifiers: [
+        {
+          icon: "monk_stance_wiseserpent",
+          process: modifiers.addCooldown(-30),
+        }
+      ],
     },
     {
       name: "Invoke Chi-ji, the Red Crane",

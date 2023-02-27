@@ -19,16 +19,18 @@ function PlayerAbility(props: {
     <div className="flex w-full flex-col place-content-start place-items-start content-start items-start gap-1">
       <button
         onClick={onToggleAbility}
-        className={classNames(
-          "flex",
-          "outline outline-2 outline-transparent transition-[outline-color] duration-100",
-          {
-            "hover:outline-slate-500": !playerAbility.isActive,
-            "outline-slate-300": playerAbility.isActive,
-          }
-        )}
+        className="flex outline outline-2 outline-transparent hover:outline-slate-500 transition-[outline] duration-100"
       >
-        <WowheadIcon name={playerAbility.ability.icon} size="full" />
+        <WowheadIcon
+          name={playerAbility.ability.icon}
+          size="full"
+          className={classNames(
+            "grayscale transition-[filter] duration-100",
+            {
+              "filter-none": playerAbility.isActive,
+            }
+          )}
+        />
       </button>
       <div className="grid grid-cols-2 gap-0.5">
         {playerAbility.ability.modifiers.map((modifier, index) => {
@@ -39,14 +41,18 @@ function PlayerAbility(props: {
               onClick={() =>
                 toggleAbilityModifier(player.id, playerAbility.id, index)
               }
-              className={classNames(
-                "flex opacity-50 transition-opacity duration-100",
-                {
-                  "opacity-100": isActive,
-                }
-              )}
+              className="flex"
             >
-              <WowheadIcon name={modifier.icon} size="mini" />
+              <WowheadIcon
+                name={modifier.icon}
+                size="mini"
+                className={classNames(
+                  "grayscale transition-[filter] duration-100",
+                  {
+                    "filter-none": isActive,
+                  }
+                )}
+              />
             </button>
           )
         })}
