@@ -274,6 +274,7 @@ function getExportData(
     isActive: player.isActive,
     class: player.class,
     abilities: player.abilities.map((playerAbility) => ({
+      name: playerAbility.originalAbility.name,
       isActive: playerAbility.isActive,
       activeModifiers: playerAbility.activeModifiers,
       castTimes: playerAbility.castTimes,
@@ -303,12 +304,14 @@ function constructState(
     const player = createPlayer(playerConfig.class)
     player.name = playerConfig.name
     player.isActive = playerConfig.isActive
-    player.abilities.forEach((playerAbility, index) => {
-      const abilityConfig = playerConfig.abilities[index]
-      playerAbility.isActive = abilityConfig.isActive
-      playerAbility.castTimes = abilityConfig.castTimes
-      playerAbility.activeModifiers = abilityConfig.activeModifiers
-      applyModifiers(playerAbility)
+    player.abilities.forEach((playerAbility) => {
+      const abilityConfig = playerConfig.abilities.find(ability => ability.name === playerAbility.originalAbility.name)
+      if (abilityConfig) {
+        playerAbility.isActive = abilityConfig.isActive
+        playerAbility.castTimes = abilityConfig.castTimes
+        playerAbility.activeModifiers = abilityConfig.activeModifiers
+        applyModifiers(playerAbility)
+      }
     })
     return player
   })
