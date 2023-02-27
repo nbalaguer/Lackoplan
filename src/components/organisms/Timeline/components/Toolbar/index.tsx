@@ -6,7 +6,7 @@ import Time from "./components/Time"
 
 function Toolbar() {
   return (
-    <div className="absolute top-0 left-0 z-30 flex w-full justify-between">
+    <div className="flex justify-between mb-2">
       <div className="text-sm text-slate-400">
         <Time />
       </div>

@@ -6,7 +6,7 @@ function FightPanel() {
   const overlays = useAppStore((state) => state.overlays.slice(1), _isEqual)
 
   return (
-    <div className="relative min-h-[300px]">
+    <div className="relative min-h-[222px]">
       {overlays
         .filter((overlay) => !!overlay)
         .map((overlay, index) => {

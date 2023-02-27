@@ -3,6 +3,7 @@ import { useAppStore } from "store"
 import { shallow } from "zustand/shallow"
 import Player from "./components/Player"
 import { LayoutGroup } from "framer-motion"
+import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
 
 function PlayerList() {
   const playerIds = useAppStore(
@@ -16,19 +17,39 @@ function PlayerList() {
   const overlay = useAppStore((state) => state.overlays[0])
 
   return (
-    <div className="relative flex flex-grow flex-col justify-end">
+    <div className="relative flex-grow">
       {!!overlay && (
         <img
           src={overlay}
           alt=""
-          className="absolute top-0 left-0 -z-10 h-full w-full opacity-20"
+          className="absolute top-0 left-0 w-full h-full -z-10 opacity-20"
         />
       )}
-      <LayoutGroup>
-        {playerIds.map((playerId) => {
-          return <Player key={playerId} playerId={playerId} />
-        })}
-      </LayoutGroup>
+      <div className="absolute top-0 bottom-0 -left-4 -right-4">
+        <OverlayScrollbarsComponent
+          element="div"
+          defer
+          className="w-full h-full"
+          options={{
+            scrollbars: {
+              theme: "os-theme-light",
+              autoHide: "scroll",
+              autoHideDelay: 300,
+            },
+            overflow: {
+              x: "hidden",
+            },
+          }}
+        >
+          <div className="min-h-full flex flex-col justify-end px-4">
+            <LayoutGroup>
+              {playerIds.map((playerId) => {
+                return <Player key={playerId} playerId={playerId} />
+              })}
+            </LayoutGroup>
+          </div>
+        </OverlayScrollbarsComponent>
+      </div>
     </div>
   )
 }

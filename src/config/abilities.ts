@@ -1,16 +1,32 @@
 import { CLASSES } from "config/constants"
 import type { Ability } from "types"
+import _pipe from 'lodash/flow'
 
 const modifiers = {
   setCooldown(cd: number) {
-    return (ability: Ability) => (ability.cooldown = cd)
+    return (ability: Ability) => {
+      ability.cooldown = cd
+      return ability
+    }
   },
   addCooldown(cd: number) {
-    return (ability: Ability) => (ability.cooldown = ability.cooldown + cd)
+    return (ability: Ability) => {
+      ability.cooldown = ability.cooldown + cd
+      return ability
+    }
   },
   multiplyCooldown(cd: number) {
-    return (ability: Ability) => (ability.cooldown = ability.cooldown * cd)
+    return (ability: Ability) => {
+      ability.cooldown = ability.cooldown * cd
+      return ability
+    }
   },
+  setIcon(icon: string) {
+    return (ability: Ability) => {
+      ability.icon = icon
+      return ability
+    }
+  }
 }
 
 const abilities: {
@@ -27,6 +43,25 @@ const abilities: {
   ],
   [CLASSES.PALADIN]: [
     {
+      name: "Avenging Wrath",
+      shortName: "Wings",
+      cooldown: 60 * 2,
+      icon: "spell_holy_avenginewrath",
+      modifiers: [
+        {
+          icon: "ability_paladin_veneration",
+          process: _pipe(modifiers.setCooldown(45), modifiers.setIcon("ability_paladin_veneration"))
+        },
+      ],
+    },
+    {
+      name: "Holy Avenger",
+      shortName: "Avenger",
+      cooldown: 60 * 3,
+      icon: "ability_paladin_holyavenger",
+      modifiers: [],
+    },
+    {
       name: "Aura of Mastery",
       shortName: "Mastery",
       cooldown: 60 * 3,
@@ -34,30 +69,16 @@ const abilities: {
       modifiers: [],
     },
     {
-      name: "Avenging Wrath",
-      shortName: "Wings",
-      cooldown: 60 * 2,
-      icon: "spell_holy_avenginewrath",
+      name: "Divine Toll",
+      shortName: "Toll",
+      cooldown: 60,
+      icon: "ability_bastion_paladin",
       modifiers: [],
     },
   ],
   [CLASSES.HUNTER]: [],
   [CLASSES.ROGUE]: [],
   [CLASSES.PRIEST]: [
-    {
-      name: "Evangelism",
-      shortName: "Evang",
-      cooldown: 60 * 1.5,
-      icon: "spell_holy_divineillumination",
-      modifiers: [],
-    },
-    {
-      name: "Power Work: Barrier",
-      shortName: "Barrier",
-      cooldown: 60 * 3,
-      icon: "spell_holy_powerwordbarrier",
-      modifiers: [],
-    },
     {
       name: "Divine Hymn",
       shortName: "Hymn",
@@ -68,27 +89,59 @@ const abilities: {
     {
       name: "Holy Work: Salvation",
       shortName: "Salvation",
-      cooldown: 60 * 4.5,
+      cooldown: 60 * 4,
       icon: "ability_priest_archangel",
       modifiers: [
         {
           icon: "ability_priest_ascension",
-          process: (ability: Ability) => {
-            modifiers.setCooldown(60 * 2)(ability)
-            ability.icon = "ability_priest_ascension"
-          },
+          process: _pipe(modifiers.setCooldown(60 * 2), modifiers.setIcon("ability_priest_ascension"))
         },
       ],
     },
-  ],
-  [CLASSES.SHAMAN]: [
     {
-      name: "Spirit-Link Totem",
-      shortName: "Link",
+      name: "Symbol of Hope",
+      shortName: "Hope",
       cooldown: 60 * 3,
-      icon: "spell_shaman_spiritlink",
+      icon: "spell_holy_symbolofhope",
       modifiers: [],
     },
+    {
+      name: "Lightwell",
+      shortName: "Well",
+      cooldown: 60 * 3,
+      icon: "spell_holy_summonlightwell",
+      modifiers: [],
+    },
+    {
+      name: "Power Work: Barrier",
+      shortName: "Barrier",
+      cooldown: 60 * 3,
+      icon: "spell_holy_powerwordbarrier",
+      modifiers: [],
+    },
+    {
+      name: "Evangelism",
+      shortName: "Evang",
+      cooldown: 60 * 1.5,
+      icon: "spell_holy_divineillumination",
+      modifiers: [],
+    },
+    {
+      name: "Rapture",
+      shortName: "Rapture",
+      cooldown: 60 * 1.5,
+      icon: "spell_holy_rapture",
+      modifiers: [],
+    },
+    {
+      name: "Vampiric Embrace",
+      shortName: "Embrace",
+      cooldown: 60 * 2,
+      icon: "spell_shadow_unsummonbuilding",
+      modifiers: [],
+    },
+  ],
+  [CLASSES.SHAMAN]: [
     {
       name: "Healing Tide Totem",
       shortName: "Tide",
@@ -97,10 +150,45 @@ const abilities: {
       modifiers: [],
     },
     {
+      name: "Spirit-Link Totem",
+      shortName: "Link",
+      cooldown: 60 * 3,
+      icon: "spell_shaman_spiritlink",
+      modifiers: [],
+    },
+    {
+      name: "Ancestral Protection Totem",
+      shortName: "Res",
+      cooldown: 60 * 5,
+      icon: "spell_nature_reincarnation",
+      modifiers: [],
+    },
+    {
+      name: "Earthen Wall Totem",
+      shortName: "Wall",
+      cooldown: 60,
+      icon: "spell_nature_stoneskintotem",
+      modifiers: [],
+    },
+    {
       name: "Ascendance",
       shortName: "Asc",
       cooldown: 60 * 3,
       icon: "spell_fire_elementaldevastation",
+      modifiers: [],
+    },
+    {
+      name: "Wind Rush Totem",
+      shortName: "Rush",
+      cooldown: 60 * 2,
+      icon: "ability_shaman_windwalktotem",
+      modifiers: [],
+    },
+    {
+      name: "Ancestral Guidance",
+      shortName: "Guidance",
+      cooldown: 60 * 2,
+      icon: "ability_shaman_ancestralguidance",
       modifiers: [],
     },
   ],
@@ -141,6 +229,13 @@ const abilities: {
   ],
   [CLASSES.DRUID]: [
     {
+      name: "Incarnation: Tree of Life",
+      shortName: "Tree",
+      cooldown: 60 * 3,
+      icon: "ability_druid_improvedtreeform",
+      modifiers: [],
+    },
+    {
       name: "Tranquility",
       shortName: "Tranq",
       cooldown: 60 * 3,
@@ -153,18 +248,42 @@ const abilities: {
       ],
     },
     {
-      name: "Tree",
-      shortName: "Incarnation: Tree of Life",
-      cooldown: 60 * 3,
-      icon: "ability_druid_improvedtreeform",
-      modifiers: [],
-    },
-    {
       name: "Flourish",
       shortName: "Flourish",
       cooldown: 60 * 1.5,
       icon: "spell_druid_wildburst",
       modifiers: [],
+    },
+    {
+      name: "Convoke the Spirits",
+      shortName: "Convoke",
+      cooldown: 60 * 2,
+      icon: "ability_ardenweald_druid",
+      modifiers: [
+        {
+          icon: "ability_ardenweald_druid",
+          process: modifiers.multiplyCooldown(0.5),
+        },
+      ],
+    },
+    {
+      name: "Innervate",
+      shortName: "Innervate",
+      cooldown: 60 * 3,
+      icon: "spell_nature_lightning",
+      modifiers: [],
+    },
+    {
+      name: "Stampeding Roar",
+      shortName: "Roar",
+      cooldown: 60 * 2,
+      icon: "spell_druid_stampedingroar_cat",
+      modifiers: [
+        {
+          icon: "spell_druid_stampedingroar_cat",
+          process: modifiers.addCooldown(-60),
+        },
+      ],
     },
   ],
   [CLASSES.DEMONHUNTER]: [
@@ -197,6 +316,48 @@ const abilities: {
           process: modifiers.addCooldown(-60),
         },
       ],
+    },
+    {
+      name: "Dream Flight",
+      shortName: "Breath",
+      cooldown: 60 * 2,
+      icon: "ability_evoker_dreamflight",
+      modifiers: [],
+    },
+    {
+      name: "Stasis",
+      shortName: "Stasis",
+      cooldown: 60 * 1.5,
+      icon: "ability_evoker_stasis",
+      modifiers: [],
+    },
+    {
+      name: "Emerald Communion",
+      shortName: "Communion",
+      cooldown: 60 * 3,
+      icon: "ability_evoker_green_01",
+      modifiers: [],
+    },
+    {
+      name: "Zephyr",
+      shortName: "Zephyr",
+      cooldown: 60 * 2,
+      icon: "ability_evoker_hoverblack",
+      modifiers: [],
+    },
+    {
+      name: "Time Spiral",
+      shortName: "Spiral",
+      cooldown: 60 * 2,
+      icon: "ability_evoker_timespiral",
+      modifiers: [],
+    },
+    {
+      name: "Rescue",
+      shortName: "Rescue",
+      cooldown: 60,
+      icon: "ability_evoker_flywithme",
+      modifiers: [],
     },
   ],
 })
