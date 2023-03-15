@@ -240,6 +240,10 @@ const abilities: {
           icon: "inv_pet_jadeserpentpet",
           process: modifiers.addCooldown(-60 * 2),
         },
+        {
+          icon: "inv_inscription_deck_jadeserpent",
+          process: modifiers.addCooldown(-30),
+        },
       ],
     },
     {
