@@ -6,6 +6,7 @@ import { create } from "zustand"
 
 type AppStore = {
   duration: number // seconds
+  warcraftlogsLink: string
   players: Player[]
   casts: PlayerAbility[]
   overlays: string[]
@@ -31,11 +32,13 @@ type AppStore = {
     replicateLeft?: boolean
   }) => void
   setDuration: (duration: number) => void
+  setWarcraftlogsLink: (warcraftlogsLink: string) => void
   setOverlay: (index: number, url: string) => void
 }
 
 export const useAppStore = create<AppStore>()((set, get) => ({
   duration: 60 * 9 + 17,
+  warcraftlogsLink: "",
   players: [],
   casts: [],
   overlays: ["", "", ""],
@@ -50,6 +53,9 @@ export const useAppStore = create<AppStore>()((set, get) => ({
 
   setDuration: (duration: number) =>
     set((state) => deepmerge(state, { duration })),
+
+  setWarcraftlogsLink: (warcraftlogsLink: string) =>
+    set((state) => deepmerge(state, { warcraftlogsLink })),
 
   setOverlay: (index: number, url: string) =>
     set((state) => {
@@ -283,6 +289,7 @@ function getExportData(
 
   return {
     duration: state.duration,
+    warcraftlogsLink: state.warcraftlogsLink,
     players,
     overlays: includeOverlays ? state.overlays : ["", "", ""],
   }
@@ -299,6 +306,7 @@ function constructState(
   }
 
   newState.duration = stateConfig.duration
+  newState.warcraftlogsLink = stateConfig.warcraftlogsLink ?? ""
 
   newState.players = stateConfig.players.map((playerConfig) => {
     const player = createPlayer(playerConfig.class)

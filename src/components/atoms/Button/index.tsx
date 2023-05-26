@@ -1,7 +1,9 @@
 import React from 'react'
 import Icon from 'components/atoms/Icon'
+import classNames from 'classnames'
 
 function Button(props: {
+  className?: string
   text: string
   startIcon?: React.ComponentPropsWithoutRef<typeof Icon>["icon"]
   endIcon?: React.ComponentPropsWithoutRef<typeof Icon>["icon"]
@@ -13,6 +15,7 @@ function Button(props: {
 
   const {
     text,
+    className,
     startIcon,
     endIcon,
     htmlType,
@@ -25,7 +28,7 @@ function Button(props: {
     <button
       type={htmlType}
       form={htmlForm}
-      className="flex gap-2 items-center justify-center border-2 border-slate-500 bg-slate-700 px-2 py-1 text-sm font-medium text-slate-200 transition-colors duration-100 hover:bg-slate-600"
+      className={classNames(className, "flex gap-2 items-center justify-center border-2 border-slate-500 bg-slate-700 px-2 py-1 text-xs font-medium text-slate-200 transition-colors duration-100 hover:bg-slate-600 uppercase")}
       onClick={onClick}
       disabled={disabled}
     >

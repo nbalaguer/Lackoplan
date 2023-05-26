@@ -36,6 +36,7 @@ export type Player = {
 
 export type ExportableProps = {
   duration: number
+  warcraftlogsLink: string
   players: {
     name: string
     class: Class

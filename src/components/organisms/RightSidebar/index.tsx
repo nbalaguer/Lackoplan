@@ -6,6 +6,7 @@ import OverlayConfig from "./components/OverlayConfig"
 import ExportMRTString from "./components/ExportMRTString"
 import ExportString from "./components/ExportString"
 import ImportString from "./components/ImportString"
+import Button from "components/atoms/Button"
 
 type FightForm = {
   duration: string
@@ -14,12 +15,14 @@ type FightForm = {
 
 function FightPicker() {
   const duration = useAppStore((state) => state.duration)
+  const warcraftlogsLink = useAppStore((state) => state.warcraftlogsLink)
   const setDuration = useAppStore((state) => state.setDuration)
+  const setWarcraftlogsLink = useAppStore((state) => state.setWarcraftlogsLink)
 
   const { register, handleSubmit, getValues, setValue } = useForm<FightForm>({
     defaultValues: {
       duration: getTimeString(duration),
-      warcraftlogsLink: "",
+      warcraftlogsLink: "asdf",
     },
   })
 
@@ -27,13 +30,17 @@ function FightPicker() {
     if (duration !== Number(getValues().duration)) {
       setValue("duration", getTimeString(duration))
     }
-  }, [duration, getValues, setValue])
+    if (warcraftlogsLink !== getValues().warcraftlogsLink) {
+      setValue("warcraftlogsLink", warcraftlogsLink)
+    }
+  }, [duration, warcraftlogsLink, getValues, setValue])
 
   const onSubmit = useCallback(
     (values: FightForm) => {
       setDuration(parseTimeString(values.duration))
+      setWarcraftlogsLink(values.warcraftlogsLink)
     },
-    [setDuration]
+    [setDuration, setWarcraftlogsLink]
   )
 
   return (
@@ -55,6 +62,7 @@ function FightPicker() {
           <div className="text-sm">Warcraftlogs link</div>
           <input {...register("warcraftlogsLink")} className="px-2 text-black" />
         </label>
+        <Button htmlType="submit" text="update" className="mt-3" />
       </form>
       <OverlayConfig />
     </div>
