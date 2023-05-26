@@ -2,6 +2,7 @@ import Modal from "components/templates/Modal"
 import React, { useCallback, useState } from "react"
 import { MRTGetTimelineString } from "utils/MRT"
 import Switch from "components/atoms/Switch"
+import Button from "components/atoms/Button"
 
 function ExportMRTString() {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -18,15 +19,10 @@ function ExportMRTString() {
 
   return (
     <>
-      <button
-        onClick={() => {
+      <Button text="Export MRT" onClick={() => {
           setIsModalOpen(true)
           setMRTString(MRTGetTimelineString({ groupBy: checked ? "player" : "none" }))
-        }}
-        className="border-2 border-slate-500 bg-slate-700 px-2 text-xs font-medium text-slate-200 transition-colors duration-100 hover:bg-slate-600"
-      >
-        Export MRT
-      </button>
+        }} />
       <Modal
         isOpen={isModalOpen}
         onCloseRequest={() => setIsModalOpen(false)}

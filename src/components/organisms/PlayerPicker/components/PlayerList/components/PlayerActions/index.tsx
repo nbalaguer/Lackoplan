@@ -19,14 +19,14 @@ function PlayerActions(props: {
 
   return (
     <div className="row-span-2 flex flex-col">
-      <IconButton type="close" onClick={onRemove} />
+      <IconButton icon="close" onClick={onRemove} />
       <IconButton
-        type="up"
+        icon="up"
         onClick={onMoveUp}
         disabled={disableUp}
       />
       <IconButton
-        type="down"
+        icon="down"
         onClick={onMoveDown}
         disabled={disableDown}
       />

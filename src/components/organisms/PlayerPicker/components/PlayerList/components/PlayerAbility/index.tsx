@@ -11,6 +11,15 @@ function PlayerAbility(props: {
 }) {
   const { player, playerAbility, onToggleAbility } = props
 
+  function handleAbilityClick(event: React.MouseEvent) {
+    if (event.ctrlKey) {
+      window.open(playerAbility.ability.wowheadLink, "_blank")
+    }
+    else {
+      onToggleAbility()
+    }
+  }
+
   const toggleAbilityModifier = useAppStore(
     (state) => state.toggleAbilityModifier
   )
@@ -18,7 +27,8 @@ function PlayerAbility(props: {
   return (
     <div className="flex w-full flex-col place-content-start place-items-start content-start items-start gap-1">
       <button
-        onClick={onToggleAbility}
+        title={playerAbility.ability.name}
+        onClick={handleAbilityClick}
         className="flex outline outline-2 outline-transparent hover:outline-slate-500 transition-[outline] duration-100"
       >
         <WowheadIcon

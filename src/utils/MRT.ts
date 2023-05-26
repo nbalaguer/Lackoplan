@@ -30,6 +30,9 @@ export function MRTWrapStringWithClassColor(
   return `|c${MRTColorString}${string}|r`
 }
 
+/**
+ * String output compatible with https://wago.io/n7l5uN3YM
+ */
 export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
   const { castTimeGroupThreshold = 3, groupBy = "none" } = config
 
@@ -59,17 +62,28 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
           (castEvent) => castEvent.player.id
         )
         const groupCastsString = Object.values(castEventsByPlayerId)
-          .map((castEvents) => {
-            const playerClass = castEvents[0].player.class
-            const playerName = castEvents[0].player.name
-            return MRTWrapStringWithClassColor(
-              playerClass,
-              `${playerName} ${castEvents
-                .map((castEvent) => castEvent.ability.ability.shortName)
-                .join("+")}`
-            )
+          .map((playerCastEvents) => {
+            const [firstCast, ...restCasts] = playerCastEvents
+            const playerClass = firstCast.player.class
+            const playerName = firstCast.player.name
+
+            return [
+              MRTWrapStringWithClassColor(playerClass, playerName),
+              MRTWrapStringWithClassColor(
+                playerClass,
+                firstCast.ability.ability.shortName
+              ),
+              ...restCasts.flatMap((castEvent) => [
+                `{spell:${castEvent.ability.ability.spellId}}`,
+                MRTWrapStringWithClassColor(
+                  playerClass,
+                  castEvent.ability.ability.shortName
+                ),
+              ]),
+              `{spell:${firstCast.ability.ability.spellId}}`,
+            ].join(" ")
           })
-          .join(" ")
+          .join("  ")
         return `{time:${groupCastTime}} ${groupCastsString}`
       })
       .join("\n")
@@ -81,23 +95,36 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
       (castEvent) => castEvent.player.id
     )
     return Object.values(castEventsByPlayerId)
-      .map((castEvents) => {
-        const playerClass = castEvents[0].player.class
-        const playerName = castEvents[0].player.name
+      .map((playerCastEvents) => {
+        const playerClass = playerCastEvents[0].player.class
+        const playerName = playerCastEvents[0].player.name
+
         const groupedCastEvents = MRTGroupCastEvents(
-          castEvents,
+          playerCastEvents,
           castTimeGroupThreshold
         )
+
         return [
-          `${playerName}`,
+          MRTWrapStringWithClassColor(playerClass, playerName),
           ...groupedCastEvents.map((castEventGroup) => {
             const groupCastTime = getTimeString(castEventGroup.castTime)
-            const playerCastString = MRTWrapStringWithClassColor(
-              playerClass,
-              castEventGroup.castEvents
-                .map((castEvent) => castEvent.ability.ability.shortName)
-                .join("+")
-            )
+            const [firstCast, ...restCasts] = castEventGroup.castEvents
+
+            const playerCastString = [
+              MRTWrapStringWithClassColor(
+                playerClass,
+                firstCast.ability.ability.shortName
+              ),
+              ...restCasts.flatMap((castEvent) => [
+                `{spell:${castEvent.ability.ability.spellId}}`,
+                MRTWrapStringWithClassColor(
+                  playerClass,
+                  castEvent.ability.ability.shortName
+                ),
+              ]),
+              `{spell:${firstCast.ability.ability.spellId}}`,
+            ].join(" ")
+
             return `{time:${groupCastTime}} ${playerCastString}`
           }),
         ].join("\n")

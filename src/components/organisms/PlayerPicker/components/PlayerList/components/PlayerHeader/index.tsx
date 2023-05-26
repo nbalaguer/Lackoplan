@@ -61,23 +61,23 @@ function PlayerHeader(props: {
           {isEditing ? (
             <IconButton
               key="done"
-              type="check"
+              icon="check"
               htmlType="submit"
               htmlForm={player.id}
             />
           ) : (
             <IconButton
               key="edit"
-              type="edit"
+              icon="edit"
               onClick={() => setIsEditing(!isEditing)}
             />
           )}
         </motion.span>
       </div>
       {player.isActive ? (
-        <IconButton type="show" onClick={onToggle} />
+        <IconButton icon="show" onClick={onToggle} />
       ) : (
-        <IconButton type="hide" onClick={onToggle} />
+        <IconButton icon="hide" onClick={onToggle} />
       )}
     </div>
   )

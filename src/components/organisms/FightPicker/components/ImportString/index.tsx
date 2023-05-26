@@ -3,6 +3,7 @@ import Modal from "components/templates/Modal"
 import { useAppStore } from "store"
 import { Base64 } from "js-base64"
 import { useForm } from "react-hook-form"
+import Button from 'components/atoms/Button'
 
 type FormData = {
   importString: string
@@ -28,12 +29,7 @@ function ImportString() {
 
   return (
     <>
-      <button
-        onClick={() => setIsModalOpen(true)}
-        className="border-2 border-slate-500 bg-slate-700 px-2 text-xs font-medium text-slate-200 transition-colors duration-100 hover:bg-slate-600"
-      >
-        Import string
-      </button>
+      <Button text="Import string" onClick={() => setIsModalOpen(true)} />
       <Modal
         isOpen={isModalOpen}
         className="h-2/3 w-full max-w-screen-lg p-4"
