@@ -1,7 +1,9 @@
-import React, { useMemo, useContext } from "react"
+import useWindowResize from "hooks/useWindowResize"
+import React, { useMemo, useContext, useState, useEffect } from "react"
 
 type TimelineContextType = {
   panelRef: React.RefObject<HTMLDivElement>
+  panelWidth: number
 }
 
 const TimelineContext = React.createContext<TimelineContextType | null>(null)
@@ -11,12 +13,26 @@ export function TimelineContextProvider(props: {
   children: React.ReactNode
 }) {
   const { panelRef, children } = props
+  const [panelWidth, setPanelWidth] = useState(0)
+
+  useEffect(() => {
+    if (panelRef.current) {
+      setPanelWidth(panelRef.current.clientWidth)
+    }
+  }, [panelRef])
+
+  useWindowResize(() => {
+    if (panelRef.current) {
+      setPanelWidth(panelRef.current.clientWidth)
+    }
+  })
 
   const contextValue = useMemo(() => {
     return {
       panelRef,
+      panelWidth,
     }
-  }, [panelRef])
+  }, [panelRef, panelWidth])
 
   return (
     <TimelineContext.Provider value={contextValue}>

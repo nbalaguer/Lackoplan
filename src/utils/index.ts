@@ -4,6 +4,12 @@ import type { PlayerAbility, Class, Player } from "types"
 import abilities from "config/abilities"
 import _cloneDeep from "lodash/cloneDeep"
 
+export const canUseDOM = !!(
+  typeof window !== "undefined" &&
+  typeof window.document !== "undefined" &&
+  typeof window.document.createElement !== "undefined"
+);
+
 export function getAccessibleValue(
   color: string,
   returnIfLight: string,

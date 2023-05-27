@@ -12,7 +12,7 @@ function AbilityCast(props: {
 }) {
   const { playerId, abilityId, castIndex } = props
 
-  const { panelRef } = useTimelineContext()
+  const { panelWidth } = useTimelineContext()
 
   const updateCastTime = useAppStore((state) => state.updateCastTime)
   const duration = useAppStore((state) => state.duration)
@@ -34,9 +34,9 @@ function AbilityCast(props: {
       playerId,
       abilityId
     )
-    if (!playerAbility || !panelRef.current) return
+    if (!playerAbility || !panelWidth) return
     x.jump(
-      (panelRef.current.clientWidth * playerAbility.castTimes[castIndex]) /
+      (panelWidth * playerAbility.castTimes[castIndex]) /
         duration
     )
 
@@ -51,12 +51,12 @@ function AbilityCast(props: {
         playerId,
         abilityId
       )
-      if (!playerAbility || !prevPlayerAbility || !panelRef.current) return
+      if (!playerAbility || !prevPlayerAbility || !panelWidth) return
 
       const cooldownChanged =
         playerAbility.ability.cooldown !== prevPlayerAbility.ability.cooldown
       const newX =
-        (panelRef.current.clientWidth * playerAbility.castTimes[castIndex]) /
+        (panelWidth * playerAbility.castTimes[castIndex]) /
         duration
 
       if (cooldownChanged) {
@@ -65,7 +65,7 @@ function AbilityCast(props: {
         x.set(newX)
       }
     })
-  }, [abilityId, castIndex, duration, x, playerId, panelRef])
+  }, [abilityId, castIndex, duration, x, playerId, panelWidth])
 
   const handleMouseOffset = useCallback(
     (event: MouseEvent, offsetX: number) => {
@@ -74,9 +74,9 @@ function AbilityCast(props: {
         playerId,
         abilityId
       )
-      if (!panelRef.current || !currentPlayerAbility) return
+      if (!panelWidth || !currentPlayerAbility) return
 
-      const containerWidth = panelRef.current.clientWidth
+      const containerWidth = panelWidth
       const currentCastTime = currentPlayerAbility.castTimes[castIndex]
       const newCastTime =
         currentCastTime + duration * (offsetX / containerWidth)
@@ -89,7 +89,7 @@ function AbilityCast(props: {
         replicateLeft: event.shiftKey,
       })
     },
-    [abilityId, castIndex, panelRef, duration, playerId, updateCastTime]
+    [abilityId, castIndex, panelWidth, duration, playerId, updateCastTime]
   )
 
   const start = useMouseOffset(handleMouseOffset)
