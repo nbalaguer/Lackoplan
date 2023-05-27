@@ -10,19 +10,15 @@ import Button from "components/atoms/Button"
 
 type FightForm = {
   duration: string
-  warcraftlogsLink: string
 }
 
 function FightPicker() {
   const duration = useAppStore((state) => state.duration)
-  const warcraftlogsLink = useAppStore((state) => state.warcraftlogsLink)
   const setDuration = useAppStore((state) => state.setDuration)
-  const setWarcraftlogsLink = useAppStore((state) => state.setWarcraftlogsLink)
 
   const { register, handleSubmit, getValues, setValue } = useForm<FightForm>({
     defaultValues: {
       duration: getTimeString(duration),
-      warcraftlogsLink: "asdf",
     },
   })
 
@@ -30,17 +26,13 @@ function FightPicker() {
     if (duration !== Number(getValues().duration)) {
       setValue("duration", getTimeString(duration))
     }
-    if (warcraftlogsLink !== getValues().warcraftlogsLink) {
-      setValue("warcraftlogsLink", warcraftlogsLink)
-    }
-  }, [duration, warcraftlogsLink, getValues, setValue])
+  }, [duration, getValues, setValue])
 
   const onSubmit = useCallback(
     (values: FightForm) => {
       setDuration(parseTimeString(values.duration))
-      setWarcraftlogsLink(values.warcraftlogsLink)
     },
-    [setDuration, setWarcraftlogsLink]
+    [setDuration]
   )
 
   return (
@@ -57,10 +49,6 @@ function FightPicker() {
         <label className="block space-y-1">
           <div className="text-sm">Fight duration</div>
           <input {...register("duration")} className="px-2 text-black" />
-        </label>
-        <label className="block space-y-1">
-          <div className="text-sm">Warcraftlogs link</div>
-          <input {...register("warcraftlogsLink")} className="px-2 text-black" />
         </label>
         <Button htmlType="submit" text="update" className="mt-3" />
       </form>

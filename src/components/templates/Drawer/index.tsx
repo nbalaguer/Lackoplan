@@ -7,46 +7,47 @@ const overlayVariants: Variants = {
   enter: {
     opacity: 1,
     transition: {
+      duration: 0.2,
+      when: "beforeChildren",
+    },
+  },
+  exit: {
+    opacity: 0,
+    transition: {
+      duration: 0.2,
+      when: "afterChildren",
+    },
+  },
+}
+
+const drawerVariants: Variants = {
+  enter: (side: DrawerSide) => ({
+    x: side === "left" ? "0%" : "0%",
+    transition: {
       duration: 0.3,
     },
-  },
-  exit: {
-    opacity: 0,
+  }),
+  exit: (side: DrawerSide) => ({
+    x: side === "left" ? "-100%" : "100%",
     transition: {
-      duration: 0.2,
-      delay: 0.1,
+      duration: 0.3,
     },
-  },
+  }),
 }
 
-const modalVariants: Variants = {
-  enter: {
-    scale: 1,
-    opacity: 1,
-    transition: {
-      duration: 0.2,
-      delay: 0.1,
-    },
-  },
-  exit: {
-    scale: 1.1,
-    opacity: 0,
-    transition: {
-      duration: 0.2,
-    },
-  },
-}
+type DrawerSide = "left" | "right"
 
-function Modal(props: {
+function Drawer(props: {
   children: React.ReactNode
   className?: string
   isOpen: boolean
   onCloseRequest: () => void
+  side: DrawerSide
 }) {
-  const { children, isOpen, onCloseRequest, className } = props
+  const { children, isOpen, onCloseRequest, className, side } = props
 
   return (
-    <Portal containerId="modals-portal">
+    <Portal containerId="drawers-portal">
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -54,13 +55,15 @@ function Modal(props: {
             animate="enter"
             exit="exit"
             initial="exit"
-            className="fixed inset-0 grid place-items-center overflow-auto bg-slate-900/50 p-6"
+            className="fixed inset-0 overflow-hidden bg-slate-900/20"
             onClick={onCloseRequest}
           >
             <motion.div
-              variants={modalVariants}
+              variants={drawerVariants}
+              style={{[side]: 0}}
+              custom={side}
               className={classNames(
-                "flex flex-col bg-slate-800 text-slate-100 shadow-lg",
+                "absolute flex flex-col bg-slate-800 text-slate-100 top-0 bottom-0 shadow-lg",
                 className
               )}
               onClick={(e) => {
@@ -76,4 +79,4 @@ function Modal(props: {
   )
 }
 
-export default Modal
+export default Drawer

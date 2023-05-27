@@ -18,7 +18,7 @@ function PlayerActions(props: {
   } = props
 
   return (
-    <div className="row-span-2 flex flex-col">
+    <div className="row-span-2 flex flex-col text-xs">
       <IconButton icon="close" onClick={onRemove} />
       <IconButton
         icon="up"

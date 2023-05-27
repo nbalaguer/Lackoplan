@@ -57,7 +57,7 @@ function PlayerHeader(props: {
             {player.name}
           </span>
         )}
-        <motion.span layout transition={{ duration: 0.15 }} className="flex">
+        <motion.span layout transition={{ duration: 0.15 }} className="flex text-xs">
           {isEditing ? (
             <IconButton
               key="done"
@@ -75,9 +75,9 @@ function PlayerHeader(props: {
         </motion.span>
       </div>
       {player.isActive ? (
-        <IconButton icon="show" onClick={onToggle} />
+        <IconButton icon="show" onClick={onToggle} className="text-xs" />
       ) : (
-        <IconButton icon="hide" onClick={onToggle} />
+        <IconButton icon="hide" onClick={onToggle} className="text-xs" />
       )}
     </div>
   )

@@ -37,7 +37,27 @@ main {
   background: rgba(248, 250, 252, 0.4);
 }
 
+#drawers-portal {
+  position: relative;
+  z-index: 800;
+}
+
 #modals-portal {
   position: relative;
   z-index: 1000;
+}
+
+.markdown {
+  font-size: 0.8rem;
+}
+.markdown * {
+  all: revert;
+}
+
+.markdown ul {
+  padding-left: 1.3em;
+}
+
+.markdown a {
+  @apply text-sky-400;
 }

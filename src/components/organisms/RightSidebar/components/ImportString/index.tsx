@@ -18,6 +18,7 @@ function ImportString() {
   const onSubmit = useCallback(
     (data: FormData) => {
       importState(JSON.parse(Base64.decode(data.importString)))
+      setIsModalOpen(false)
     },
     [importState]
   )

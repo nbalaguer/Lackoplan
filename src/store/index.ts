@@ -4,9 +4,17 @@ import type { PlayerAbility, Player, ExportableProps } from "types"
 import { applyModifiers, createPlayer, getCastTimes } from "utils"
 import { create } from "zustand"
 
+const initialUserNote = `
+# Hi!
+
+Click on the edit button to add your own notes.
+
+Use **all** the [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) you want!.
+`
+
 type AppStore = {
   duration: number // seconds
-  warcraftlogsLink: string
+  userNote: string
   players: Player[]
   casts: PlayerAbility[]
   overlays: string[]
@@ -32,13 +40,13 @@ type AppStore = {
     replicateLeft?: boolean
   }) => void
   setDuration: (duration: number) => void
-  setWarcraftlogsLink: (warcraftlogsLink: string) => void
+  setUserNote: (userNote: string) => void
   setOverlay: (index: number, url: string) => void
 }
 
 export const useAppStore = create<AppStore>()((set, get) => ({
   duration: 60 * 9 + 17,
-  warcraftlogsLink: "",
+  userNote: initialUserNote,
   players: [],
   casts: [],
   overlays: ["", "", ""],
@@ -54,8 +62,8 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   setDuration: (duration: number) =>
     set((state) => deepmerge(state, { duration })),
 
-  setWarcraftlogsLink: (warcraftlogsLink: string) =>
-    set((state) => deepmerge(state, { warcraftlogsLink })),
+  setUserNote: (userNote: string) =>
+    set((state) => deepmerge(state, { userNote })),
 
   setOverlay: (index: number, url: string) =>
     set((state) => {
@@ -289,7 +297,7 @@ function getExportData(
 
   return {
     duration: state.duration,
-    warcraftlogsLink: state.warcraftlogsLink,
+    userNote: state.userNote,
     players,
     overlays: includeOverlays ? state.overlays : ["", "", ""],
   }
@@ -306,7 +314,7 @@ function constructState(
   }
 
   newState.duration = stateConfig.duration
-  newState.warcraftlogsLink = stateConfig.warcraftlogsLink ?? ""
+  if (stateConfig.userNote) newState.userNote = stateConfig.userNote
 
   newState.players = stateConfig.players.map((playerConfig) => {
     const player = createPlayer(playerConfig.class)
