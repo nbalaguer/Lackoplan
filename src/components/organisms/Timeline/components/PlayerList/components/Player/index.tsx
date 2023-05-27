@@ -31,7 +31,7 @@ function Player(props: { playerId: string }) {
       className="py-0.5"
       style={{
         backgroundColor: Color(theme.colors[playerData.class])
-          .alpha(0.2)
+          .alpha(0.1)
           .string(),
       }}
     >

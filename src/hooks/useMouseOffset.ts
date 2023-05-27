@@ -1,4 +1,4 @@
-import { useCallback } from "react"
+import React, { useCallback } from "react"
 
 function useMouseOffset<T = HTMLDivElement>(
   callback: (event: MouseEvent, offset: number) => void
