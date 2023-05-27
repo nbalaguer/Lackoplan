@@ -3,7 +3,7 @@ import Modal from "components/templates/Modal"
 import { useAppStore } from "store"
 import { Base64 } from "js-base64"
 import { useForm } from "react-hook-form"
-import Button from 'components/atoms/Button'
+import Button from "components/atoms/Button"
 
 type FormData = {
   importString: string

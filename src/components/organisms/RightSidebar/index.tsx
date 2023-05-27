@@ -36,15 +36,15 @@ function FightPicker() {
   )
 
   return (
-    <div className="flex flex-col border-l-2 border-slate-700 divide-y-2 divide-slate-700">
-      <div className="flex flex-col p-3 gap-2">
+    <div className="flex flex-col divide-y-2 divide-slate-700 border-l-2 border-slate-700">
+      <div className="flex flex-col gap-2 p-3">
         <ImportString />
         <ExportString />
         <ExportMRTString />
       </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="p-3 flex flex-col gap-3"
+        className="flex flex-col gap-3 p-3"
       >
         <label className="block space-y-1">
           <div className="text-sm">Fight duration</div>

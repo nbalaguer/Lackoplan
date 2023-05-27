@@ -35,10 +35,7 @@ function AbilityCast(props: {
       abilityId
     )
     if (!playerAbility || !panelWidth) return
-    x.jump(
-      (panelWidth * playerAbility.castTimes[castIndex]) /
-        duration
-    )
+    x.jump((panelWidth * playerAbility.castTimes[castIndex]) / duration)
 
     useAppStore.subscribe((state, prevState) => {
       const playerAbility = getPlayerAbilityFromStore(
@@ -55,9 +52,7 @@ function AbilityCast(props: {
 
       const cooldownChanged =
         playerAbility.ability.cooldown !== prevPlayerAbility.ability.cooldown
-      const newX =
-        (panelWidth * playerAbility.castTimes[castIndex]) /
-        duration
+      const newX = (panelWidth * playerAbility.castTimes[castIndex]) / duration
 
       if (cooldownChanged) {
         x.jump(newX)

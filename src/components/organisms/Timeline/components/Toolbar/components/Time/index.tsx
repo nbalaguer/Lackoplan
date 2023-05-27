@@ -13,10 +13,10 @@ function Time() {
     const panel = panelRef.current
 
     function handleMove(event: MouseEvent) {
-      const timestamp = (duration * (event.clientX - panel.offsetLeft)) / panel.clientWidth
+      const timestamp =
+        (duration * (event.clientX - panel.offsetLeft)) / panel.clientWidth
       if (timestamp < 0 || timestamp > duration) setTime("--:--")
-      else setTime(getTimeString(timestamp)
-      )
+      else setTime(getTimeString(timestamp))
     }
 
     panel.addEventListener("mousemove", handleMove)

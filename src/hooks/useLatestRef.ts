@@ -1,14 +1,14 @@
-import useIsomorphicLayoutEffect from "./useIsomorphicLayoutEffect";
-import { useRef } from "react";
+import useIsomorphicLayoutEffect from "./useIsomorphicLayoutEffect"
+import { useRef } from "react"
 
 function useLatestRef<T>(value: T) {
-  const valueRef = useRef<T>(value);
+  const valueRef = useRef<T>(value)
 
   useIsomorphicLayoutEffect(() => {
-    valueRef.current = value;
-  }, [value]);
+    valueRef.current = value
+  }, [value])
 
-  return valueRef;
+  return valueRef
 }
 
-export default useLatestRef;
+export default useLatestRef

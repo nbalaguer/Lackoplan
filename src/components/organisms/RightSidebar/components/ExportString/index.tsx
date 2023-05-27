@@ -3,7 +3,7 @@ import React, { useState, useCallback, useEffect, useRef } from "react"
 import { useAppStore } from "store"
 import { Base64 } from "js-base64"
 import Switch from "components/atoms/Switch"
-import Button from 'components/atoms/Button'
+import Button from "components/atoms/Button"
 
 function ExportString() {
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -38,10 +38,13 @@ function ExportString() {
 
   return (
     <>
-      <Button text="Export string" onClick={() => {
+      <Button
+        text="Export string"
+        onClick={() => {
           setIsModalOpen(true)
           setExportString(getExportString(checked))
-        }} />
+        }}
+      />
       <Modal
         isOpen={isModalOpen}
         onCloseRequest={() => setIsModalOpen(false)}

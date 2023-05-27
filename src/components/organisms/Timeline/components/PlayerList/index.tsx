@@ -22,14 +22,14 @@ function PlayerList() {
         <img
           src={overlay}
           alt=""
-          className="absolute top-0 left-0 w-full h-full -z-10 opacity-20"
+          className="absolute top-0 left-0 -z-10 h-full w-full opacity-20"
         />
       )}
       <div className="absolute top-0 bottom-0 -left-4 -right-4">
         <OverlayScrollbarsComponent
           element="div"
           defer
-          className="w-full h-full"
+          className="h-full w-full"
           options={{
             scrollbars: {
               theme: "os-theme-light",
@@ -41,7 +41,7 @@ function PlayerList() {
             },
           }}
         >
-          <div className="min-h-full flex flex-col justify-end px-4">
+          <div className="flex min-h-full flex-col justify-end px-4">
             <LayoutGroup>
               {playerIds.map((playerId) => {
                 return <Player key={playerId} playerId={playerId} />

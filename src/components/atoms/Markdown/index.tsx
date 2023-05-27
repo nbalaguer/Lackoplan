@@ -1,11 +1,15 @@
-import React from 'react'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
+import React from "react"
+import ReactMarkdown from "react-markdown"
+import remarkGfm from "remark-gfm"
 
-function Markdown(props: {markdown: string}) {
-  const {markdown} = props
+function Markdown(props: { markdown: string }) {
+  const { markdown } = props
   return (
-    <ReactMarkdown className="markdown" remarkPlugins={[remarkGfm]} linkTarget="_blank">
+    <ReactMarkdown
+      className="markdown"
+      remarkPlugins={[remarkGfm]}
+      linkTarget="_blank"
+    >
       {markdown}
     </ReactMarkdown>
   )

@@ -15,11 +15,7 @@ type PlayerProps = {
 }
 
 const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
-  const {
-    playerId,
-    isFirst,
-    isLast,
-  } = props
+  const { playerId, isFirst, isLast } = props
 
   // Ref for mantaining last player value before removing, so AnimatePresence works properly
   const playerRef = useRef<Player>()

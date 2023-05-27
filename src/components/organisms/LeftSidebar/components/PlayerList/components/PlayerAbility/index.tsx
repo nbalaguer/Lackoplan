@@ -14,8 +14,7 @@ function PlayerAbility(props: {
   function handleAbilityClick(event: React.MouseEvent) {
     if (event.ctrlKey) {
       window.open(playerAbility.ability.wowheadLink, "_blank")
-    }
-    else {
+    } else {
       onToggleAbility()
     }
   }
@@ -29,17 +28,14 @@ function PlayerAbility(props: {
       <button
         title={playerAbility.ability.name}
         onClick={handleAbilityClick}
-        className="flex outline outline-2 outline-transparent hover:outline-slate-500 transition-[outline] duration-100"
+        className="flex outline outline-2 outline-transparent transition-[outline] duration-100 hover:outline-slate-500"
       >
         <WowheadIcon
           name={playerAbility.ability.icon}
           size="full"
-          className={classNames(
-            "grayscale transition-[filter] duration-100",
-            {
-              "filter-none": playerAbility.isActive,
-            }
-          )}
+          className={classNames("grayscale transition-[filter] duration-100", {
+            "filter-none": playerAbility.isActive,
+          })}
         />
       </button>
       <div className="grid grid-cols-2 gap-0.5">

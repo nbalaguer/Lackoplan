@@ -8,7 +8,7 @@ function OverlayConfig() {
   const overlays = useAppStore((state) => state.overlays, _isEqual)
 
   return (
-    <div className="space-y-3 p-3 mt-auto">
+    <div className="mt-auto space-y-3 p-3">
       <div className="flex items-center justify-between">Overlays</div>
       <div className="space-y-3">
         {overlays.map((overlay, index) => {

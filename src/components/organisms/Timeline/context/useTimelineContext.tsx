@@ -13,7 +13,7 @@ export function TimelineContextProvider(props: {
   children: React.ReactNode
 }) {
   const { panelRef, children } = props
-  const {width} = useResizeObserver({ref: panelRef})
+  const { width } = useResizeObserver({ ref: panelRef })
 
   const contextValue = useMemo(() => {
     return {

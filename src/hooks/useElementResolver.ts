@@ -1,13 +1,13 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react"
 
 function useResolvedElement(extElement?: HTMLElement) {
-  const [element, setElement] = useState<HTMLElement | undefined>(extElement);
+  const [element, setElement] = useState<HTMLElement | undefined>(extElement)
 
   useEffect(() => {
-    setElement(extElement);
-  }, [extElement]);
+    setElement(extElement)
+  }, [extElement])
 
-  return useMemo(() => [element, setElement] as const, [element]);
+  return useMemo(() => [element, setElement] as const, [element])
 }
 
-export default useResolvedElement;
+export default useResolvedElement

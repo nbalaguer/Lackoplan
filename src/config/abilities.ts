@@ -1,6 +1,6 @@
 import { CLASSES } from "config/constants"
 import type { Ability } from "types"
-import _pipe from 'lodash/flow'
+import _pipe from "lodash/flow"
 
 const modifiers = {
   setCooldown(cd: number) {
@@ -50,7 +50,7 @@ const modifiers = {
       ability.wowheadLink = wowheadLink
       return ability
     }
-  }
+  },
 }
 
 const abilities: {
@@ -131,8 +131,10 @@ const abilities: {
             modifiers.setSpellId(216331),
             modifiers.setName("Avenging Crusader"),
             modifiers.setShortName("Avenging Crusader"),
-            modifiers.setWowheadLink("https://www.wowhead.com/spell=216331/avenging-crusader"),
-          )
+            modifiers.setWowheadLink(
+              "https://www.wowhead.com/spell=216331/avenging-crusader"
+            )
+          ),
         },
       ],
     },
@@ -192,8 +194,10 @@ const abilities: {
             modifiers.setSpellId(200183),
             modifiers.setName("Apotheosis"),
             modifiers.setShortName("Apotheosis"),
-            modifiers.setWowheadLink("https://www.wowhead.com/spell=200183/apotheosis"),
-          )
+            modifiers.setWowheadLink(
+              "https://www.wowhead.com/spell=200183/apotheosis"
+            )
+          ),
         },
       ],
     },
@@ -272,7 +276,8 @@ const abilities: {
       modifiers: [],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=207399/ancestral-protection-totem",
+      wowheadLink:
+        "https://www.wowhead.com/spell=207399/ancestral-protection-totem",
       name: "Ancestral Protection Totem",
       spellId: 207399,
       shortName: "Res",
@@ -331,11 +336,12 @@ const abilities: {
         {
           icon: "monk_stance_wiseserpent",
           process: modifiers.addCooldown(-30),
-        }
+        },
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=325197/invoke-chi-ji-the-red-crane",
+      wowheadLink:
+        "https://www.wowhead.com/spell=325197/invoke-chi-ji-the-red-crane",
       name: "Invoke Celestial",
       spellId: 325197,
       shortName: "Celestial",
@@ -364,7 +370,8 @@ const abilities: {
   ],
   [CLASSES.DRUID]: [
     {
-      wowheadLink: "https://www.wowhead.com/spell=33891/incarnation-tree-of-life",
+      wowheadLink:
+        "https://www.wowhead.com/spell=33891/incarnation-tree-of-life",
       name: "Incarnation: Tree of Life",
       spellId: 33891,
       shortName: "Tree",

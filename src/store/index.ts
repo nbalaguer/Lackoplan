@@ -98,14 +98,18 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   movePlayer: (playerId: string, amount: number) =>
     set((state) => {
       const nextState = _cloneDeep(state)
-      const playerPosition = nextState.players.findIndex(player => player.id === playerId)
+      const playerPosition = nextState.players.findIndex(
+        (player) => player.id === playerId
+      )
 
       if (playerPosition < 0) return state
 
       const player = getPlayerFromStore(nextState, playerId) as Player // If playerPosition exists, player exists. We're looking for the same Id
       const newPlayerPosition = Math.max(0, playerPosition + amount)
 
-      nextState.players = nextState.players.filter(player => player.id !== playerId)
+      nextState.players = nextState.players.filter(
+        (player) => player.id !== playerId
+      )
       nextState.players.splice(newPlayerPosition, 0, player)
 
       return nextState
@@ -321,7 +325,9 @@ function constructState(
     player.name = playerConfig.name
     player.isActive = playerConfig.isActive
     player.abilities.forEach((playerAbility) => {
-      const abilityConfig = playerConfig.abilities.find(ability => ability.name === playerAbility.originalAbility.name)
+      const abilityConfig = playerConfig.abilities.find(
+        (ability) => ability.name === playerAbility.originalAbility.name
+      )
       if (abilityConfig) {
         playerAbility.isActive = abilityConfig.isActive
         playerAbility.castTimes = abilityConfig.castTimes

@@ -1,6 +1,6 @@
-import React from 'react'
-import Icon from 'components/atoms/Icon'
-import classNames from 'classnames'
+import React from "react"
+import Icon from "components/atoms/Icon"
+import classNames from "classnames"
 
 function Button(props: {
   className?: string
@@ -12,7 +12,6 @@ function Button(props: {
   onClick?: React.MouseEventHandler<HTMLButtonElement>
   disabled?: boolean
 }) {
-
   const {
     text,
     className,
@@ -28,7 +27,10 @@ function Button(props: {
     <button
       type={htmlType}
       form={htmlForm}
-      className={classNames(className, "flex gap-2 items-center justify-center border-2 border-slate-500 bg-slate-700 px-2 py-1 text-xs font-medium text-slate-200 transition-colors duration-100 hover:bg-slate-600 uppercase")}
+      className={classNames(
+        className,
+        "flex items-center justify-center gap-2 border-2 border-slate-500 bg-slate-700 px-2 py-1 text-xs font-medium uppercase text-slate-200 transition-colors duration-100 hover:bg-slate-600"
+      )}
       onClick={onClick}
       disabled={disabled}
     >

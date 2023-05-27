@@ -60,10 +60,10 @@ function Drawer(props: {
           >
             <motion.div
               variants={drawerVariants}
-              style={{[side]: 0}}
+              style={{ [side]: 0 }}
               custom={side}
               className={classNames(
-                "absolute flex flex-col bg-slate-800 text-slate-100 top-0 bottom-0 shadow-lg",
+                "absolute top-0 bottom-0 flex flex-col bg-slate-800 text-slate-100 shadow-lg",
                 className
               )}
               onClick={(e) => {

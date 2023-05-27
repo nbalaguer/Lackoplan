@@ -42,7 +42,7 @@ export type ExportableProps = {
     class: Class
     isActive: boolean
     abilities: {
-      name: string,
+      name: string
       isActive: boolean
       activeModifiers: boolean[]
       castTimes: number[]

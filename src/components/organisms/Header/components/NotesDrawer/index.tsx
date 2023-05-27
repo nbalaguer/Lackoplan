@@ -1,23 +1,17 @@
-import Button from 'components/atoms/Button'
-import IconButton from 'components/atoms/IconButton'
-import Markdown from 'components/atoms/Markdown'
-import Drawer from 'components/templates/Drawer'
-import React, { useCallback, useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useAppStore } from 'store'
+import Button from "components/atoms/Button"
+import IconButton from "components/atoms/IconButton"
+import Markdown from "components/atoms/Markdown"
+import Drawer from "components/templates/Drawer"
+import React, { useCallback, useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { useAppStore } from "store"
 
 type FormData = {
   userNote: string
 }
 
-function NotesDrawer(props: {
-  isOpen: boolean
-  onCloseRequest: () => void
-}) {
-  const {
-    isOpen,
-    onCloseRequest,
-  } = props
+function NotesDrawer(props: { isOpen: boolean; onCloseRequest: () => void }) {
+  const { isOpen, onCloseRequest } = props
 
   const [isEditMode, setIsEditMode] = useState(false)
   const userNote = useAppStore((state) => state.userNote)
@@ -31,7 +25,7 @@ function NotesDrawer(props: {
 
   useEffect(() => {
     if (isOpen) {
-      reset({userNote})
+      reset({ userNote })
     }
   }, [isOpen, reset, userNote])
 
@@ -46,23 +40,15 @@ function NotesDrawer(props: {
   return (
     <Drawer
       isOpen={isOpen}
-      side='right'
+      side="right"
       onCloseRequest={onCloseRequest}
-      className="p-3 w-[900px] max-w-[90%] flex flex-col gap-4 border-l-2 border-slate-700"
+      className="flex w-[900px] max-w-[90%] flex-col gap-4 border-l-2 border-slate-700 p-3"
     >
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         {!isEditMode && (
-          <Button
-            text="edit"
-            onClick={() => setIsEditMode(true)}
-          />
+          <Button text="edit" onClick={() => setIsEditMode(true)} />
         )}
-        {isEditMode && (
-          <Button
-            htmlForm='noteForm'
-            text="done"
-          />
-        )}
+        {isEditMode && <Button htmlForm="noteForm" text="done" />}
         <IconButton icon="close" onClick={onCloseRequest} />
       </div>
       {!isEditMode && (
@@ -71,10 +57,14 @@ function NotesDrawer(props: {
         </div>
       )}
       {isEditMode && (
-        <form id="noteForm" onSubmit={handleSubmit(onSubmit)} className="flex-grow flex">
+        <form
+          id="noteForm"
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-grow"
+        >
           <textarea
             {...register("userNote")}
-            className="w-full border-2 border-slate-600 bg-transparent px-3 py-2 text-sm outline-none resize-none"
+            className="w-full resize-none border-2 border-slate-600 bg-transparent px-3 py-2 text-sm outline-none"
           />
         </form>
       )}

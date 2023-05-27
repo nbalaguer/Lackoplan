@@ -19,10 +19,15 @@ function ExportMRTString() {
 
   return (
     <>
-      <Button text="Export MRT" onClick={() => {
+      <Button
+        text="Export MRT"
+        onClick={() => {
           setIsModalOpen(true)
-          setMRTString(MRTGetTimelineString({ groupBy: checked ? "player" : "none" }))
-        }} />
+          setMRTString(
+            MRTGetTimelineString({ groupBy: checked ? "player" : "none" })
+          )
+        }}
+      />
       <Modal
         isOpen={isModalOpen}
         onCloseRequest={() => setIsModalOpen(false)}
