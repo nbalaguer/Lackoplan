@@ -24,7 +24,7 @@ function IconButton(props: {
       type={htmlType}
       form={htmlForm}
       className={classNames(
-        "rounded-full bg-transparent p-1.5 transition-colors hover:bg-slate-100/20 disabled:text-slate-400 disabled:hover:bg-transparent",
+        "rounded-full bg-transparent p-[0.5em] transition-colors hover:bg-slate-100/20 disabled:text-slate-400 disabled:hover:bg-transparent",
         className
       )}
       onClick={onClick}
