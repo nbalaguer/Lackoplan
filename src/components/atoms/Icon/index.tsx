@@ -14,6 +14,7 @@ import { IoSettingsSharp as SettingsIcon } from "react-icons/io5"
 import { RiStickyNoteFill as NoteIcon } from "react-icons/ri"
 import { MdAreaChart as FightIcon } from "react-icons/md"
 import { FaFolder as FolderIcon } from "react-icons/fa"
+import { FaSave as SaveIcon } from "react-icons/fa"
 
 const defaultSize = "1.2em"
 
@@ -33,6 +34,7 @@ const icons = {
   note: <NoteIcon size={defaultSize} />,
   fight: <FightIcon size={defaultSize} />,
   folder: <FolderIcon size={defaultSize} />,
+  save: <SaveIcon size={defaultSize} />,
 } as const
 
 export type IconName = keyof typeof icons

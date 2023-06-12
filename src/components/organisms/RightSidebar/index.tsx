@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react"
 import IconButton from "components/atoms/IconButton"
 import FightView from "./views/FightView"
 import NoteView from "./views/NoteView"
-// import FilesView from "./views/FilesView"
+import SettingsView from "./views/SettingsView"
 import classNames from "classnames"
 
 const views = {
@@ -14,10 +14,10 @@ const views = {
     icon: "note",
     Component: NoteView,
   },
-  // files: {
-  //   icon: "folder",
-  //   Component: FilesView,
-  // },
+  settings: {
+    icon: "settings",
+    Component: SettingsView,
+  },
 } as const
 
 type ViewName = keyof typeof views
@@ -38,16 +38,23 @@ function RightSidebar() {
   if (activeView) ViewComponent = views[activeView].Component
 
   return (
-    <div className="grid grid-cols-[repeat(2,minmax(0px,auto))] border-l-2 border-slate-700">
+    <div
+      className={classNames("grid grid-cols-[repeat(2,minmax(0px,auto))]", {
+        ["border-l-2 border-slate-700"]: !!ViewComponent,
+      })}
+    >
       {ViewComponent && <ViewComponent />}
       <div className="col-start-2 flex flex-col divide-y-2 divide-slate-700 border-l-2 border-slate-700">
         {Object.entries(views).map(([key, view]) => {
           return (
             <div
               key={key}
-              className={classNames("p-3 text-xl transition-colors duration-150", {
-                ["bg-slate-700"]: activeView === key,
-              })}
+              className={classNames(
+                "p-3 text-xl transition-colors duration-150",
+                {
+                  ["bg-slate-700"]: activeView === key,
+                }
+              )}
             >
               <IconButton
                 icon={view.icon}
