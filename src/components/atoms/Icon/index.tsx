@@ -12,6 +12,8 @@ import { BiExport as ExportIcon } from "react-icons/bi"
 import { TbNotes as MRTNoteIcon } from "react-icons/tb"
 import { IoSettingsSharp as SettingsIcon } from "react-icons/io5"
 import { RiStickyNoteFill as NoteIcon } from "react-icons/ri"
+import { MdAreaChart as FightIcon } from "react-icons/md"
+import { FaFolder as FolderIcon } from "react-icons/fa"
 
 const defaultSize = "1.2em"
 
@@ -29,9 +31,13 @@ const icons = {
   mrtnote: <MRTNoteIcon size={defaultSize} />,
   settings: <SettingsIcon size={defaultSize} />,
   note: <NoteIcon size={defaultSize} />,
+  fight: <FightIcon size={defaultSize} />,
+  folder: <FolderIcon size={defaultSize} />,
 } as const
 
-function Icon(props: { icon: keyof typeof icons }) {
+export type IconName = keyof typeof icons
+
+function Icon(props: { icon: IconName }) {
   const { icon } = props
   return icons[icon]
 }

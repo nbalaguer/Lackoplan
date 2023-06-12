@@ -1,60 +1,64 @@
-import React, { useCallback, useEffect } from "react"
-import { useForm } from "react-hook-form"
-import { useAppStore } from "store"
-import { getTimeString, parseTimeString } from "utils"
-import OverlayConfig from "./components/OverlayConfig"
-import ExportMRTString from "./components/ExportMRTString"
-import ExportString from "./components/ExportString"
-import ImportString from "./components/ImportString"
-import Button from "components/atoms/Button"
+import React, { useCallback, useState } from "react"
+import IconButton from "components/atoms/IconButton"
+import FightView from "./views/FightView"
+import NoteView from "./views/NoteView"
+// import FilesView from "./views/FilesView"
+import classNames from "classnames"
 
-type FightForm = {
-  duration: string
-}
+const views = {
+  fight: {
+    icon: "fight",
+    Component: FightView,
+  },
+  note: {
+    icon: "note",
+    Component: NoteView,
+  },
+  // files: {
+  //   icon: "folder",
+  //   Component: FilesView,
+  // },
+} as const
 
-function FightPicker() {
-  const duration = useAppStore((state) => state.duration)
-  const setDuration = useAppStore((state) => state.setDuration)
+type ViewName = keyof typeof views
 
-  const { register, handleSubmit, getValues, setValue } = useForm<FightForm>({
-    defaultValues: {
-      duration: getTimeString(duration),
-    },
-  })
+function RightSidebar() {
+  const [activeView, setActiveView] = useState<ViewName | null>("fight")
 
-  useEffect(() => {
-    if (duration !== Number(getValues().duration)) {
-      setValue("duration", getTimeString(duration))
-    }
-  }, [duration, getValues, setValue])
+  const handleViewToggle = useCallback((viewKey: ViewName) => {
+    setActiveView((currentView) => {
+      if (currentView === viewKey) {
+        return null
+      }
+      return viewKey
+    })
+  }, [])
 
-  const onSubmit = useCallback(
-    (values: FightForm) => {
-      setDuration(parseTimeString(values.duration))
-    },
-    [setDuration]
-  )
+  let ViewComponent: React.ComponentType | null = null
+  if (activeView) ViewComponent = views[activeView].Component
 
   return (
-    <div className="flex flex-col divide-y-2 divide-slate-700 border-l-2 border-slate-700">
-      <div className="flex flex-col gap-2 p-3">
-        <ImportString />
-        <ExportString />
-        <ExportMRTString />
+    <div className="grid grid-cols-[repeat(2,minmax(0px,auto))] border-l-2 border-slate-700">
+      {ViewComponent && <ViewComponent />}
+      <div className="col-start-2 flex flex-col divide-y-2 divide-slate-700 border-l-2 border-slate-700">
+        {Object.entries(views).map(([key, view]) => {
+          return (
+            <div
+              key={key}
+              className={classNames("p-3 text-xl transition-colors duration-150", {
+                ["bg-slate-700"]: activeView === key,
+              })}
+            >
+              <IconButton
+                icon={view.icon}
+                onClick={() => handleViewToggle(key as ViewName)}
+              />
+            </div>
+          )
+        })}
       </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-3 p-3"
-      >
-        <label className="block space-y-1">
-          <div className="text-sm">Fight duration</div>
-          <input {...register("duration")} className="px-2 text-black" />
-        </label>
-        <Button htmlType="submit" text="update" className="mt-3" />
-      </form>
-      <OverlayConfig />
     </div>
   )
 }
 
-export default FightPicker
+export default RightSidebar
