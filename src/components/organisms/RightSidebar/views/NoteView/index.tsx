@@ -53,7 +53,7 @@ function NoteView() {
         >
           <textarea
             {...register("userNote")}
-            className="w-full resize-none px-3 py-2 text-sm outline-none border-2 bg-slate-800 border-slate-600"
+            className="w-full resize-none border-2 border-slate-600 bg-slate-800 px-3 py-2 text-sm outline-none"
           />
         </form>
       )}

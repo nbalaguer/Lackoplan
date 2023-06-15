@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react"
 import ExportString from "./components/ExportString"
 import ImportString from "./components/ImportString"
-import LoadFile from './components/LoadFile'
-import SaveFile from './components/SaveFile'
-import SaveFileAs from './components/SaveFileAs'
+import LoadFile from "./components/LoadFile"
+import SaveFile from "./components/SaveFile"
+import SaveFileAs from "./components/SaveFileAs"
 
 function SettingsView() {
   return (
