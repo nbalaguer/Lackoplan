@@ -29,7 +29,7 @@ function Button(props: {
       form={htmlForm}
       className={classNames(
         className,
-        "flex items-center justify-center gap-2 border-2 border-slate-500 bg-slate-700 px-2 py-1 text-xs font-medium uppercase text-slate-200 transition-colors duration-100 hover:bg-slate-600"
+        "flex items-center justify-center gap-2 border-2 border-slate-500 bg-slate-700 px-2 py-1 text-xs font-medium uppercase text-slate-200 transition-colors duration-100 hover:bg-slate-600 disabled:border-slate-700 disabled:bg-slate-800 disabled:text-slate-500"
       )}
       onClick={onClick}
       disabled={disabled}

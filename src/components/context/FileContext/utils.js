@@ -35,4 +35,6 @@ export async function requestSaveFileAs(data) {
   const fileWriter = await fileHandle.createWritable()
   await fileWriter.write(data)
   await fileWriter.close()
+
+  return fileHandle
 }

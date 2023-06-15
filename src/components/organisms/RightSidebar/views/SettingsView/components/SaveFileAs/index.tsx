@@ -7,19 +7,20 @@ import { useAppStore } from "store"
 
 function SaveFileAs() {
   const exportState = useAppStore((state) => state.exportState)
-  const { isFileSystemSupported } = useFileContext()
+  const { isFileSystemSupported, setFileHandle } = useFileContext()
 
   const handleSaveAs = useCallback(async () => {
     const exportedState = exportState(true)
     const exportString = Base64.encode(JSON.stringify(exportedState))
 
     try {
-      await requestSaveFileAs(exportString)
+      const newFileHandle = await requestSaveFileAs(exportString)
+      setFileHandle(newFileHandle)
       alert("File Saved")
     } catch (error) {
       console.error(error)
     }
-  }, [exportState])
+  }, [exportState, setFileHandle])
 
   if (!isFileSystemSupported) return null
 
