@@ -1,6 +1,6 @@
 import Button from "components/atoms/Button"
-import useFileContext from "components/context/FileContext"
-import { requestSaveFileAs } from "components/context/FileContext/utils"
+import useFileContext from "context/FileContext"
+import { requestSaveFileAs } from "context/FileContext/utils"
 import { Base64 } from "js-base64"
 import React, { useCallback } from "react"
 import { useAppStore } from "store"

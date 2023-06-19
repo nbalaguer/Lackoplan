@@ -3,7 +3,7 @@ import Header from "components/organisms/Header"
 import LeftSidebar from "components/organisms/LeftSidebar"
 import Timeline from "components/organisms/Timeline"
 import RightSidebar from "components/organisms/RightSidebar"
-import { FileContextProvider } from "components/context/FileContext"
+import { FileContextProvider } from "context/FileContext"
 
 function App() {
   return (
