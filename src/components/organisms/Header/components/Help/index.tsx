@@ -19,7 +19,7 @@ const helpText = `## Timeline controls
 - The exported MRT string is compatible with [Kaze ERT Timers Icons Wekaura](https://wago.io/n7l5uN3YM)
 - Use the overlays section to paste in captures from your fight logs, I'm using damage taken and casts in this example :)
 
-![alt text](/public/lackoplan-screenshot.png)
+![alt text](/img/lackoplan-screenshot.png)
 `
 
 function Help() {
