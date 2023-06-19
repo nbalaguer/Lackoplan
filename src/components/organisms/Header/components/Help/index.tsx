@@ -1,7 +1,7 @@
-import IconButton from 'components/atoms/IconButton'
-import Markdown from 'components/atoms/Markdown'
-import Modal from 'components/templates/Modal'
-import React, {useState} from 'react'
+import IconButton from "components/atoms/IconButton"
+import Markdown from "components/atoms/Markdown"
+import Modal from "components/templates/Modal"
+import React, { useState } from "react"
 
 const helpText = `## Timeline controls
 
@@ -27,11 +27,23 @@ function Help() {
 
   return (
     <>
-    <IconButton className="text-xl" icon="help" onClick={() => setIsModalOpen(true)} />
-    <Modal isOpen={isModalOpen} onCloseRequest={() => setIsModalOpen(false)} className="py-2 px-6 border-2 border-slate-700">
-      <IconButton icon="close" className="self-end -mr-3 mt-1" onClick={() => setIsModalOpen(false)} />
-      <Markdown markdown={helpText} />
-    </Modal>
+      <IconButton
+        className="text-xl"
+        icon="help"
+        onClick={() => setIsModalOpen(true)}
+      />
+      <Modal
+        isOpen={isModalOpen}
+        onCloseRequest={() => setIsModalOpen(false)}
+        className="border-2 border-slate-700 py-2 px-6"
+      >
+        <IconButton
+          icon="close"
+          className="-mr-3 mt-1 self-end"
+          onClick={() => setIsModalOpen(false)}
+        />
+        <Markdown markdown={helpText} />
+      </Modal>
     </>
   )
 }
