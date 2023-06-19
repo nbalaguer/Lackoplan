@@ -29,6 +29,7 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
   const changePlayerName = useAppStore((state) => state.changePlayerName)
   const togglePlayer = useAppStore((state) => state.togglePlayer)
   const movePlayer = useAppStore((state) => state.movePlayer)
+  const duplicatePlayer = useAppStore((state) => state.duplicatePlayer)
 
   const player = playerState || playerRef.current
 
@@ -57,21 +58,27 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
     movePlayer(playerId, 1)
   }, [movePlayer, playerId])
 
+  const handleDuplicate = useCallback(() => {
+    duplicatePlayer(playerId)
+  }, [duplicatePlayer, playerId])
+
   if (!player) return null
 
   return (
     <motion.div
       layout
       initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
+      animate={{ opacity: player.isActive ? 1 : 0.6 }}
       exit={{ opacity: 0 }}
       transition={{
         opacity: { duration: 0.1 },
       }}
       style={{
-        borderColor: theme.colors[player.class],
+        borderColor: player.isActive
+          ? theme.colors[player.class]
+          : "transparent",
       }}
-      className="grid grid-cols-[auto_1fr] border-l-4 pl-3"
+      className="grid grid-cols-[auto_1fr] border-l-[5px] pl-3"
       ref={ref}
     >
       <PlayerHeader
@@ -85,6 +92,7 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
         onMoveUp={handleMoveUp}
         disableMoveDown={isLast}
         onMoveDown={handleMoveDown}
+        onDuplicate={handleDuplicate}
       />
       <div className="grid grid-cols-4 items-start gap-2 pr-2 pt-2">
         {player.abilities.map((playerAbility) => {

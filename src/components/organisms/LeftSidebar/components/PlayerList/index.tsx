@@ -26,7 +26,7 @@ function PlayerList() {
             },
           }}
         >
-          <div className="space-y-3 p-3">
+          <div className="space-y-3 py-3 pr-2">
             <AnimatePresence mode="popLayout">
               {playerIds.map((playerId, index) => {
                 return (

@@ -1,5 +1,6 @@
 import deepmerge from "deepmerge"
 import _cloneDeep from "lodash/cloneDeep"
+import { v4 as uuid } from "uuid"
 import type { PlayerAbility, Player, ExportableProps } from "types"
 import { applyModifiers, createPlayer, getCastTimes } from "utils"
 import { create } from "zustand"
@@ -21,6 +22,7 @@ type AppStore = {
   exportState: (includeOverlays?: boolean) => ExportableProps
   importState: (stateConfig: ExportableProps) => void
   addPlayer: (player: Player) => void
+  duplicatePlayer: (playerId: string) => void
   removePlayer: (playerId: string) => void
   togglePlayer: (playerId: string) => void
   movePlayer: (playerId: string, amount: number) => void
@@ -74,6 +76,23 @@ export const useAppStore = create<AppStore>()((set, get) => ({
 
   addPlayer: (player: Player) =>
     set((state) => deepmerge(state, { players: [player] })),
+
+  duplicatePlayer: (playerId: string) =>
+    set((state) => {
+      const playerIndex = state.players.findIndex(
+        (player) => player.id === playerId
+      )
+
+      if (playerIndex != -1) {
+        const playerClone = _cloneDeep(state.players[playerIndex])
+        playerClone.id = uuid()
+
+        const nextState = _cloneDeep(state)
+        nextState.players.splice(playerIndex, 0, playerClone)
+
+        return nextState
+      } else return state
+    }),
 
   removePlayer: (playerId: string) =>
     set((state) => {

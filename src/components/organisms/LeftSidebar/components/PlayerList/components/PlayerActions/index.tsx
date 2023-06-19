@@ -7,6 +7,7 @@ function PlayerActions(props: {
   onMoveUp: () => void
   disableMoveDown: boolean
   onMoveDown: () => void
+  onDuplicate: () => void
 }) {
   const {
     onRemove,
@@ -14,6 +15,7 @@ function PlayerActions(props: {
     onMoveUp,
     disableMoveDown: disableDown,
     onMoveDown,
+    onDuplicate,
   } = props
 
   return (
@@ -21,6 +23,7 @@ function PlayerActions(props: {
       <IconButton icon="close" onClick={onRemove} />
       <IconButton icon="up" onClick={onMoveUp} disabled={disableUp} />
       <IconButton icon="down" onClick={onMoveDown} disabled={disableDown} />
+      <IconButton icon="duplicate" onClick={onDuplicate} />
     </div>
   )
 }

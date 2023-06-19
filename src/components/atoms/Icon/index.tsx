@@ -16,6 +16,7 @@ import { MdAreaChart as FightIcon } from "react-icons/md"
 import { FaFolder as FolderIcon } from "react-icons/fa"
 import { FaSave as SaveIcon } from "react-icons/fa"
 import { MdHelpCenter as HelpIcon } from "react-icons/md"
+import { HiDuplicate as DuplicateIcon } from "react-icons/hi"
 
 const defaultSize = "1.2em"
 
@@ -37,6 +38,7 @@ const icons = {
   folder: <FolderIcon size={defaultSize} />,
   save: <SaveIcon size={defaultSize} />,
   help: <HelpIcon size={defaultSize} />,
+  duplicate: <DuplicateIcon size={defaultSize} />,
 } as const
 
 export type IconName = keyof typeof icons
