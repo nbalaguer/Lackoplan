@@ -13,7 +13,9 @@ function PlayerAbility(props: {
 
   function handleAbilityClick(event: React.MouseEvent) {
     if (event.ctrlKey) {
-      window.open(playerAbility.ability.wowheadLink, "_blank")
+      if (playerAbility.ability.wowheadLink) {
+        window.open(playerAbility.ability.wowheadLink, "_blank")
+      }
     } else {
       onToggleAbility()
     }

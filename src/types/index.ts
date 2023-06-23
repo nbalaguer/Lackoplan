@@ -3,7 +3,7 @@ import { CLASSES } from "config/constants"
 export type Class = (typeof CLASSES)[keyof typeof CLASSES]
 
 export type Ability = {
-  wowheadLink: string
+  wowheadLink?: string
   name: string
   spellId: number
   shortName: string
