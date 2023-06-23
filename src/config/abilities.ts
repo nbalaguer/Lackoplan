@@ -105,7 +105,6 @@ const abilities: {
       icon: "inv_potion_27",
       modifiers: [],
     },
-
   ],
   [CLASSES.WARRIOR]: [
     {
