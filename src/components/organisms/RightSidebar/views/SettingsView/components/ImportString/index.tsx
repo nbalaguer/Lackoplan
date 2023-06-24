@@ -4,6 +4,7 @@ import { useAppStore } from "store"
 import { Base64 } from "js-base64"
 import { useForm } from "react-hook-form"
 import Button from "components/atoms/Button"
+import IconButton from "components/atoms/IconButton"
 
 type FormData = {
   importString: string
@@ -33,23 +34,25 @@ function ImportString() {
       <Button text="Import string" onClick={() => setIsModalOpen(true)} />
       <Modal
         isOpen={isModalOpen}
-        className="h-2/3 w-full max-w-screen-lg p-4"
+        className="h-2/3 w-full max-w-screen-lg space-y-2 border-2 border-slate-700 p-4"
         onCloseRequest={handleOpen}
       >
+        <div className="flex justify-end">
+          <IconButton
+            icon="close"
+            onClick={() => setIsModalOpen(false)}
+            className="text-md"
+          />
+        </div>
         <form
-          className="flex h-full flex-col gap-2"
+          className="flex h-full flex-col gap-4"
           onSubmit={handleSubmit(onSubmit)}
         >
           <textarea
             {...register("importString")}
-            className="h-full border-2 border-slate-600 bg-transparent px-3 py-2 text-sm outline-none"
+            className="h-full resize-none bg-slate-900/60 px-3 py-2 text-sm outline-none"
           />
-          <button
-            type="submit"
-            className="text-md self-end border-2 border-slate-500 bg-slate-700 px-4 py-1 font-medium text-slate-200 transition-colors duration-100 hover:bg-slate-600"
-          >
-            Import
-          </button>
+          <Button text="Import" htmlType="submit" className="self-end" />
         </form>
       </Modal>
     </>

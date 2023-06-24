@@ -10,7 +10,7 @@ function Timeline() {
   const panelRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="grid bg-slate-900 py-3 px-5">
+    <div className="grid select-none bg-slate-900 py-3 px-5">
       <div ref={panelRef} className="relative z-0 flex flex-col">
         <TimelineContextProvider panelRef={panelRef}>
           <Toolbar />

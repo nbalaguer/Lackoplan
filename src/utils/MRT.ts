@@ -84,7 +84,7 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
             ].join(" ")
           })
           .join("  ")
-        return `{time:${groupCastTime}} ${groupCastsString}`
+        return `{time:${groupCastTime}} ${groupCastsString}  ` // These two spaces at the end of each line are key for the weakaura to recognize the last assignment of the line.
       })
       .join("\n")
   }
@@ -125,7 +125,7 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
               `{spell:${firstCast.ability.ability.spellId}}`,
             ].join(" ")
 
-            return `{time:${groupCastTime}} ${playerCastString}`
+            return `{time:${groupCastTime}} ${playerCastString}  `
           }),
         ].join("\n")
       })

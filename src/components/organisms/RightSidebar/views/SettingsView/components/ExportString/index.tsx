@@ -4,6 +4,8 @@ import { useAppStore } from "store"
 import { Base64 } from "js-base64"
 import Switch from "components/atoms/Switch"
 import Button from "components/atoms/Button"
+import CopyButton from "components/molecules/CopyButton"
+import IconButton from "components/atoms/IconButton"
 
 function ExportString() {
   const inputRef = useRef<HTMLTextAreaElement>(null)
@@ -48,21 +50,30 @@ function ExportString() {
       <Modal
         isOpen={isModalOpen}
         onCloseRequest={() => setIsModalOpen(false)}
-        className="h-2/3 w-full max-w-screen-lg space-y-2 p-4"
+        className="relative h-2/3 w-full max-w-screen-lg space-y-2 border-2 border-slate-700 p-4"
       >
-        <div className="flex justify-end">
+        <div className="flex items-center justify-between">
           <Switch
             label="Include overlays"
             checked={checked}
             onChange={handleExportOverlaysChange}
             reverse
           />
+          <IconButton
+            icon="close"
+            onClick={() => setIsModalOpen(false)}
+            className="text-md"
+          />
         </div>
         <textarea
           ref={inputRef}
-          className="h-full border-2 border-slate-600 bg-transparent px-3 py-2 text-sm outline-none"
+          className="h-full resize-none bg-slate-900/60 px-3 py-2 text-sm outline-none"
           value={exportString}
           readOnly
+        />
+        <CopyButton
+          clipboardData={exportString}
+          className="absolute bottom-7 right-6 text-lg"
         />
       </Modal>
     </>

@@ -6,8 +6,9 @@ import React, { useState } from "react"
 const helpText = `## Timeline controls
 
 - Move ability instances by dragging them
-- Dragged instances will displace others to respect the ability cooldown. Hold Ctrl for disabling the behaviour
-- Holding shift will cause all future instances of the ability to reset and move with the one you're dragging
+- Dragged instances will displace others to respect the ability cooldown. Hold **Ctrl** for disabling the behaviour
+- Holding **Shift** will cause all future instances of the ability to reset and move with the one you're dragging
+- Hold **Alt** while dragging to make small adjustments to the cast times.
 
 ## Left panel
 

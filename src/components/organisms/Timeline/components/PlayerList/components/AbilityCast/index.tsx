@@ -71,10 +71,13 @@ function AbilityCast(props: {
       )
       if (!panelWidth || !currentPlayerAbility) return
 
+      const multiplier = event.altKey ? 0.1 : 1
+
       const containerWidth = panelWidth
       const currentCastTime = currentPlayerAbility.castTimes[castIndex]
       const newCastTime =
-        currentCastTime + duration * (offsetX / containerWidth)
+        currentCastTime + duration * (offsetX / containerWidth) * multiplier
+
       updateCastTime({
         playerId,
         abilityId,
