@@ -338,7 +338,19 @@ const abilities: {
       modifiers: [
         {
           icon: "monk_stance_wiseserpent",
+          description:
+            "Uplifted Spirits. Expected CD reduction from Rising Sun Kick",
+          wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
           process: modifiers.addCooldown(-30),
+          dependants: [1],
+        },
+        {
+          icon: "ability_monk_soothingmists",
+          description:
+            "Uplifted Spirits. Expected extra CD reduction from Clouded Focus build",
+          wowheadLink: "https://www.wowhead.com/spell=388047/clouded-focus",
+          process: modifiers.addCooldown(-45),
+          dependsOn: [0],
         },
       ],
     },
@@ -353,11 +365,18 @@ const abilities: {
       modifiers: [
         {
           icon: "inv_pet_jadeserpentpet",
+          description: "Gift of the Celestials",
+          wowheadLink:
+            "https://www.wowhead.com/spell=388212/gift-of-the-celestials",
           process: modifiers.addCooldown(-60 * 2),
+          exclusiveWith: [1],
         },
         {
           icon: "inv_inscription_deck_jadeserpent",
+          description: "Jade Bond",
+          wowheadLink: "https://www.wowhead.com/spell=388031/jade-bond",
           process: modifiers.addCooldown(-30),
+          exclusiveWith: [0],
         },
       ],
     },
@@ -392,6 +411,8 @@ const abilities: {
       modifiers: [
         {
           icon: "ability_druid_dreamstate",
+          description: "Inner Peace",
+          wowheadLink: "https://www.wowhead.com/spell=197073/inner-peace",
           process: modifiers.addCooldown(-60),
         },
       ],
@@ -415,6 +436,8 @@ const abilities: {
       modifiers: [
         {
           icon: "ability_ardenweald_druid",
+          description: "Cenarius Guidance",
+          wowheadLink: "https://www.wowhead.com/spell=393371/cenarius-guidance",
           process: modifiers.multiplyCooldown(0.5),
         },
       ],
@@ -438,6 +461,9 @@ const abilities: {
       modifiers: [
         {
           icon: "spell_druid_stampedingroar_cat",
+          description: "Improved Stampeding Roar",
+          wowheadLink:
+            "https://www.wowhead.com/spell=288826/improved-stampeding-roar",
           process: modifiers.addCooldown(-60),
         },
       ],
@@ -476,6 +502,9 @@ const abilities: {
       modifiers: [
         {
           icon: "ability_evoker_rewind",
+          description: "Temporal Artificer",
+          wowheadLink:
+            "https://www.wowhead.com/spell=381922/temporal-artificer",
           process: modifiers.addCooldown(-60),
         },
       ],

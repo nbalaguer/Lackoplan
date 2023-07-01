@@ -46,9 +46,16 @@ function PlayerAbility(props: {
           return (
             <button
               key={modifier.icon}
-              onClick={() =>
-                toggleAbilityModifier(player.id, playerAbility.id, index)
-              }
+              title={modifier.description}
+              onClick={(event) => {
+                if (event.ctrlKey) {
+                  if (modifier.wowheadLink) {
+                    window.open(modifier.wowheadLink, "_blank")
+                  }
+                } else {
+                  toggleAbilityModifier(player.id, playerAbility.id, index)
+                }
+              }}
               className="flex"
             >
               <WowheadIcon

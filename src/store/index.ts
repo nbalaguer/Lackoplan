@@ -181,9 +181,20 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       )
       if (!playerAbility) return state
 
+      // If the modifier depends on another modifier, check if that modifier is active
+      if (
+        playerAbility.ability.modifiers[modifierIndex].dependsOn
+          ?.map((modIndex) => playerAbility.activeModifiers[modIndex])
+          .some((mod) => !mod)
+      )
+        return state
+
       playerAbility.activeModifiers[modifierIndex] =
         !playerAbility.activeModifiers[modifierIndex]
+
+      updateModifiers(playerAbility, modifierIndex)
       applyModifiers(playerAbility)
+
       playerAbility.castTimes = getCastTimes(
         playerAbility.ability.cooldown,
         state.duration
@@ -358,6 +369,38 @@ function constructState(
   })
 
   return newState
+}
+
+function deactivateDependentModifiers(
+  playerAbility: PlayerAbility,
+  modifierIndex: number
+) {
+  playerAbility.ability.modifiers[modifierIndex].dependants
+    ?.filter((modIndex) => playerAbility.activeModifiers[modIndex])
+    .forEach((modIndex) => {
+      playerAbility.activeModifiers[modIndex] = false
+      deactivateDependentModifiers(playerAbility, modIndex)
+    })
+}
+
+function deactivateExclusiveModifiers(
+  playerAbility: PlayerAbility,
+  modifierIndex: number
+) {
+  playerAbility.ability.modifiers[modifierIndex].exclusiveWith
+    ?.filter((modIndex) => playerAbility.activeModifiers[modIndex])
+    .forEach((modIndex) => {
+      playerAbility.activeModifiers[modIndex] = false
+      deactivateDependentModifiers(playerAbility, modIndex)
+    })
+}
+
+function updateModifiers(playerAbility: PlayerAbility, modifierIndex: number) {
+  if (playerAbility.activeModifiers[modifierIndex]) {
+    deactivateExclusiveModifiers(playerAbility, modifierIndex)
+  } else {
+    deactivateDependentModifiers(playerAbility, modifierIndex)
+  }
 }
 
 export function getPlayerFromStore(state: AppStore, playerId: string) {

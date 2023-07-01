@@ -2,7 +2,6 @@ import React, { useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
 import { useAppStore } from "store"
 import OverlayConfig from "./components/OverlayConfig"
-import ExportMRTString from "./components/ExportMRTString"
 import Button from "components/atoms/Button"
 import { getTimeString, parseTimeString } from "utils"
 
@@ -35,9 +34,6 @@ function FightView() {
 
   return (
     <div className="flex flex-col divide-y-2 divide-slate-700">
-      <div className="flex flex-col gap-2 p-3">
-        <ExportMRTString />
-      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex flex-col gap-3 p-3"

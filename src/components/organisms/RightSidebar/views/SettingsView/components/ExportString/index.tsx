@@ -4,7 +4,6 @@ import { useAppStore } from "store"
 import { Base64 } from "js-base64"
 import Switch from "components/atoms/Switch"
 import Button from "components/atoms/Button"
-import CopyButton from "components/molecules/CopyButton"
 import IconButton from "components/atoms/IconButton"
 
 function ExportString() {
@@ -70,10 +69,6 @@ function ExportString() {
           className="h-full resize-none bg-slate-900/60 px-3 py-2 text-sm outline-none"
           value={exportString}
           readOnly
-        />
-        <CopyButton
-          clipboardData={exportString}
-          className="absolute bottom-7 right-6 text-lg"
         />
       </Modal>
     </>

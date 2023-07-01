@@ -4,6 +4,7 @@ import ImportString from "./components/ImportString"
 import LoadFile from "./components/LoadFile"
 import SaveFile from "./components/SaveFile"
 import SaveFileAs from "./components/SaveFileAs"
+import ExportMRTString from "./components/ExportMRTString"
 
 function SettingsView() {
   return (
@@ -14,6 +15,7 @@ function SettingsView() {
         <SaveFile />
         <ExportString />
         <SaveFileAs />
+        <ExportMRTString />
       </div>
     </div>
   )

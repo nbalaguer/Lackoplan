@@ -14,6 +14,11 @@ export type Ability = {
 
 export type AbilityModifier = {
   icon: string
+  description?: string
+  wowheadLink?: string
+  dependants?: number[]
+  dependsOn?: number[]
+  exclusiveWith?: number[]
   process: (ability: Ability) => void
 }
 
