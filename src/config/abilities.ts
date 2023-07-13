@@ -563,6 +563,15 @@ const abilities: {
       icon: "ability_evoker_flywithme",
       modifiers: [],
     },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=406732/spatial-paradox",
+      name: "Spatial Paradox",
+      spellId: 406732,
+      shortName: "Paradox",
+      cooldown: 60 * 2,
+      icon: "ability_evoker_stretchtime",
+      modifiers: [],
+    },
   ],
 })
 
