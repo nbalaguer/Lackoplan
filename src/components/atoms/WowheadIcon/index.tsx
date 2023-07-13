@@ -19,6 +19,7 @@ function WowheadIcon(
   return (
     <img
       src={`https://wow.zamimg.com/images/wow/icons/medium/${name}.jpg`}
+      loading="lazy"
       className={classNames(`${classConfig[size]}`, className)}
       {...rest}
     />
