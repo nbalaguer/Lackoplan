@@ -78,7 +78,7 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
           ? theme.colors[player.class]
           : "transparent",
       }}
-      className="grid grid-cols-[auto_1fr] border-l-[5px] pl-3"
+      className="grid grid-cols-[1fr,auto] grid-rows-[auto,1fr] border-l-[5px] pl-3"
       ref={ref}
     >
       <PlayerHeader
@@ -94,7 +94,7 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
         onMoveDown={handleMoveDown}
         onDuplicate={handleDuplicate}
       />
-      <div className="grid grid-cols-4 items-start gap-2 pr-2 pt-2">
+      <div className="grid grid-cols-4 items-start gap-1 pr-2 pt-2">
         {player.abilities.map((playerAbility) => {
           return (
             <PlayerAbility

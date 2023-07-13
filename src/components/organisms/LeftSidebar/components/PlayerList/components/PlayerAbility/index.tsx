@@ -35,9 +35,12 @@ function PlayerAbility(props: {
         <WowheadIcon
           name={playerAbility.ability.icon}
           size="full"
-          className={classNames("grayscale transition-[filter] duration-100", {
-            "filter-none": playerAbility.isActive,
-          })}
+          className={classNames(
+            "aspect-[4/3] object-cover grayscale transition-[filter] duration-100",
+            {
+              "filter-none": playerAbility.isActive,
+            }
+          )}
         />
       </button>
       <div className="grid grid-cols-2 gap-0.5">

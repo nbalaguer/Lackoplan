@@ -25,7 +25,11 @@ function AbilitySequence(props: { playerId: string; abilityId: string }) {
 
   return (
     <motion.div layout className="relative flex select-none">
-      <WowheadIcon name={abilityData.icon} className="invisible" size="small" />
+      <WowheadIcon
+        name={abilityData.icon}
+        className="invisible aspect-[5/4]"
+        size="small"
+      />
       {[...Array(abilityData.numCasts)].map((_, index) => {
         return (
           <AbilityCast

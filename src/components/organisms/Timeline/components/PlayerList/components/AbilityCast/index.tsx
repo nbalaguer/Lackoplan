@@ -112,7 +112,7 @@ function AbilityCast(props: {
       <WowheadIcon
         name={abilityIcon || ""}
         size="small"
-        className="pointer-events-none"
+        className="pointer-events-none aspect-[5/4] object-cover"
       />
     </motion.div>
   )
