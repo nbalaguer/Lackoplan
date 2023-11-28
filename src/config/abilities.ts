@@ -129,7 +129,7 @@ const abilities: {
         {
           icon: "ability_paladin_veneration",
           process: _pipe(
-            modifiers.setCooldown(45),
+            modifiers.setCooldown(60),
             modifiers.setIcon("ability_paladin_veneration"),
             modifiers.setSpellId(216331),
             modifiers.setName("Avenging Crusader"),
@@ -168,6 +168,24 @@ const abilities: {
       icon: "ability_bastion_paladin",
       modifiers: [],
     },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=414176/daybreak",
+      name: "Daybreak",
+      spellId: 414176,
+      shortName: "Daybreak",
+      cooldown: 60,
+      icon: "spell_holy_aspiration",
+      modifiers: [],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=135517/lights-hammer",
+      name: "Light's Hammer",
+      spellId: 135517,
+      shortName: "Hammer",
+      cooldown: 60,
+      icon: "spell_paladin_lightshammer",
+      modifiers: [],
+    }
   ],
   [CLASSES.HUNTER]: [],
   [CLASSES.ROGUE]: [],
@@ -355,8 +373,7 @@ const abilities: {
       ],
     },
     {
-      wowheadLink:
-        "https://www.wowhead.com/spell=325197/invoke-chi-ji-the-red-crane",
+      wowheadLink: "https://www.wowhead.com/spell=325197/invoke-chi-ji-the-red-crane",
       name: "Invoke Celestial",
       spellId: 325197,
       shortName: "Celestial",
@@ -381,14 +398,23 @@ const abilities: {
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=197908/mana-tea",
-      name: "Mana Tea",
-      spellId: 197908,
-      shortName: "Tea",
-      cooldown: 60 * 1.5,
-      icon: "monk_ability_cherrymanatea",
+      wowheadLink: "https://www.wowhead.com/spell=116680/thunder-focus-tea",
+      name: "Thunder Focus Tea",
+      spellId: 116680,
+      shortName: "TFT",
+      cooldown: 30,
+      icon: "ability_monk_thunderfocustea",
       modifiers: [],
     },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=191837/essence-font",
+      name: "Essence Font",
+      spellId: 191837,
+      shortName: "Font",
+      cooldown: 30,
+      icon: "ability_monk_essencefont",
+      modifiers: [],
+    }
   ],
   [CLASSES.DRUID]: [
     {
@@ -422,7 +448,7 @@ const abilities: {
       name: "Flourish",
       spellId: 197721,
       shortName: "Flourish",
-      cooldown: 60 * 1.5,
+      cooldown: 60,
       icon: "spell_druid_wildburst",
       modifiers: [],
     },

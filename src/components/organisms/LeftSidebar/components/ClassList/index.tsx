@@ -7,7 +7,7 @@ import WowheadIcon from "components/atoms/WowheadIcon"
 
 function ClassList() {
   return (
-    <div className="grid grid-cols-5 gap-2 border-b-2 border-slate-700 p-4">
+    <div className="grid grid-cols-5 gap-2 border-b-2 border-slate-700 p-4 px-8">
       {Object.values(CLASSES).map((classKey) => {
         const hasAbilities = !!abilities[classKey].length
         if (hasAbilities) return <Class key={classKey} classKey={classKey} />

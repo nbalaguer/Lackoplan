@@ -94,7 +94,7 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
         onMoveDown={handleMoveDown}
         onDuplicate={handleDuplicate}
       />
-      <div className="grid grid-cols-4 items-start gap-1 pr-2 pt-2">
+      <div className="grid grid-cols-5 items-start gap-1 pr-2 pt-2">
         {player.abilities.map((playerAbility) => {
           return (
             <PlayerAbility
