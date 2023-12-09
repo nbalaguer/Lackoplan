@@ -8,6 +8,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "format": "prettier --write src",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "generateTheme": "node ./bin/generate-tailwind-theme.js"
   },
   "dependencies": {
