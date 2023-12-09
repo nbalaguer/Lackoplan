@@ -185,7 +185,7 @@ const abilities: {
       cooldown: 60,
       icon: "spell_paladin_lightshammer",
       modifiers: [],
-    }
+    },
   ],
   [CLASSES.HUNTER]: [],
   [CLASSES.ROGUE]: [],
@@ -373,7 +373,8 @@ const abilities: {
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=325197/invoke-chi-ji-the-red-crane",
+      wowheadLink:
+        "https://www.wowhead.com/spell=325197/invoke-chi-ji-the-red-crane",
       name: "Invoke Celestial",
       spellId: 325197,
       shortName: "Celestial",
@@ -414,7 +415,7 @@ const abilities: {
       cooldown: 30,
       icon: "ability_monk_essencefont",
       modifiers: [],
-    }
+    },
   ],
   [CLASSES.DRUID]: [
     {

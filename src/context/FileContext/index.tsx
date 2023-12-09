@@ -7,6 +7,7 @@ type FileContextValue = {
   fileHandle: FileSystemFileHandle | null
   // eslint-disable-next-line no-undef
   setFileHandle: React.Dispatch<
+    // eslint-disable-next-line no-undef
     React.SetStateAction<FileSystemFileHandle | null>
   >
 }

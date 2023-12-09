@@ -53,5 +53,5 @@ export type ExportableProps = {
       castTimes: number[]
     }[]
   }[]
-  overlays: string[]
+  overlays?: string[]
 }

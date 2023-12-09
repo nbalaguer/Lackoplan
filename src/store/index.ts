@@ -329,12 +329,15 @@ function getExportData(
     })),
   }))
 
-  return {
+  const exportData: ExportableProps = {
     duration: state.duration,
     userNote: state.userNote,
     players,
-    overlays: includeOverlays ? state.overlays : ["", "", ""],
   }
+
+  if (includeOverlays) exportData.overlays = state.overlays
+
+  return exportData
 }
 
 function constructState(
@@ -343,12 +346,15 @@ function constructState(
 ): AppStore {
   const newState = _cloneDeep(state)
 
-  if (stateConfig.overlays.some((overlay) => !!overlay)) {
-    newState.overlays = stateConfig.overlays
-  }
+  // Allow for importing data with no overlays without overwriting existing overlays
+  if (stateConfig.overlays) newState.overlays = stateConfig.overlays
 
   newState.duration = stateConfig.duration
+
+  // Properties added after initial release.
+  // Check if they exist before importing for backwards compatibility
   if (stateConfig.userNote) newState.userNote = stateConfig.userNote
+  // ----------------------------------------------------------------
 
   newState.players = stateConfig.players.map((playerConfig) => {
     const player = createPlayer(playerConfig.class)
