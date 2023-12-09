@@ -1,7 +1,7 @@
 import theme from "config/theme"
 import { useAppStore } from "store"
 import type { Class, Player, PlayerAbility } from "types"
-import { getTimeString } from "utils"
+import { getConditionString, getTimeString } from "utils"
 import _groupBy from "lodash/groupBy"
 
 type TimelineStringConfig = {
@@ -56,7 +56,6 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
   if (groupBy === "none") {
     return MRTGroupCastEvents(castEvents, castTimeGroupThreshold)
       .map((castEventGroup) => {
-        const groupCastTime = getTimeString(castEventGroup.castTime)
         const castEventsByPlayerId = _groupBy<CastEvent>(
           castEventGroup.castEvents,
           (castEvent) => castEvent.player.id
@@ -84,7 +83,18 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
             ].join(" ")
           })
           .join("  ")
-        return `{time:${groupCastTime}} ${groupCastsString}  ` // These two spaces at the end of each line are key for the weakaura to recognize the last assignment of the line.
+
+        const relatedMarker = currentState.markers.findLast(
+          (marker) => marker.time <= castEventGroup.castTime
+        )
+        const condition = relatedMarker
+          ? "," + getConditionString(relatedMarker)
+          : ""
+        const groupCastTime = getTimeString(
+          castEventGroup.castTime - (relatedMarker?.time || 0)
+        )
+
+        return `{time:${groupCastTime}${condition}} ${groupCastsString}  ` // These two spaces at the end of each line are key for the weakaura to recognize the last assignment of the line.
       })
       .join("\n")
   }
@@ -107,7 +117,6 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
         return [
           MRTWrapStringWithClassColor(playerClass, playerName),
           ...groupedCastEvents.map((castEventGroup) => {
-            const groupCastTime = getTimeString(castEventGroup.castTime)
             const [firstCast, ...restCasts] = castEventGroup.castEvents
 
             const playerCastString = [
@@ -125,7 +134,17 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
               `{spell:${firstCast.ability.ability.spellId}}`,
             ].join(" ")
 
-            return `{time:${groupCastTime}} ${playerCastString}  `
+            const relatedMarker = currentState.markers.findLast(
+              (marker) => marker.time <= castEventGroup.castTime
+            )
+            const condition = relatedMarker
+              ? "," + getConditionString(relatedMarker)
+              : ""
+            const groupCastTime = getTimeString(
+              castEventGroup.castTime - (relatedMarker?.time || 0)
+            )
+
+            return `{time:${groupCastTime}${condition}} ${playerCastString}  `
           }),
         ].join("\n")
       })

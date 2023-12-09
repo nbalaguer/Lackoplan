@@ -1,6 +1,6 @@
 import Color from "color"
 import { v4 as uuid } from "uuid"
-import type { PlayerAbility, Class, Player } from "types"
+import type { PlayerAbility, Class, Player, Marker } from "types"
 import abilities from "config/abilities"
 import _cloneDeep from "lodash/cloneDeep"
 
@@ -68,4 +68,13 @@ export function getTimeString(time: number) {
     2,
     "0"
   )}`
+}
+
+export function getConditionString(marker: Marker) {
+  switch (marker.type) {
+    case "phase":
+      return `p${marker.phase}`
+    case "event":
+      return `${marker.event}:${marker.spell}:${marker.counter}`
+  }
 }

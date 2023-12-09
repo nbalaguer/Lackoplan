@@ -1,7 +1,13 @@
 import deepmerge from "deepmerge"
 import _cloneDeep from "lodash/cloneDeep"
 import { v4 as uuid } from "uuid"
-import type { PlayerAbility, Player, ExportableProps } from "types"
+import type {
+  PlayerAbility,
+  Player,
+  ExportableProps,
+  Marker,
+  MarkerUpdate,
+} from "types"
 import { applyModifiers, createPlayer, getCastTimes } from "utils"
 import { create } from "zustand"
 
@@ -19,6 +25,7 @@ type AppStore = {
   players: Player[]
   casts: PlayerAbility[]
   overlays: string[]
+  markers: Marker[]
   exportState: (includeOverlays?: boolean) => ExportableProps
   importState: (stateConfig: ExportableProps) => void
   addPlayer: (player: Player) => void
@@ -44,6 +51,9 @@ type AppStore = {
   setDuration: (duration: number) => void
   setUserNote: (userNote: string) => void
   setOverlay: (index: number, url: string) => void
+  addMarker: (type: Marker["type"]) => void
+  updateMarker: (markerId: Marker["id"], partialMarker: MarkerUpdate) => void
+  removeMarker: (markerId: Marker["id"]) => void
 }
 
 export const useAppStore = create<AppStore>()((set, get) => ({
@@ -52,6 +62,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   players: [],
   casts: [],
   overlays: ["", "", ""],
+  markers: [],
 
   exportState: (includeOverlays = false) => {
     const currentState = get()
@@ -227,6 +238,66 @@ export const useAppStore = create<AppStore>()((set, get) => ({
 
       return nextState
     }),
+
+  addMarker: (type) =>
+    set((state) => {
+      let marker: Marker
+
+      switch (type) {
+        case "phase":
+          marker = {
+            id: uuid(),
+            type: "phase",
+            time: 0,
+            phase: 1,
+          }
+          break
+        case "event":
+          marker = {
+            id: uuid(),
+            type: "event",
+            time: 0,
+            counter: 1,
+            event: "SCS",
+            spell: 0,
+          }
+          break
+      }
+
+      const nextState = _cloneDeep(state)
+      nextState.markers.push(marker)
+      return nextState
+    }),
+
+  updateMarker: (markerId, partialMarker) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
+      const markerIndex = nextState.markers.findIndex(
+        (marker) => marker.id === markerId
+      )
+      if (markerIndex < 0) return state
+
+      nextState.markers[markerIndex] = {
+        ...nextState.markers[markerIndex],
+        ...partialMarker,
+      }
+
+      nextState.markers[markerIndex].time = Math.max(
+        0,
+        Math.min(nextState.markers[markerIndex].time, nextState.duration)
+      )
+
+      return nextState
+    }),
+
+  removeMarker: (markerId) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
+      nextState.markers = nextState.markers.filter(
+        (marker) => marker.id !== markerId
+      )
+      return nextState
+    }),
 }))
 
 function updateCastTime(
@@ -331,6 +402,7 @@ function getExportData(
 
   const exportData: ExportableProps = {
     duration: state.duration,
+    markers: state.markers,
     userNote: state.userNote,
     players,
   }
@@ -354,6 +426,7 @@ function constructState(
   // Properties added after initial release.
   // Check if they exist before importing for backwards compatibility
   if (stateConfig.userNote) newState.userNote = stateConfig.userNote
+  if (stateConfig.markers) newState.markers = stateConfig.markers
   // ----------------------------------------------------------------
 
   newState.players = stateConfig.players.map((playerConfig) => {

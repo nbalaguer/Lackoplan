@@ -37,7 +37,7 @@ function AbilityCast(props: {
     if (!playerAbility || !panelWidth) return
     x.jump((panelWidth * playerAbility.castTimes[castIndex]) / duration)
 
-    useAppStore.subscribe((state, prevState) => {
+    return useAppStore.subscribe((state, prevState) => {
       const playerAbility = getPlayerAbilityFromStore(
         state,
         playerId,
@@ -73,10 +73,9 @@ function AbilityCast(props: {
 
       const multiplier = event.altKey ? 0.1 : 1
 
-      const containerWidth = panelWidth
       const currentCastTime = currentPlayerAbility.castTimes[castIndex]
       const newCastTime =
-        currentCastTime + duration * (offsetX / containerWidth) * multiplier
+        currentCastTime + duration * (offsetX / panelWidth) * multiplier
 
       updateCastTime({
         playerId,

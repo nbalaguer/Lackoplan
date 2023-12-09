@@ -42,6 +42,7 @@ export type Player = {
 export type ExportableProps = {
   duration: number
   userNote: string
+  markers: Marker[]
   players: {
     name: string
     class: Class
@@ -55,3 +56,25 @@ export type ExportableProps = {
   }[]
   overlays?: string[]
 }
+
+type PhaseMarker = {
+  id: string
+  type: "phase"
+  time: number
+  phase: number
+}
+
+type EventMarker = {
+  id: string
+  type: "event"
+  time: number
+  event: string
+  spell: number
+  counter: number
+}
+
+export type Marker = PhaseMarker | EventMarker
+
+export type MarkerUpdate =
+  | Partial<Pick<PhaseMarker, "time" | "phase">>
+  | Partial<Pick<EventMarker, "time" | "event" | "spell" | "counter">>

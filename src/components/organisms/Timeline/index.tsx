@@ -5,6 +5,7 @@ import TimeBar from "./components/TimeBar"
 import FightPanel from "./components/FightPanel"
 import { TimelineContextProvider } from "./context/useTimelineContext"
 import Toolbar from "./components/Toolbar"
+import Markers from "./components/Markers"
 
 function Timeline() {
   const panelRef = useRef<HTMLDivElement>(null)
@@ -15,6 +16,7 @@ function Timeline() {
         <TimelineContextProvider panelRef={panelRef}>
           <Toolbar />
           <TimeGrid />
+          <Markers />
           <PlayerList />
           <TimeBar />
           <FightPanel />
