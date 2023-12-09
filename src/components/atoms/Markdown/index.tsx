@@ -8,7 +8,6 @@ function Markdown(props: { markdown: string }) {
     <ReactMarkdown
       className="markdown"
       remarkPlugins={[remarkGfm]}
-      linkTarget="_blank"
     >
       {markdown}
     </ReactMarkdown>
