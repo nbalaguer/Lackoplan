@@ -84,15 +84,20 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
           })
           .join("  ")
 
-        const relatedMarker = currentState.markers.findLast(
-          (marker) => marker.time <= castEventGroup.castTime
-        )
-        const condition = relatedMarker
-          ? "," + getConditionString(relatedMarker)
-          : ""
-        const groupCastTime = getTimeString(
-          castEventGroup.castTime - (relatedMarker?.time || 0)
-        )
+        let groupCastTime = getTimeString(castEventGroup.castTime)
+        let condition = ""
+
+        if (currentState.markersEnabled) {
+          const relatedMarker = currentState.markers.findLast(
+            (marker) => marker.time <= castEventGroup.castTime
+          )
+          condition = relatedMarker
+            ? "," + getConditionString(relatedMarker)
+            : ""
+          groupCastTime = getTimeString(
+            castEventGroup.castTime - (relatedMarker?.time || 0)
+          )
+        }
 
         return `{time:${groupCastTime}${condition}} ${groupCastsString}  ` // These two spaces at the end of each line are key for the weakaura to recognize the last assignment of the line.
       })
@@ -134,15 +139,20 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
               `{spell:${firstCast.ability.ability.spellId}}`,
             ].join(" ")
 
-            const relatedMarker = currentState.markers.findLast(
-              (marker) => marker.time <= castEventGroup.castTime
-            )
-            const condition = relatedMarker
-              ? "," + getConditionString(relatedMarker)
-              : ""
-            const groupCastTime = getTimeString(
-              castEventGroup.castTime - (relatedMarker?.time || 0)
-            )
+            let groupCastTime = getTimeString(castEventGroup.castTime)
+            let condition = ""
+
+            if (currentState.markersEnabled) {
+              const relatedMarker = currentState.markers.findLast(
+                (marker) => marker.time <= castEventGroup.castTime
+              )
+              condition = relatedMarker
+                ? "," + getConditionString(relatedMarker)
+                : ""
+              groupCastTime = getTimeString(
+                castEventGroup.castTime - (relatedMarker?.time || 0)
+              )
+            }
 
             return `{time:${groupCastTime}${condition}} ${playerCastString}  `
           }),

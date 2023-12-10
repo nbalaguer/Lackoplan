@@ -43,6 +43,7 @@ export type ExportableProps = {
   duration: number
   userNote: string
   markers: Marker[]
+  markersEnabled: boolean
   players: {
     name: string
     class: Class

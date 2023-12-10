@@ -26,6 +26,7 @@ type AppStore = {
   casts: PlayerAbility[]
   overlays: string[]
   markers: Marker[]
+  markersEnabled: boolean
   exportState: (includeOverlays?: boolean) => ExportableProps
   importState: (stateConfig: ExportableProps) => void
   addPlayer: (player: Player) => void
@@ -51,6 +52,7 @@ type AppStore = {
   setDuration: (duration: number) => void
   setUserNote: (userNote: string) => void
   setOverlay: (index: number, url: string) => void
+  toggleMarkers: (active?: boolean) => void
   addMarker: (type: Marker["type"]) => void
   updateMarker: (markerId: Marker["id"], partialMarker: MarkerUpdate) => void
   removeMarker: (markerId: Marker["id"]) => void
@@ -63,6 +65,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   casts: [],
   overlays: ["", "", ""],
   markers: [],
+  markersEnabled: true,
 
   exportState: (includeOverlays = false) => {
     const currentState = get()
@@ -239,6 +242,13 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       return nextState
     }),
 
+  toggleMarkers: (active) =>
+    set((state) => {
+      const nextState = _cloneDeep(state)
+      nextState.markersEnabled = active ?? !nextState.markersEnabled
+      return nextState
+    }),
+
   addMarker: (type) =>
     set((state) => {
       let marker: Marker
@@ -403,6 +413,7 @@ function getExportData(
   const exportData: ExportableProps = {
     duration: state.duration,
     markers: state.markers,
+    markersEnabled: state.markersEnabled,
     userNote: state.userNote,
     players,
   }
@@ -427,6 +438,8 @@ function constructState(
   // Check if they exist before importing for backwards compatibility
   if (stateConfig.userNote) newState.userNote = stateConfig.userNote
   if (stateConfig.markers) newState.markers = stateConfig.markers
+  if (stateConfig.markersEnabled)
+    newState.markersEnabled = stateConfig.markersEnabled
   // ----------------------------------------------------------------
 
   newState.players = stateConfig.players.map((playerConfig) => {

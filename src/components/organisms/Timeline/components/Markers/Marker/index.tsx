@@ -4,9 +4,10 @@ import type { Marker } from "types"
 import { motion, useSpring } from "framer-motion"
 import { useAppStore } from "store"
 import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
+import classNames from "classnames"
 
-function Marker(props: { markerId: string }) {
-  const { markerId } = props
+function Marker(props: { markerId: string; disabled?: boolean }) {
+  const { markerId, disabled } = props
 
   const { panelWidth } = useTimelineContext()
   const marker = useAppStore((state) =>
@@ -53,13 +54,18 @@ function Marker(props: { markerId: string }) {
   })
 
   return (
-    <div className="group">
+    <div className={classNames("group", { ["opacity-50"]: disabled })}>
       <motion.div
         className="absolute top-4 -left-2 z-10 p-1"
-        onMouseDown={track}
+        onMouseDown={!disabled ? track : undefined}
         style={{ x }}
       >
-        <div className="h-0 w-[9px] border-x-4 border-t-4 border-transparent border-t-yellow-500 opacity-100 transition-colors group-hover:border-t-yellow-300" />
+        <div
+          className={classNames(
+            "h-0 w-[9px] border-x-4 border-t-4 border-transparent border-t-yellow-500 opacity-100 transition-colors",
+            { ["group-hover:border-t-yellow-300"]: !disabled }
+          )}
+        />
       </motion.div>
       <motion.div
         className="absolute top-4 left-0 p-2 text-xs font-thin text-slate-400"
@@ -75,7 +81,10 @@ function Marker(props: { markerId: string }) {
         )}
       </motion.div>
       <motion.div
-        className="absolute top-6 left-0 bottom-0 w-px bg-yellow-500 opacity-60 transition-opacity group-hover:opacity-80"
+        className={classNames(
+          "absolute top-6 left-0 bottom-0 w-px bg-yellow-500 opacity-60 transition-opacity",
+          { ["group-hover:opacity-80"]: !disabled }
+        )}
         style={{ x }}
       />
     </div>
