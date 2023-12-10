@@ -33,9 +33,10 @@ function FightConfig() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 p-3">
+      <h3 className="text-md font-bold">Fight</h3>
       <label className="block space-y-1">
-        <div className="text-sm">Fight duration</div>
-        <input {...register("duration")} className="px-2 text-black" />
+        <span className="text-xs">Duration</span>
+        <input {...register("duration")} className="w-full px-2 text-black" />
       </label>
       <Button htmlType="submit" text="update" className="mt-3" />
     </form>

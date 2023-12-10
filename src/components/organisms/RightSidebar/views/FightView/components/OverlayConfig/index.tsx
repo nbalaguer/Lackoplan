@@ -9,7 +9,7 @@ function OverlayConfig() {
 
   return (
     <div className="mt-auto space-y-3 p-3">
-      <div className="flex items-center justify-between">Overlays</div>
+      <h3 className="text-md font-bold">Overlays</h3>
       <div className="space-y-3">
         {overlays.map((overlay, index) => {
           return (

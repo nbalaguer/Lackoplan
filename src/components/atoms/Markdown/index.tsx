@@ -5,10 +5,7 @@ import remarkGfm from "remark-gfm"
 function Markdown(props: { markdown: string }) {
   const { markdown } = props
   return (
-    <ReactMarkdown
-      className="markdown"
-      remarkPlugins={[remarkGfm]}
-    >
+    <ReactMarkdown className="markdown" remarkPlugins={[remarkGfm]}>
       {markdown}
     </ReactMarkdown>
   )
