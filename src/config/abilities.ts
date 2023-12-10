@@ -55,7 +55,7 @@ const modifiers = {
 
 const abilities: {
   [s in (typeof CLASSES)[keyof typeof CLASSES]]: Ability[]
-} = Object.freeze({
+} = {
   [CLASSES.GENERAL]: [
     {
       name: "Personal defensives",
@@ -157,7 +157,15 @@ const abilities: {
       shortName: "Mastery",
       cooldown: 60 * 3,
       icon: "spell_holy_auramastery",
-      modifiers: [],
+      modifiers: [
+        {
+          icon: "spell_holy_fanaticism",
+          wowheadLink: "https://www.wowhead.com/spell=392911/unwavering-spirit",
+          process: _pipe(
+            modifiers.addCooldown(-30),
+          ),
+        }
+      ],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=375576/divine-toll",
@@ -185,6 +193,54 @@ const abilities: {
       cooldown: 60,
       icon: "spell_paladin_lightshammer",
       modifiers: [],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=204018/blessing-of-spellwarding",
+      name: "Blessing of Spellwarding",
+      spellId: 204018,
+      shortName: "Spellwarding",
+      cooldown: 60 * 5,
+      icon: "spell_holy_blessingofprotection",
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=384909/improved-blessing-of-protection",
+          icon: "spell_holy_sealofprotection",
+          process: _pipe(
+            modifiers.addCooldown(-60),
+          )
+        },
+        {
+          wowheadLink: "https://www.wowhead.com/spell=378425/uthers-counsel",
+          icon: "spell_holy_greaterblessingofsalvation",
+          process: _pipe(
+            modifiers.multiplyCooldown(0.7),
+          )
+        }
+      ],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=1022/blessing-of-protection",
+      name: "Blessing of Protection",
+      spellId: 1022,
+      shortName: "Protection",
+      cooldown: 60 * 5,
+      icon: "spell_holy_sealofprotection",
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=384909/improved-blessing-of-protection",
+          icon: "spell_holy_sealofprotection",
+          process: _pipe(
+            modifiers.addCooldown(-60),
+          )
+        },
+        {
+          wowheadLink: "https://www.wowhead.com/spell=378425/uthers-counsel",
+          icon: "spell_holy_greaterblessingofsalvation",
+          process: _pipe(
+            modifiers.multiplyCooldown(0.7),
+          )
+        }
+      ],
     },
   ],
   [CLASSES.HUNTER]: [],
@@ -600,6 +656,6 @@ const abilities: {
       modifiers: [],
     },
   ],
-})
+}
 
 export default abilities
