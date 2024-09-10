@@ -18,7 +18,7 @@ function Class(props: { classKey: Class }) {
         addPlayer(newPlayer)
       }}
     >
-      <WowheadIcon name={classIcons[classKey]} />
+      <WowheadIcon name={classIcons[classKey]} size="large" />
     </button>
   )
 }

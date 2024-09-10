@@ -5,7 +5,6 @@ import PlayerAbility from "../PlayerAbility"
 import { motion } from "framer-motion"
 import PlayerHeader from "../PlayerHeader"
 import theme from "config/theme"
-import PlayerActions from "../PlayerActions"
 import _omit from "lodash/omit"
 import useLatestValue from "hooks/useLatestValue"
 import useDeep from "hooks/useDeep"
@@ -56,21 +55,18 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
           ? theme.colors[player.class]
           : "transparent",
       }}
-      className="grid grid-cols-[1fr,auto] grid-rows-[auto,1fr] border-l-[5px] pl-3"
+      className="grid grid-cols-[minmax(0,1fr)] border-l-[5px] pl-3 pb-1 gap-1"
       ref={ref}
     >
       <PlayerHeader
         playerId={playerId}
         name={player.name}
         isActive={player.isActive}
-      />
-      <PlayerActions
-        playerId={playerId}
         onRemove={handleRemove}
         disableMoveUp={isFirst}
         disableMoveDown={isLast}
       />
-      <div className="grid grid-cols-5 items-start gap-1 pr-2 pt-2">
+      <div className="grid grid-cols-[repeat(7,minmax(0,auto))] gap-1 justify-start">
         {player.abilityIds?.map((playerAbilityId) => {
           return (
             <PlayerAbility

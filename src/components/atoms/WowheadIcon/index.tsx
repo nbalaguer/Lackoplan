@@ -5,6 +5,7 @@ const classConfig = {
   mini: "w-4",
   small: "w-6",
   medium: "w-8",
+  large: "w-10",
   full: "w-full",
 } as const
 

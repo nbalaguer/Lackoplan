@@ -13,11 +13,23 @@ function PlayerHeader(props: {
   playerId: string
   name: string
   isActive: boolean
+  onRemove: () => void
+  disableMoveUp: boolean
+  disableMoveDown: boolean
 }) {
-  const { playerId, name, isActive } = props
+  const {
+    playerId,
+    name,
+    isActive,
+    onRemove,
+    disableMoveUp: disableUp,
+    disableMoveDown: disableDown,
+  } = props
 
   const changePlayerName = useAppStore((state) => state.changePlayerName)
   const togglePlayer = useAppStore((state) => state.togglePlayer)
+  const movePlayer = useAppStore((state) => state.movePlayer)
+  const duplicatePlayer = useAppStore((state) => state.duplicatePlayer)
 
   const handleToggle = useCallback(() => {
     togglePlayer(playerId)
@@ -43,7 +55,8 @@ function PlayerHeader(props: {
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex min-w-0 flex-grow items-center gap-2">
+      <IconButton icon="close" onClick={onRemove} className="text-xs -ml-2 mt-1" />
+      <div className="flex min-w-[18ch] flex-grow items-center gap-2 pl-1">
         {isEditing ? (
           <form
             id={playerId}
@@ -85,6 +98,9 @@ function PlayerHeader(props: {
           )}
         </motion.span>
       </div>
+      <IconButton icon="duplicate" onClick={() => duplicatePlayer(playerId)} className="text-xs" />
+      <IconButton icon="up" onClick={() => movePlayer(playerId, -1)} disabled={disableUp} className="text-xs" />
+      <IconButton icon="down" onClick={() => movePlayer(playerId, 1)} disabled={disableDown} className="text-xs" />
       {isActive ? (
         <IconButton icon="show" onClick={handleToggle} className="text-xs" />
       ) : (

@@ -4,7 +4,7 @@ import PlayerList from "./components/PlayerList"
 
 function LeftSidebar() {
   return (
-    <div className="flex flex-col border-r-2 border-r-slate-700">
+    <div className="grid grid-rows-[auto_minmax(0px,1fr)] border-r-2 border-r-slate-700">
       <ClassList />
       <PlayerList />
     </div>
