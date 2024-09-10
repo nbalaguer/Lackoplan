@@ -20,6 +20,7 @@
     "deepmerge": "^4.3.1",
     "framer-motion": "^10.16.16",
     "graphql": "^16.8.1",
+    "immer": "^10.0.3",
     "js-base64": "^3.7.5",
     "lodash": "^4.17.21",
     "overlayscrollbars-react": "^0.5.3",
@@ -51,6 +52,7 @@
     "prettier": "^3.1.1",
     "prettier-plugin-tailwindcss": "^0.5.9",
     "tailwindcss": "^3.4.0",
+    "type-fest": "^4.8.3",
     "typescript": "^5.3.3",
     "vite": "^5.0.10",
     "vite-tsconfig-paths": "^4.2.2"

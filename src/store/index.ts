@@ -1,4 +1,3 @@
-import deepmerge from "deepmerge"
 import _cloneDeep from "lodash/cloneDeep"
 import { v4 as uuid } from "uuid"
 import type {
@@ -10,6 +9,7 @@ import type {
 } from "types"
 import { applyModifiers, createPlayer, getCastTimes } from "utils"
 import { create } from "zustand"
+import { immer } from "zustand/middleware/immer"
 
 const initialUserNote = `
 # Hi!
@@ -58,7 +58,7 @@ type AppStore = {
   removeMarker: (markerId: Marker["id"]) => void
 }
 
-export const useAppStore = create<AppStore>()((set, get) => ({
+export const useAppStore = create<AppStore>()(immer((set, get) => ({
   duration: 60 * 9 + 17,
   userNote: initialUserNote,
   players: [],
@@ -73,23 +73,29 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   },
 
   importState: (stateConfig: ExportableProps) =>
-    set((state) => constructState(state, stateConfig)),
+    set((state) => {
+      constructState(state, stateConfig)
+    }),
 
   setDuration: (duration: number) =>
-    set((state) => deepmerge(state, { duration })),
+    set((state) => {
+      state.duration = duration
+    }),
 
   setUserNote: (userNote: string) =>
-    set((state) => deepmerge(state, { userNote })),
+    set((state) => {
+      state.userNote = userNote
+    }),
 
   setOverlay: (index: number, url: string) =>
     set((state) => {
-      const newState = _cloneDeep(state)
-      newState.overlays[index] = url
-      return newState
+      state.overlays[index] = url
     }),
 
   addPlayer: (player: Player) =>
-    set((state) => deepmerge(state, { players: [player] })),
+    set((state) => {
+      state.players.push(player)
+    }),
 
   duplicatePlayer: (playerId: string) =>
     set((state) => {
@@ -101,62 +107,52 @@ export const useAppStore = create<AppStore>()((set, get) => ({
         const playerClone = _cloneDeep(state.players[playerIndex])
         playerClone.id = uuid()
 
-        const nextState = _cloneDeep(state)
-        nextState.players.splice(playerIndex, 0, playerClone)
-
-        return nextState
-      } else return state
+        state.players.splice(playerIndex, 0, playerClone)
+      }
     }),
 
   removePlayer: (playerId: string) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
-
-      nextState.players = nextState.players.filter(
-        (player) => player.id !== playerId
+      const playerIndex = state.players.findIndex(
+        (player) => player.id === playerId
       )
 
-      return nextState
+      if (playerIndex !== -1) {
+        state.players.splice(playerIndex, 1)
+      }
     }),
 
   togglePlayer: (playerId: string) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
-      const player = getPlayerFromStore(nextState, playerId)
-      if (!player) return state
-      player.isActive = !player.isActive
-      return nextState
+      const player = getPlayerFromStore(state, playerId)
+      if (player) {
+        player.isActive = !player.isActive
+      }
     }),
 
   movePlayer: (playerId: string, amount: number) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
-      const playerPosition = nextState.players.findIndex(
+      const playerPosition = state.players.findIndex(
         (player) => player.id === playerId
       )
 
-      if (playerPosition < 0) return state
+      if (playerPosition !== -1) {
+        const player = state.players[playerPosition]
+        const newPlayerPosition = Math.max(0, playerPosition + amount)
 
-      const player = getPlayerFromStore(nextState, playerId) as Player // If playerPosition exists, player exists. We're looking for the same Id
-      const newPlayerPosition = Math.max(0, playerPosition + amount)
-
-      nextState.players = nextState.players.filter(
-        (player) => player.id !== playerId
-      )
-      nextState.players.splice(newPlayerPosition, 0, player)
-
-      return nextState
+        state.players.splice(playerPosition, 1)
+        state.players.splice(newPlayerPosition, 0, player)
+      }
     }),
 
   toggleAbility: (playerId: string, abilityId: string) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
       const playerAbility = getPlayerAbilityFromStore(
-        nextState,
+        state,
         playerId,
         abilityId
       )
-      if (!playerAbility) return state
+      if (!playerAbility) return
 
       playerAbility.isActive = !playerAbility.isActive
       if (playerAbility.isActive) {
@@ -166,19 +162,14 @@ export const useAppStore = create<AppStore>()((set, get) => ({
           state.duration
         )
       }
-
-      return nextState
     }),
 
   changePlayerName: (playerId: string, name: string) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
-      const player = getPlayerFromStore(nextState, playerId)
-      if (!player) return state
+      const player = getPlayerFromStore(state, playerId)
+      if (!player) return
 
       player.name = name
-
-      return nextState
     }),
 
   toggleAbilityModifier: (
@@ -187,13 +178,12 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     modifierIndex: number
   ) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
       const playerAbility = getPlayerAbilityFromStore(
-        nextState,
+        state,
         playerId,
         abilityId
       )
-      if (!playerAbility) return state
+      if (!playerAbility) return
 
       // If the modifier depends on another modifier, check if that modifier is active
       if (
@@ -201,7 +191,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
           ?.map((modIndex) => playerAbility.activeModifiers[modIndex])
           .some((mod) => !mod)
       )
-        return state
+        return
 
       playerAbility.activeModifiers[modifierIndex] =
         !playerAbility.activeModifiers[modifierIndex]
@@ -213,8 +203,6 @@ export const useAppStore = create<AppStore>()((set, get) => ({
         playerAbility.ability.cooldown,
         state.duration
       )
-
-      return nextState
     }),
 
   updateCastTime: ({
@@ -226,27 +214,22 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     replicateLeft = false,
   }) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
       const playerAbility = getPlayerAbilityFromStore(
-        nextState,
+        state,
         playerId,
         abilityId
       )
-      if (!playerAbility) return state
+      if (!playerAbility) return
 
       const duration = state.duration
       updateCastTime(playerAbility, castIndex, newCastTime, duration, constrain)
       adjustLeft(playerAbility, castIndex)
       adjustRight(playerAbility, castIndex, duration, replicateLeft)
-
-      return nextState
     }),
 
   toggleMarkers: (active) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
-      nextState.markersEnabled = active ?? !nextState.markersEnabled
-      return nextState
+      state.markersEnabled = active ?? !state.markersEnabled
     }),
 
   addMarker: (type) =>
@@ -274,41 +257,44 @@ export const useAppStore = create<AppStore>()((set, get) => ({
           break
       }
 
-      const nextState = _cloneDeep(state)
-      nextState.markers.push(marker)
-      return nextState
+      state.markers.push(marker)
     }),
 
-  updateMarker: (markerId, partialMarker) =>
+  updateMarker: (markerId, markerUpdate) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
-      const markerIndex = nextState.markers.findIndex(
+      const marker = state.markers.find(
         (marker) => marker.id === markerId
       )
-      if (markerIndex < 0) return state
+      if (!marker) return
 
-      nextState.markers[markerIndex] = {
-        ...nextState.markers[markerIndex],
-        ...partialMarker,
-      }
-
-      nextState.markers[markerIndex].time = Math.max(
+      const newTime = Math.max(
         0,
-        Math.min(nextState.markers[markerIndex].time, nextState.duration)
+        Math.min(markerUpdate.time ?? marker.time, state.duration)
       )
 
-      return nextState
+      marker.time = newTime
+
+      if (marker.type === "phase" && markerUpdate.type === "phase") {
+        marker.phase = markerUpdate.phase ?? marker.phase
+      }
+      if (marker.type === "event" && markerUpdate.type === "event") {
+        marker.event = markerUpdate.event ?? marker.event
+        marker.spell = markerUpdate.spell ?? marker.spell
+        marker.counter = markerUpdate.counter ?? marker.counter
+      }
     }),
 
   removeMarker: (markerId) =>
     set((state) => {
-      const nextState = _cloneDeep(state)
-      nextState.markers = nextState.markers.filter(
-        (marker) => marker.id !== markerId
+      const markerIndex = state.markers.findIndex(
+        (marker) => marker.id === markerId
       )
-      return nextState
+
+      if (markerIndex !== -1) {
+        state.markers.splice(markerIndex, 1)
+      }
     }),
-}))
+})))
 
 function updateCastTime(
   playerAbility: PlayerAbility,
@@ -426,23 +412,22 @@ function getExportData(
 function constructState(
   state: AppStore,
   stateConfig: ExportableProps
-): AppStore {
-  const newState = _cloneDeep(state)
+) {
 
   // Allow for importing data with no overlays without overwriting existing overlays
-  if (stateConfig.overlays) newState.overlays = stateConfig.overlays
+  if (stateConfig.overlays) state.overlays = stateConfig.overlays
 
-  newState.duration = stateConfig.duration
+  state.duration = stateConfig.duration
 
   // Properties added after initial release.
   // Check if they exist before importing for backwards compatibility
-  if (stateConfig.userNote) newState.userNote = stateConfig.userNote
-  if (stateConfig.markers) newState.markers = stateConfig.markers
+  if (stateConfig.userNote) state.userNote = stateConfig.userNote
+  if (stateConfig.markers) state.markers = stateConfig.markers
   if (stateConfig.markersEnabled)
-    newState.markersEnabled = stateConfig.markersEnabled
+    state.markersEnabled = stateConfig.markersEnabled
   // ----------------------------------------------------------------
 
-  newState.players = stateConfig.players.map((playerConfig) => {
+  state.players = stateConfig.players.map((playerConfig) => {
     const player = createPlayer(playerConfig.class)
     player.name = playerConfig.name
     player.isActive = playerConfig.isActive
@@ -459,8 +444,6 @@ function constructState(
     })
     return player
   })
-
-  return newState
 }
 
 function deactivateDependentModifiers(
