@@ -1,17 +1,17 @@
 import React from "react"
 import { useAppStore } from "store"
-import { shallow } from "zustand/shallow"
 import Player from "./components/Player"
 import { LayoutGroup } from "framer-motion"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
+import { useShallow } from "zustand/react/shallow"
 
 function PlayerList() {
   const playerIds = useAppStore(
-    (state) =>
+    useShallow((state) =>
       state.players
         .filter((player) => player.isActive)
-        .map((player) => player.id),
-    shallow
+        .map((player) => player.id)
+    )
   )
 
   const overlay = useAppStore((state) => state.overlays[0])

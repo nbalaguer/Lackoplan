@@ -3,7 +3,8 @@ import { useAppStore } from "store"
 import type { Marker, MarkerUpdate } from "types"
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import IconButton from "components/atoms/IconButton"
-import useLatestRef from "hooks/useLatestRef"
+import { useShallow } from "zustand/react/shallow"
+import type { Except } from "type-fest"
 
 function PhaseMarkerFormView() {
   const { register } = useFormContext()
@@ -49,15 +50,31 @@ function EventMarkerFormView() {
   )
 }
 
-type MarkerForm = Marker
+type MarkerForm = Except<Marker, "id" | "time">
 
 function MarkerForm(props: { markerId: string }) {
   const { markerId } = props
 
-  const marker = useAppStore((state) =>
-    state.markers.find((m) => m.id === markerId)
+  const marker = useAppStore(
+    useShallow((state): MarkerForm | undefined => {
+      const storeMarker = state.markers.find((m) => m.id === markerId)
+      if (!storeMarker) return undefined
+      switch (storeMarker.type) {
+        case "phase":
+          return {
+            type: storeMarker.type,
+            phase: storeMarker.phase,
+          }
+        case "event":
+          return {
+            type: storeMarker.type,
+            event: storeMarker.event,
+            spell: storeMarker.spell,
+            counter: storeMarker.counter,
+          }
+      }
+    })
   )
-  const markerRef = useLatestRef(marker)
   const updateMarker = useAppStore((state) => state.updateMarker)
   const removeMarker = useAppStore((state) => state.removeMarker)
 
@@ -71,19 +88,16 @@ function MarkerForm(props: { markerId: string }) {
     (values: MarkerForm) => {
       let markerUpdate: MarkerUpdate
 
-      // There's already a check for null before rendering.
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      const marker = markerRef.current!
-
       switch (values.type) {
         case "phase":
           markerUpdate = {
-            time: marker.time,
+            type: values.type,
             phase: values.phase,
           }
           break
         case "event":
           markerUpdate = {
+            type: values.type,
             event: values.event,
             spell: values.spell,
             counter: values.counter,
@@ -93,7 +107,7 @@ function MarkerForm(props: { markerId: string }) {
 
       updateMarker(markerId, markerUpdate)
     },
-    [markerId, updateMarker, markerRef]
+    [markerId, updateMarker]
   )
 
   if (!marker) return null

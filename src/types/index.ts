@@ -10,6 +10,7 @@ export type Ability = {
   cooldown: number // In seconds
   icon: string
   modifiers: AbilityModifier[]
+  spec?: string
 }
 
 export type AbilityModifier = {
@@ -77,5 +78,5 @@ type EventMarker = {
 export type Marker = PhaseMarker | EventMarker
 
 export type MarkerUpdate =
-  | Partial<Pick<PhaseMarker, "time" | "phase">>
-  | Partial<Pick<EventMarker, "time" | "event" | "spell" | "counter">>
+  | Pick<PhaseMarker, "type"> & Partial<Pick<PhaseMarker, "time" | "phase">>
+  | Pick<EventMarker, "type"> & Partial<Pick<EventMarker, "time" | "event" | "spell" | "counter">>

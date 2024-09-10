@@ -1,15 +1,16 @@
 import React from "react"
 import Marker from "./Marker"
 import { useAppStore } from "store"
+import {useShallow} from "zustand/react/shallow"
 
 function Markers() {
-  const markerIds = useAppStore((state) => state.markers.map((m) => m.id))
+  const markers = useAppStore(useShallow((state) => state.markers))
   const markersEnabled = useAppStore((state) => state.markersEnabled)
 
   return (
     <div>
-      {markerIds.map((markerId) => (
-        <Marker markerId={markerId} key={markerId} disabled={!markersEnabled} />
+      {markers.map((marker) => (
+        <Marker marker={marker} key={marker.id} disabled={!markersEnabled} />
       ))}
     </div>
   )

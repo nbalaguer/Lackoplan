@@ -1,11 +1,11 @@
 import React from "react"
 import { useAppStore } from "store"
 import Overlay from "./components/Overlay"
-import _isEqual from "lodash/isEqual"
+import { useShallow } from "zustand/react/shallow"
 
 function OverlayConfig() {
   const setOverlay = useAppStore((state) => state.setOverlay)
-  const overlays = useAppStore((state) => state.overlays, _isEqual)
+  const overlays = useAppStore(useShallow((state) => state.overlays))
 
   return (
     <div className="mt-auto space-y-3 p-3">

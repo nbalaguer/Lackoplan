@@ -5,22 +5,25 @@ import { useAppStore } from "store"
 import _isEqual from "lodash/isEqual"
 import AbilitySequence from "../AbilitySequence"
 import { AnimatePresence, motion } from "framer-motion"
+import useDeep from "hooks/useDeep"
 
 function Player(props: { playerId: string }) {
   const { playerId } = props
 
-  const playerData = useAppStore((state) => {
-    const player = state.players.find((player) => player.id === playerId)
-    if (!player) return
-    return {
-      name: player.name,
-      class: player.class,
-      abilityData: player.abilities.map((ability) => ({
-        id: ability.id,
-        isActive: ability.isActive,
-      })),
-    }
-  }, _isEqual)
+  const playerData = useAppStore(
+    useDeep((state) => {
+      const player = state.players.find((player) => player.id === playerId)
+      if (!player) return
+      return {
+        name: player.name,
+        class: player.class,
+        abilityData: player.abilities.map((ability) => ({
+          id: ability.id,
+          isActive: ability.isActive,
+        })),
+      }
+    })
+  )
 
   if (!playerData) return null
 

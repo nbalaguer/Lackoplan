@@ -1,9 +1,9 @@
 import React from "react"
-import _isEqual from "lodash/isEqual"
 import { useAppStore } from "store"
+import { useShallow } from "zustand/react/shallow"
 
 function FightPanel() {
-  const overlays = useAppStore((state) => state.overlays.slice(1), _isEqual)
+  const overlays = useAppStore(useShallow((state) => state.overlays.slice(1)))
 
   return (
     <div className="relative min-h-[222px]">

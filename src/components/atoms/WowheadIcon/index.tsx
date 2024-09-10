@@ -1,12 +1,12 @@
 import classNames from "classnames"
 import React from "react"
 
-const classConfig = Object.freeze({
+const classConfig = {
   mini: "w-4",
   small: "w-6",
   medium: "w-8",
   full: "w-full",
-})
+} as const
 
 function WowheadIcon(
   props: Omit<React.ImgHTMLAttributes<HTMLImageElement>, "src"> & {

@@ -3,11 +3,12 @@ import { useAppStore } from "store"
 import MarkerForm from "./MarkerForm"
 import Button from "components/atoms/Button"
 import Switch from "components/atoms/Switch"
+import { useShallow } from "zustand/react/shallow"
 
 function MarkerConfig() {
   const markersEnabled = useAppStore((state) => state.markersEnabled)
   const toggleMarkers = useAppStore((state) => state.toggleMarkers)
-  const markerIds = useAppStore((state) => state.markers.map((m) => m.id))
+  const markerIds = useAppStore(useShallow((state) => state.markers.map((m) => m.id)))
   const addMarker = useAppStore((state) => state.addMarker)
 
   return (

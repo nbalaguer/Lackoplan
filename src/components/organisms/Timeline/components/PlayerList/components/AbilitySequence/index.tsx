@@ -1,14 +1,14 @@
 import React from "react"
 import WowheadIcon from "components/atoms/WowheadIcon"
 import { useAppStore } from "store"
-import _isEqual from "lodash/isEqual"
 import AbilityCast from "../AbilityCast"
 import { motion } from "framer-motion"
+import { useShallow } from "zustand/react/shallow"
 
 function AbilitySequence(props: { playerId: string; abilityId: string }) {
   const { playerId, abilityId } = props
 
-  const abilityData = useAppStore((state) => {
+  const abilityData = useAppStore(useShallow((state) => {
     const player = state.players.find((player) => player.id === playerId)
     if (!player) return
     const playerAbility = player.abilities.find(
@@ -19,7 +19,7 @@ function AbilitySequence(props: { playerId: string; abilityId: string }) {
       icon: playerAbility.ability.icon,
       numCasts: playerAbility.castTimes.length,
     }
-  }, _isEqual)
+  }))
 
   if (!abilityData) return null
 

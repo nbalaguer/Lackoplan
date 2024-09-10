@@ -2,14 +2,11 @@ import React from "react"
 import Player from "./components/Player"
 import { useAppStore } from "store"
 import { AnimatePresence } from "framer-motion"
-import { shallow } from "zustand/shallow"
 import { OverlayScrollbarsComponent } from "overlayscrollbars-react"
+import { useShallow } from "zustand/react/shallow"
 
 function PlayerList() {
-  const playerIds = useAppStore(
-    (state) => state.players.map((player) => player.id),
-    shallow
-  )
+  const playerIds = useAppStore(useShallow((state) => state.players.map((player) => player.id)))
 
   return (
     <div className="relative flex-grow">

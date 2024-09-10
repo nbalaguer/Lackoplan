@@ -1,29 +1,50 @@
 import React from "react"
-import type { Player, PlayerAbility } from "types"
+import type { PlayerAbility } from "types"
 import WowheadIcon from "components/atoms/WowheadIcon"
 import classNames from "classnames"
-import { useAppStore } from "store"
+import { getPlayerAbilityFromStore, useAppStore } from "store"
+import { useShallow } from "zustand/react/shallow"
+import _omit from "lodash/omit"
+import useLatestValue from "hooks/useLatestValue"
 
 function PlayerAbility(props: {
-  player: Player
-  playerAbility: PlayerAbility
-  onToggleAbility: () => void
+  playerId: string
+  playerAbilityId: string
 }) {
-  const { player, playerAbility, onToggleAbility } = props
+  const { playerId, playerAbilityId } = props
 
+  const storePlayerAbility = useAppStore(
+    useShallow((state) => {
+      const playerAbility = getPlayerAbilityFromStore(state, playerId, playerAbilityId)
+      if (!playerAbility) return
+      return {
+        id: playerAbility.id,
+        ability: playerAbility.ability,
+        isActive: playerAbility.isActive,
+        activeModifiers: playerAbility.activeModifiers,
+      }
+    })
+  )
+
+  // Mantain last known player value so AnimatePresence works properly
+  const playerAbility = useLatestValue(storePlayerAbility)
+
+  const toggleAbility = useAppStore((state) => state.toggleAbility)
   function handleAbilityClick(event: React.MouseEvent) {
     if (event.ctrlKey) {
-      if (playerAbility.ability.wowheadLink) {
+      if (playerAbility?.ability.wowheadLink) {
         window.open(playerAbility.ability.wowheadLink, "_blank")
       }
     } else {
-      onToggleAbility()
+      toggleAbility(playerId, playerAbilityId)
     }
   }
 
   const toggleAbilityModifier = useAppStore(
     (state) => state.toggleAbilityModifier
   )
+
+  if (!playerAbility) return null
 
   return (
     <div className="flex w-full flex-col place-content-start place-items-start content-start items-start gap-1">
@@ -56,7 +77,7 @@ function PlayerAbility(props: {
                     window.open(modifier.wowheadLink, "_blank")
                   }
                 } else {
-                  toggleAbilityModifier(player.id, playerAbility.id, index)
+                  toggleAbilityModifier(playerId, playerAbilityId, index)
                 }
               }}
               className="flex"

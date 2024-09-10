@@ -1,9 +1,11 @@
-import React, { useCallback, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import WowheadIcon from "components/atoms/WowheadIcon"
 import { motion, useSpring } from "framer-motion"
 import { getPlayerAbilityFromStore, useAppStore } from "store"
-import useMouseOffset from "hooks/useMouseOffset"
+import useTrackMouseOffset from "hooks/useMouseOffset"
 import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
+import _debounce from "lodash/debounce"
+import TimestampHint from "./TimestampHint"
 
 function AbilityCast(props: {
   playerId: string
@@ -13,6 +15,10 @@ function AbilityCast(props: {
   const { playerId, abilityId, castIndex } = props
 
   const { panelWidth } = useTimelineContext()
+
+  const [isDragging, setIsDragging] = useState(false)
+  const [isHovering, setIsHovering] = useState(false)
+  const showTimestamp = isDragging || isHovering
 
   const updateCastTime = useAppStore((state) => state.updateCastTime)
   const duration = useAppStore((state) => state.duration)
@@ -62,39 +68,40 @@ function AbilityCast(props: {
     })
   }, [abilityId, castIndex, duration, x, playerId, panelWidth])
 
-  const handleMouseOffset = useCallback(
-    (event: MouseEvent, offsetX: number) => {
-      const currentPlayerAbility = getPlayerAbilityFromStore(
-        useAppStore.getState(),
-        playerId,
-        abilityId
-      )
-      if (!panelWidth || !currentPlayerAbility) return
+  function handleMouseOffset(event: MouseEvent, offsetX: number) {
+    const currentPlayerAbility = getPlayerAbilityFromStore(
+      useAppStore.getState(),
+      playerId,
+      abilityId
+    )
+    if (!panelWidth || !currentPlayerAbility) return
 
-      const multiplier = event.altKey ? 0.1 : 1
+    const multiplier = event.altKey ? 0.1 : 1
 
-      const currentCastTime = currentPlayerAbility.castTimes[castIndex]
-      const newCastTime =
-        currentCastTime + duration * (offsetX / panelWidth) * multiplier
+    const currentCastTime = currentPlayerAbility.castTimes[castIndex]
+    const newCastTime =
+      currentCastTime + duration * (offsetX / panelWidth) * multiplier
 
-      updateCastTime({
-        playerId,
-        abilityId,
-        castIndex,
-        newCastTime,
-        constrain: event.ctrlKey,
-        replicateLeft: event.shiftKey,
-      })
-    },
-    [abilityId, castIndex, panelWidth, duration, playerId, updateCastTime]
-  )
+    updateCastTime({
+      playerId,
+      abilityId,
+      castIndex,
+      newCastTime,
+      constrain: event.ctrlKey,
+      replicateLeft: event.shiftKey,
+    })
+  }
 
-  const start = useMouseOffset(handleMouseOffset)
+  const startTracking = useTrackMouseOffset({
+    onStart: () => setIsDragging(true),
+    onChange: handleMouseOffset,
+    onEnd: () => setIsDragging(false),
+  })
 
   return (
     <motion.div
       className="absolute top-0 left-0"
-      onMouseDown={start}
+      onMouseDown={startTracking}
       initial={{
         opacity: 0,
       }}
@@ -107,11 +114,25 @@ function AbilityCast(props: {
       style={{
         x,
       }}
+      onHoverStart={() => setIsHovering(true)}
+      onHoverEnd={() => setIsHovering(false)}
     >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showTimestamp ? 1 : 0 }}
+        className="absolute bottom-[120%] left-1/2 -translate-x-1/2 pointer-events-none"
+      >
+        <TimestampHint
+          playerId={playerId}
+          abilityId={abilityId}
+          castIndex={castIndex}
+        />
+      </motion.div>
       <WowheadIcon
         name={abilityIcon || ""}
         size="small"
         className="pointer-events-none aspect-[5/4] object-cover"
+
       />
     </motion.div>
   )

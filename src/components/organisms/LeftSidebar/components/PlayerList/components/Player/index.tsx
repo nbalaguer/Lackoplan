@@ -1,12 +1,14 @@
-import React, { useCallback, useRef, forwardRef } from "react"
+import React, { useCallback, forwardRef } from "react"
 import type { Player } from "types"
 import { getPlayerFromStore, useAppStore } from "store"
 import PlayerAbility from "../PlayerAbility"
 import { motion } from "framer-motion"
 import PlayerHeader from "../PlayerHeader"
 import theme from "config/theme"
-import _isEqual from "lodash/isEqual"
 import PlayerActions from "../PlayerActions"
+import _omit from "lodash/omit"
+import useLatestValue from "hooks/useLatestValue"
+import useDeep from "hooks/useDeep"
 
 type PlayerProps = {
   playerId: string
@@ -17,50 +19,26 @@ type PlayerProps = {
 const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
   const { playerId, isFirst, isLast } = props
 
-  // Ref for mantaining last player value before removing, so AnimatePresence works properly
-  const playerRef = useRef<Player>()
+  const storePlayer = useAppStore(
+    useDeep((state) => {
+      const player = getPlayerFromStore(state, playerId)
+      if (!player) return
 
-  const playerState = useAppStore(
-    (state) => getPlayerFromStore(state, playerId),
-    _isEqual
+      return {
+        name: player.name,
+        isActive: player.isActive,
+        class: player.class,
+        abilityIds: player.abilities.map((ability) => ability.id),
+      }
+    })
   )
+  // Mantain last known player value so AnimatePresence works properly
+  const player = useLatestValue(storePlayer)
+
   const removePlayer = useAppStore((state) => state.removePlayer)
-  const toggleAbility = useAppStore((state) => state.toggleAbility)
-  const changePlayerName = useAppStore((state) => state.changePlayerName)
-  const togglePlayer = useAppStore((state) => state.togglePlayer)
-  const movePlayer = useAppStore((state) => state.movePlayer)
-  const duplicatePlayer = useAppStore((state) => state.duplicatePlayer)
-
-  const player = playerState || playerRef.current
-
   const handleRemove = useCallback(() => {
-    if (!player) return
-    playerRef.current = player
     removePlayer(playerId)
-  }, [player, playerId, removePlayer])
-
-  const handleChangeName = useCallback(
-    (newName: string) => {
-      changePlayerName(playerId, newName)
-    },
-    [changePlayerName, playerId]
-  )
-
-  const handleToggle = useCallback(() => {
-    togglePlayer(playerId)
-  }, [playerId, togglePlayer])
-
-  const handleMoveUp = useCallback(() => {
-    movePlayer(playerId, -1)
-  }, [movePlayer, playerId])
-
-  const handleMoveDown = useCallback(() => {
-    movePlayer(playerId, 1)
-  }, [movePlayer, playerId])
-
-  const handleDuplicate = useCallback(() => {
-    duplicatePlayer(playerId)
-  }, [duplicatePlayer, playerId])
+  }, [removePlayer, playerId])
 
   if (!player) return null
 
@@ -82,26 +60,23 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
       ref={ref}
     >
       <PlayerHeader
-        player={player}
-        onChangeName={handleChangeName}
-        onToggle={handleToggle}
+        playerId={playerId}
+        name={player.name}
+        isActive={player.isActive}
       />
       <PlayerActions
+        playerId={playerId}
         onRemove={handleRemove}
         disableMoveUp={isFirst}
-        onMoveUp={handleMoveUp}
         disableMoveDown={isLast}
-        onMoveDown={handleMoveDown}
-        onDuplicate={handleDuplicate}
       />
       <div className="grid grid-cols-5 items-start gap-1 pr-2 pt-2">
-        {player.abilities.map((playerAbility) => {
+        {player.abilityIds?.map((playerAbilityId) => {
           return (
             <PlayerAbility
-              key={playerAbility.id}
-              player={player}
-              playerAbility={playerAbility}
-              onToggleAbility={() => toggleAbility(player.id, playerAbility.id)}
+              key={playerAbilityId}
+              playerId={playerId}
+              playerAbilityId={playerAbilityId}
             />
           )
         })}
@@ -112,4 +87,4 @@ const Player = forwardRef<HTMLDivElement, PlayerProps>((props, ref) => {
 
 Player.displayName = "Player"
 
-export default Player
+export default React.memo(Player)

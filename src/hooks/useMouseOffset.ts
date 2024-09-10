@@ -1,12 +1,26 @@
 import React, { useCallback } from "react"
+import useLatestRef from "./useLatestRef"
 
-function useMouseOffset<T = HTMLDivElement>(
-  callback: (event: MouseEvent, offset: number) => void
-) {
+function useTrackMouseOffset<T = HTMLDivElement>({
+  onStart,
+  onChange,
+  onEnd,
+}: {
+  onStart?: () => void
+  onChange: (event: MouseEvent, offset: number) => void
+  onEnd?: () => void
+}) {
+
+  const onStartRef = useLatestRef(onStart)
+  const onChangeRef = useLatestRef(onChange)
+  const onEndRef = useLatestRef(onEnd)
+
   const start = useCallback<React.MouseEventHandler<T>>(
     (event) => {
       window.addEventListener("mousemove", handleMouseMove)
       window.addEventListener("mouseup", handleMouseUp)
+
+      onStartRef.current?.()
 
       let startX = event.clientX
 
@@ -14,7 +28,7 @@ function useMouseOffset<T = HTMLDivElement>(
         const currentX = event.clientX
         const offsetX = currentX - startX
         if (offsetX > 2 || offsetX < -2) {
-          callback(event, offsetX)
+          onChangeRef.current(event, offsetX)
           startX = currentX
         }
       }
@@ -22,12 +36,13 @@ function useMouseOffset<T = HTMLDivElement>(
       function handleMouseUp() {
         window.removeEventListener("mousemove", handleMouseMove)
         window.removeEventListener("mouseup", handleMouseUp)
+        onEndRef.current?.()
       }
     },
-    [callback]
+    [onStartRef, onChangeRef, onEndRef]
   )
 
   return start
 }
 
-export default useMouseOffset
+export default useTrackMouseOffset

@@ -1,5 +1,5 @@
 import { CLASSES } from "config/constants"
-import type { Ability } from "types"
+import type { Ability, Class } from "types"
 import _pipe from "lodash/flow"
 
 const modifiers = {
@@ -54,7 +54,7 @@ const modifiers = {
 }
 
 const abilities: {
-  [s in (typeof CLASSES)[keyof typeof CLASSES]]: Ability[]
+  [c in Class]: Ability[]
 } = {
   [CLASSES.GENERAL]: [
     {
@@ -142,12 +142,28 @@ const abilities: {
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=105809/holy-avenger",
-      name: "Holy Avenger",
-      spellId: 105809,
-      shortName: "Avenger",
-      cooldown: 60 * 3,
-      icon: "ability_paladin_holyavenger",
+      wowheadLink: "https://www.wowhead.com/spell=375576/divine-toll",
+      name: "Divine Toll",
+      spellId: 375576,
+      shortName: "Toll",
+      cooldown: 60,
+      icon: "ability_bastion_paladin",
+      modifiers: [
+        {
+          icon: "spell_holy_pureofheart",
+          wowheadLink: "https://www.wowhead.com/spell=379391/quickened-invocation",
+          description: "Quickened Invocation",
+          process: modifiers.addCooldown(-15),
+        }
+      ],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=200652/tyrs-deliverance",
+      name: "Tyr's Deliverance",
+      spellId: 200652,
+      shortName: "Tyr's Deliverance",
+      cooldown: 60 * 1.5,
+      icon: "inv_mace_2h_artifactsilverhand_d_01",
       modifiers: [],
     },
     {
@@ -161,38 +177,28 @@ const abilities: {
         {
           icon: "spell_holy_fanaticism",
           wowheadLink: "https://www.wowhead.com/spell=392911/unwavering-spirit",
-          process: _pipe(
-            modifiers.addCooldown(-30),
-          ),
+          description: "Unwavering Spirit",
+          process: modifiers.addCooldown(-30),
         }
       ],
     },
+
     {
-      wowheadLink: "https://www.wowhead.com/spell=375576/divine-toll",
-      name: "Divine Toll",
-      spellId: 375576,
-      shortName: "Toll",
-      cooldown: 60,
-      icon: "ability_bastion_paladin",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=414176/daybreak",
-      name: "Daybreak",
-      spellId: 414176,
-      shortName: "Daybreak",
-      cooldown: 60,
-      icon: "spell_holy_aspiration",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=135517/lights-hammer",
-      name: "Light's Hammer",
-      spellId: 135517,
-      shortName: "Hammer",
-      cooldown: 60,
-      icon: "spell_paladin_lightshammer",
-      modifiers: [],
+      wowheadLink: "https://www.wowhead.com/spell=1022/blessing-of-protection",
+      name: "Blessing of Protection",
+      spellId: 1022,
+      shortName: "Protection",
+      cooldown: 60 * 5,
+      icon: "spell_holy_sealofprotection",
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=384909/improved-blessing-of-protection",
+          icon: "spell_holy_sealofprotection",
+          process: _pipe(
+            modifiers.addCooldown(-60),
+          )
+        },
+      ],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=204018/blessing-of-spellwarding",
@@ -218,39 +224,25 @@ const abilities: {
         }
       ],
     },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=1022/blessing-of-protection",
-      name: "Blessing of Protection",
-      spellId: 1022,
-      shortName: "Protection",
-      cooldown: 60 * 5,
-      icon: "spell_holy_sealofprotection",
-      modifiers: [
-        {
-          wowheadLink: "https://www.wowhead.com/spell=384909/improved-blessing-of-protection",
-          icon: "spell_holy_sealofprotection",
-          process: _pipe(
-            modifiers.addCooldown(-60),
-          )
-        },
-        {
-          wowheadLink: "https://www.wowhead.com/spell=378425/uthers-counsel",
-          icon: "spell_holy_greaterblessingofsalvation",
-          process: _pipe(
-            modifiers.multiplyCooldown(0.7),
-          )
-        }
-      ],
-    },
   ],
   [CLASSES.HUNTER]: [],
   [CLASSES.ROGUE]: [],
   [CLASSES.PRIEST]: [
     {
+      wowheadLink: "https://www.wowhead.com/spell=120517/halo",
+      name: "Halo",
+      spellId: 120517,
+      shortName: "Halo",
+      cooldown: 60,
+      icon: "ability_priest_halo",
+      modifiers: [],
+    },
+    {
       wowheadLink: "https://www.wowhead.com/spell=64843/divine-hymn",
       name: "Divine Hymn",
       spellId: 64843,
       shortName: "Hymn",
+      spec: "holy",
       cooldown: 60 * 3,
       icon: "spell_holy_divinehymn",
       modifiers: [],
@@ -260,6 +252,7 @@ const abilities: {
       name: "Holy Word: Salvation",
       spellId: 265202,
       shortName: "Salvation",
+      spec: "holy",
       cooldown: 60 * 4,
       icon: "ability_priest_archangel",
       modifiers: [
@@ -279,37 +272,55 @@ const abilities: {
       ],
     },
     {
+      wowheadLink: "https://www.wowhead.com/spell=372835/lightwell",
+      name: "Lightwell",
+      spellId: 372835,
+      shortName: "Well",
+      spec: "holy",
+      cooldown: 60 * 1.5,
+      icon: "spell_holy_summonlightwell",
+      modifiers: [],
+    },
+    {
       wowheadLink: "https://www.wowhead.com/spell=64901/symbol-of-hope",
       name: "Symbol of Hope",
       spellId: 64901,
       shortName: "Hope",
+      spec: "holy",
       cooldown: 60 * 3,
       icon: "spell_holy_symbolofhope",
       modifiers: [],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=372835/lightwell",
-      name: "Lightwell",
-      spellId: 372835,
-      shortName: "Well",
+      wowheadLink: "https://www.wowhead.com/spell=34433/shadowfiend?spellModifier=137032",
+      name: "Shadowfiend",
+      spellId: 34433,
+      shortName: "Shadowfiend",
+      spec: "discipline",
       cooldown: 60 * 3,
-      icon: "spell_holy_summonlightwell",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=62618/power-word-barrier",
-      name: "Power Work: Barrier",
-      spellId: 62618,
-      shortName: "Barrier",
-      cooldown: 60 * 3,
-      icon: "spell_holy_powerwordbarrier",
-      modifiers: [],
+      icon: "spell_shadow_shadowfiend",
+      modifiers: [
+        {
+          icon: "spell_shadow_soulleech_3",
+          process: _pipe(
+            modifiers.setCooldown(60),
+            modifiers.setIcon("spell_shadow_soulleech_3"),
+            modifiers.setSpellId(123040),
+            modifiers.setName("Mindbender"),
+            modifiers.setShortName("Mindbender"),
+            modifiers.setWowheadLink(
+              "https://www.wowhead.com/spell=123040/mindbender"
+            )
+          ),
+        },
+      ],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=246287/evangelism",
       name: "Evangelism",
       spellId: 246287,
       shortName: "Evang",
+      spec: "discipline",
       cooldown: 60 * 1.5,
       icon: "spell_holy_divineillumination",
       modifiers: [],
@@ -319,8 +330,46 @@ const abilities: {
       name: "Rapture",
       spellId: 47536,
       shortName: "Rapture",
+      spec: "discipline",
       cooldown: 60 * 1.5,
       icon: "spell_holy_rapture",
+      modifiers: [],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=421453/ultimate-penitence",
+      name: "Ultimate Penitence",
+      spellId: 421453,
+      shortName: "Ultimate Penitence",
+      spec: "discipline",
+      cooldown: 60 * 4,
+      icon: "ability_priest_ascendance",
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=421558/heavens-wrath",
+          icon: "spell_holy_penance",
+          description: "Heaven's Wrath expected CD: 1m",
+          process: modifiers.addCooldown(-60),
+        }
+      ],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=62618/power-word-barrier",
+      name: "Power Work: Barrier",
+      spellId: 62618,
+      shortName: "Barrier",
+      spec: "discipline",
+      cooldown: 60 * 3,
+      icon: "spell_holy_powerwordbarrier",
+      modifiers: [],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=33206/pain-suppression",
+      name: "Pain Suppression",
+      spellId: 33206,
+      shortName: "Pain Suppression",
+      spec: "discipline",
+      cooldown: 60 * 3,
+      icon: "spell_holy_painsupression",
       modifiers: [],
     },
     {
@@ -335,13 +384,59 @@ const abilities: {
   ],
   [CLASSES.SHAMAN]: [
     {
+      wowheadLink: "https://www.wowhead.com/spell=114052/ascendance",
+      name: "Ascendance",
+      spellId: 114052,
+      shortName: "Asc",
+      cooldown: 60 * 3,
+      icon: "spell_fire_elementaldevastation",
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=462440/first-ascendant",
+          icon: "spell_shaman_astralshift",
+          description: "First Ascendant",
+          process: modifiers.addCooldown(-60),
+        }
+      ],
+    },
+    {
       wowheadLink: "https://www.wowhead.com/spell=108280/healing-tide-totem",
       name: "Healing Tide Totem",
       spellId: 108280,
       shortName: "Tide",
-      cooldown: 60 * 3,
+      cooldown: 60 * 2.75, // CDR from Water Totem Mastery talent ~15sec
       icon: "ability_shaman_healingtide",
-      modifiers: [],
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=404015/current-control",
+          icon: "ability_shaman_healingtide",
+          description: "Current Control",
+          process: modifiers.addCooldown(-45),
+        }
+      ],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=198838/earthen-wall-totem",
+      name: "Earthen Wall Totem",
+      spellId: 198838,
+      shortName: "Wall",
+      cooldown: 60,
+      icon: "spell_nature_stoneskintotem",
+      modifiers: [
+        {
+          icon: "spell_nature_reincarnation",
+          process: _pipe(
+            modifiers.setCooldown(60 * 5),
+            modifiers.setIcon("spell_nature_reincarnation"),
+            modifiers.setSpellId(207399),
+            modifiers.setName("Ancestral Protection Totem"),
+            modifiers.setShortName("Res Totem"),
+            modifiers.setWowheadLink(
+              "https://www.wowhead.com/spell=207399/ancestral-protection-totem"
+            )
+          ),
+        },
+      ],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=98008/spirit-link-totem",
@@ -353,41 +448,20 @@ const abilities: {
       modifiers: [],
     },
     {
-      wowheadLink:
-        "https://www.wowhead.com/spell=207399/ancestral-protection-totem",
-      name: "Ancestral Protection Totem",
-      spellId: 207399,
-      shortName: "Res",
-      cooldown: 60 * 5,
-      icon: "spell_nature_reincarnation",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=198838/earthen-wall-totem",
-      name: "Earthen Wall Totem",
-      spellId: 198838,
-      shortName: "Wall",
-      cooldown: 60,
-      icon: "spell_nature_stoneskintotem",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=114052/ascendance",
-      name: "Ascendance",
-      spellId: 114052,
-      shortName: "Asc",
-      cooldown: 60 * 3,
-      icon: "spell_fire_elementaldevastation",
-      modifiers: [],
-    },
-    {
       wowheadLink: "https://www.wowhead.com/spell=192077/wind-rush-totem",
       name: "Wind Rush Totem",
       spellId: 192077,
       shortName: "Rush",
       cooldown: 60 * 2,
       icon: "ability_shaman_windwalktotem",
-      modifiers: [],
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=462791/ascending-air",
+          icon: "achievement_raidprimalist_windelemental",
+          description: "Ascending Air",
+          process: modifiers.addCooldown(-30),
+        }
+      ],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=108281/ancestral-guidance",
@@ -402,32 +476,6 @@ const abilities: {
   [CLASSES.MAGE]: [],
   [CLASSES.WARLOCK]: [],
   [CLASSES.MONK]: [
-    {
-      wowheadLink: "https://www.wowhead.com/spell=115310/revival",
-      name: "Revival",
-      spellId: 115310,
-      shortName: "Revival",
-      cooldown: 60 * 3,
-      icon: "spell_monk_revival",
-      modifiers: [
-        {
-          icon: "monk_stance_wiseserpent",
-          description:
-            "Uplifted Spirits. Expected CD reduction from Rising Sun Kick",
-          wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
-          process: modifiers.addCooldown(-30),
-          dependants: [1],
-        },
-        {
-          icon: "ability_monk_soothingmists",
-          description:
-            "Uplifted Spirits. Expected extra CD reduction from Clouded Focus build",
-          wowheadLink: "https://www.wowhead.com/spell=388047/clouded-focus",
-          process: modifiers.addCooldown(-45),
-          dependsOn: [0],
-        },
-      ],
-    },
     {
       wowheadLink:
         "https://www.wowhead.com/spell=325197/invoke-chi-ji-the-red-crane",
@@ -449,28 +497,51 @@ const abilities: {
           icon: "inv_inscription_deck_jadeserpent",
           description: "Jade Bond",
           wowheadLink: "https://www.wowhead.com/spell=388031/jade-bond",
-          process: modifiers.addCooldown(-30),
+          process: modifiers.addCooldown(-60),
           exclusiveWith: [0],
         },
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=116680/thunder-focus-tea",
-      name: "Thunder Focus Tea",
-      spellId: 116680,
-      shortName: "TFT",
-      cooldown: 30,
-      icon: "ability_monk_thunderfocustea",
+      wowheadLink: "https://www.wowhead.com/spell=443028/celestial-conduit?spellModifier=137024",
+      name: "Celestial Conduit",
+      spellId: 443028,
+      shortName: "Conduit",
+      cooldown: 60 * 1.5,
+      icon: "inv_ability_conduitofthecelestialsmonk_celestialconduit",
       modifiers: [],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=191837/essence-font",
-      name: "Essence Font",
-      spellId: 191837,
-      shortName: "Font",
-      cooldown: 30,
-      icon: "ability_monk_essencefont",
-      modifiers: [],
+      wowheadLink: "https://www.wowhead.com/spell=115310/revival",
+      name: "Revival",
+      spellId: 115310,
+      shortName: "Revival",
+      cooldown: 60 * 3,
+      icon: "spell_monk_revival",
+      modifiers: [
+        {
+          icon: "monk_stance_wiseserpent",
+          description:
+            "Uplifted Spirits. Expected CDR: 1m",
+          wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
+          process: modifiers.addCooldown(-60),
+        },
+      ],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=116849/life-cocoon",
+      name: "Life Cocoon",
+      spellId: 116849,
+      shortName: "Cocoon",
+      cooldown: 60 * 2,
+      icon: "ability_monk_chicocoon",
+      modifiers: [
+        {
+          icon: "ability_monk_domeofmist",
+          wowheadLink: "https://www.wowhead.com/spell=202424/chrysalis",
+          process: modifiers.addCooldown(-45),
+        }
+      ],
     },
   ],
   [CLASSES.DRUID]: [
@@ -482,7 +553,14 @@ const abilities: {
       shortName: "Tree",
       cooldown: 60 * 3,
       icon: "ability_druid_improvedtreeform",
-      modifiers: [],
+      modifiers: [
+        {
+          icon: "ability_druid_treeoflife",
+          description: "Cenarius' Guidance",
+          wowheadLink: "https://www.wowhead.com/spell=393371/cenarius-guidance",
+          process: modifiers.addCooldown(-60),
+        }
+      ],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=740/tranquility",
@@ -496,7 +574,7 @@ const abilities: {
           icon: "ability_druid_dreamstate",
           description: "Inner Peace",
           wowheadLink: "https://www.wowhead.com/spell=197073/inner-peace",
-          process: modifiers.addCooldown(-60),
+          process: modifiers.addCooldown(-30),
         },
       ],
     },
@@ -653,6 +731,15 @@ const abilities: {
       shortName: "Paradox",
       cooldown: 60 * 2,
       icon: "ability_evoker_stretchtime",
+      modifiers: [],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=370553/tip-the-scales",
+      name: "Tip the Scales",
+      spellId: 370553,
+      shortName: "Tip the Scales",
+      cooldown: 60 * 2,
+      icon: "ability_evoker_tipthescales",
       modifiers: [],
     },
   ],

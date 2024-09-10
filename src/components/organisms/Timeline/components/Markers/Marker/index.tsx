@@ -1,18 +1,16 @@
 import React, { useEffect } from "react"
-import useMouseOffset from "hooks/useMouseOffset"
+import useTrackMouseOffset from "hooks/useMouseOffset"
 import type { Marker } from "types"
 import { motion, useSpring } from "framer-motion"
 import { useAppStore } from "store"
 import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
 import classNames from "classnames"
 
-function Marker(props: { markerId: string; disabled?: boolean }) {
-  const { markerId, disabled } = props
+function Marker(props: { marker: Marker; disabled?: boolean }) {
+  const { marker, disabled } = props
 
   const { panelWidth } = useTimelineContext()
-  const marker = useAppStore((state) =>
-    state.markers.find((m) => m.id === markerId)
-  )
+
   const duration = useAppStore((state) => state.duration)
   const updateMarker = useAppStore((state) => state.updateMarker)
 
@@ -23,41 +21,40 @@ function Marker(props: { markerId: string; disabled?: boolean }) {
   })
 
   useEffect(() => {
-    if (!panelWidth) return
-    const marker = useAppStore.getState().markers.find((m) => m.id === markerId)
-    if (!marker) return
+    if (!panelWidth || !marker) return
+
     const newX =
       (panelWidth * (marker.time > duration ? duration : marker.time)) /
       duration
     x.jump(newX)
 
     return useAppStore.subscribe((state) => {
-      const marker = state.markers.find((m) => m.id === markerId)
-      if (!marker) return
-      const newX = (panelWidth * marker.time) / duration
+      const markerState = state.markers.find((m) => m.id === marker.id)
+      if (!markerState) return
+      const newX = (panelWidth * markerState.time) / duration
       if (x.get() !== newX) {
         x.set(newX)
       }
     })
-  }, [duration, markerId, panelWidth, x])
+  }, [duration, marker, panelWidth, x])
 
-  const track = useMouseOffset((event, offsetX) => {
-    if (!panelWidth) return
-    const marker = useAppStore.getState().markers.find((m) => m.id === markerId)
-    if (!marker) return
+  const startTracking = useTrackMouseOffset({
+    onChange: (event, offsetX) => {
+      if (!panelWidth || !marker) return
+      const multiplier = event.altKey ? 0.1 : 1
 
-    const multiplier = event.altKey ? 0.1 : 1
-
-    updateMarker(markerId, {
-      time: marker.time + duration * (offsetX / panelWidth) * multiplier,
-    })
+      updateMarker(marker.id, {
+        type: marker.type,
+        time: marker.time + duration * (offsetX / panelWidth) * multiplier,
+      })
+    }
   })
 
   return (
     <div className={classNames("group", { ["opacity-50"]: disabled })}>
       <motion.div
         className="absolute top-4 -left-2 z-10 p-1"
-        onMouseDown={!disabled ? track : undefined}
+        onMouseDown={!disabled ? startTracking : undefined}
         style={{ x }}
       >
         <div
@@ -91,4 +88,4 @@ function Marker(props: { markerId: string; disabled?: boolean }) {
   )
 }
 
-export default Marker
+export default React.memo(Marker)
