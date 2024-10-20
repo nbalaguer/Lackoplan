@@ -224,6 +224,14 @@ const abilities: {
         }
       ],
     },
+    {
+      name: "Spam!",
+      spellId: 424650,
+      shortName: "Spam!",
+      cooldown: 60,
+      icon: "spell_nzinsanity_panicattack",
+      modifiers: [],
+    },
   ],
   [CLASSES.HUNTER]: [],
   [CLASSES.ROGUE]: [],
@@ -381,6 +389,14 @@ const abilities: {
       icon: "spell_shadow_unsummonbuilding",
       modifiers: [],
     },
+    {
+      name: "Spam!",
+      spellId: 424650,
+      shortName: "Spam!",
+      cooldown: 60,
+      icon: "spell_nzinsanity_panicattack",
+      modifiers: [],
+    },
   ],
   [CLASSES.SHAMAN]: [
     {
@@ -472,6 +488,14 @@ const abilities: {
       icon: "ability_shaman_ancestralguidance",
       modifiers: [],
     },
+    {
+      name: "Spam!",
+      spellId: 424650,
+      shortName: "Spam!",
+      cooldown: 60,
+      icon: "spell_nzinsanity_panicattack",
+      modifiers: [],
+    }
   ],
   [CLASSES.MAGE]: [],
   [CLASSES.WARLOCK]: [],
@@ -543,6 +567,14 @@ const abilities: {
         }
       ],
     },
+    {
+      name: "Spam!",
+      spellId: 424650,
+      shortName: "Spam!",
+      cooldown: 60,
+      icon: "spell_nzinsanity_panicattack",
+      modifiers: [],
+    }
   ],
   [CLASSES.DRUID]: [
     {
@@ -629,6 +661,14 @@ const abilities: {
         },
       ],
     },
+    {
+      name: "Spam!",
+      spellId: 424650,
+      shortName: "Spam!",
+      cooldown: 60,
+      icon: "spell_nzinsanity_panicattack",
+      modifiers: [],
+    }
   ],
   [CLASSES.DEMONHUNTER]: [
     {
@@ -734,6 +774,14 @@ const abilities: {
       modifiers: [],
     },
     {
+      name: "Stasis Release",
+      spellId: 108978,
+      shortName: "Stasis",
+      cooldown: 60 * 1,
+      icon: "spell_mage_altertime",
+      modifiers: [],
+    },
+    {
       wowheadLink: "https://www.wowhead.com/spell=370553/tip-the-scales",
       name: "Tip the Scales",
       spellId: 370553,
@@ -742,6 +790,14 @@ const abilities: {
       icon: "ability_evoker_tipthescales",
       modifiers: [],
     },
+    {
+      name: "Spam!",
+      spellId: 424650,
+      shortName: "Spam!",
+      cooldown: 60,
+      icon: "spell_nzinsanity_panicattack",
+      modifiers: [],
+    }
   ],
 }
 
