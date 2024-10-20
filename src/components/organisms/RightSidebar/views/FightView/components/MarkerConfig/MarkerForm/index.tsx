@@ -5,6 +5,7 @@ import { FormProvider, useForm, useFormContext } from "react-hook-form"
 import IconButton from "components/atoms/IconButton"
 import { useShallow } from "zustand/react/shallow"
 import type { Except } from "type-fest"
+import ButtonGroup from "components/inputs/ButtonGroup"
 
 function PhaseMarkerFormView() {
   const { register } = useFormContext()
@@ -13,7 +14,7 @@ function PhaseMarkerFormView() {
     <label className="flex gap-2 py-1 text-slate-300">
       <span>Phase:</span>
       <input
-        className="flex-grow border-none bg-transparent outline-none"
+        className="flex-grow border-none bg-transparent outline-none w-[2ch]"
         {...register("phase")}
       />
     </label>
@@ -24,29 +25,32 @@ function EventMarkerFormView() {
   const { register } = useFormContext()
 
   return (
-    <>
-      <label className="flex gap-2 py-1 text-slate-300">
-        <span>Event:</span>
-        <input
-          className="flex-grow border-none bg-transparent outline-none"
-          {...register("event")}
-        />
-      </label>
-      <label className="flex gap-2 py-1 text-slate-300">
-        <span>SpellId:</span>
-        <input
-          className="flex-grow border-none bg-transparent outline-none"
-          {...register("spell")}
-        />
-      </label>
-      <label className="flex gap-2 py-1 text-slate-300">
-        <span>Counter:</span>
-        <input
-          className="flex-grow border-none bg-transparent outline-none"
-          {...register("counter")}
-        />
-      </label>
-    </>
+    <div className="grid grid-cols-[auto,1fr] gap-2">
+      <div>
+        <ButtonGroup>
+          <ButtonGroup.Button text="SCS" value="SCS" {...register("event")} />
+          <ButtonGroup.Button text="SCC" value="SCC" {...register("event")} />
+          <ButtonGroup.Button text="SAA" value="SAA" {...register("event")} />
+          <ButtonGroup.Button text="SAR" value="SAR" {...register("event")} />
+        </ButtonGroup>
+      </div>
+      <div className="flex gap-1">
+        <label className="flex gap-2 text-slate-300">
+          <input
+            className="flex-grow border-none bg-transparent outline-none w-[2ch]"
+            placeholder="C"
+            {...register("counter")}
+          />
+        </label>
+        <label className="flex gap-2 text-slate-300">
+          <input
+            className="flex-grow border-none bg-transparent outline-none w-[6ch]"
+            placeholder="Id"
+            {...register("spell")}
+          />
+        </label>
+      </div>
+    </div>
   )
 }
 
@@ -105,6 +109,8 @@ function MarkerForm(props: { markerId: string }) {
           break
       }
 
+      console.log(values)
+
       updateMarker(markerId, markerUpdate)
     },
     [markerId, updateMarker]
@@ -122,14 +128,14 @@ function MarkerForm(props: { markerId: string }) {
           {marker.type === "phase" && <PhaseMarkerFormView />}
           {marker.type === "event" && <EventMarkerFormView />}
         </div>
-        <div className="flex flex-col gap-1">
+        <div className="flex gap-1">
+          <IconButton className="text-xs" icon="check" htmlType="submit" />
           <IconButton
-            className="text-xs"
+            className="text-xs mr-2"
             icon="close"
             htmlType="button"
             onClick={() => removeMarker(markerId)}
           />
-          <IconButton className="text-xs" icon="check" htmlType="submit" />
         </div>
       </form>
     </FormProvider>

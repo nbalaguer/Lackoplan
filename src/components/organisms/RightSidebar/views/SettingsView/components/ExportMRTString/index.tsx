@@ -1,7 +1,7 @@
 import Modal from "components/templates/Modal"
 import React, { useCallback, useState, useRef, useEffect } from "react"
 import { MRTGetTimelineString } from "utils/MRT"
-import Switch from "components/atoms/Switch"
+import Switch from "components/inputs/Switch"
 import Button from "components/atoms/Button"
 import IconButton from "components/atoms/IconButton"
 

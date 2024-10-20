@@ -2,7 +2,7 @@ import React from "react"
 import { useAppStore } from "store"
 import MarkerForm from "./MarkerForm"
 import Button from "components/atoms/Button"
-import Switch from "components/atoms/Switch"
+import Switch from "components/inputs/Switch"
 import { useShallow } from "zustand/react/shallow"
 
 function MarkerConfig() {
@@ -12,7 +12,7 @@ function MarkerConfig() {
   const addMarker = useAppStore((state) => state.addMarker)
 
   return (
-    <div className="space-y-3 p-3">
+    <div className="grid grid-rows-[auto_auto_minmax(0px,1fr)] space-y-3 p-3">
       <h3 className="text-md font-bold flex justify-between">
         <span>Markers</span>
         <Switch
@@ -33,7 +33,7 @@ function MarkerConfig() {
           text="Add event marker"
         />
       </div>
-      <div className="space-y-2">
+      <div className="overflow-auto space-y-2">
         {markerIds.map((markerId) => (
           <MarkerForm markerId={markerId} key={markerId} />
         ))}

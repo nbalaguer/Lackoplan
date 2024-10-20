@@ -39,7 +39,7 @@ function RightSidebar() {
 
   return (
     <div
-      className={classNames("grid grid-cols-[repeat(2,minmax(0px,auto))]", {
+      className={classNames("grid grid-cols-[repeat(2,minmax(0px,auto))] grid-rows-[minmax(0px,auto)]", {
         ["border-l-2 border-slate-700"]: !!ViewComponent,
       })}
     >

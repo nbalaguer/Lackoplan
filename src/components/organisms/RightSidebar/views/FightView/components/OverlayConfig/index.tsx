@@ -8,7 +8,7 @@ function OverlayConfig() {
   const overlays = useAppStore(useShallow((state) => state.overlays))
 
   return (
-    <div className="mt-auto space-y-3 p-3">
+    <div className="space-y-3 p-3">
       <h3 className="text-md font-bold">Overlays</h3>
       <div className="space-y-3">
         {overlays.map((overlay, index) => {

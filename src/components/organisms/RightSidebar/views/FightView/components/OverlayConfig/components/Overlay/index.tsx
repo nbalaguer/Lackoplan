@@ -52,11 +52,11 @@ function Overlay(props: { src: string; onOverlay: (src: string) => void }) {
   return (
     <div
       ref={ref}
-      className="relative grid aspect-video cursor-pointer place-content-center outline outline-2 outline-slate-600 transition-[outline-width,outline-color] duration-100 hover:outline-slate-500 focus:outline-4"
+      className="relative grid aspect-[16/6] cursor-pointer place-content-center outline outline-2 outline-slate-600 transition-[outline-width,outline-color] duration-100 hover:outline-slate-500 focus:outline-4"
       tabIndex={0}
     >
       {!!src && (
-        <img src={src} alt="" className="absolute top-0 left-0 h-full w-full" />
+        <img src={src} alt="" className="absolute top-0 left-0 h-full w-full object-fill" />
       )}
       {!src && (
         <span className="text-sm text-slate-500">Click + Paste image here</span>

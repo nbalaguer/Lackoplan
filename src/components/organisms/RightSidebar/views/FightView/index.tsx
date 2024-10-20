@@ -5,7 +5,7 @@ import MarkerConfig from "./components/MarkerConfig"
 
 function FightView() {
   return (
-    <div className="flex flex-col divide-y-2 divide-slate-700">
+    <div className="grid grid-rows-[auto_minmax(0px,1fr)_auto] divide-y-2 divide-slate-700">
       <FightConfig />
       <MarkerConfig />
       <OverlayConfig />
