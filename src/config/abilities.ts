@@ -219,7 +219,7 @@ const abilities: {
           wowheadLink: "https://www.wowhead.com/spell=378425/uthers-counsel",
           icon: "spell_holy_greaterblessingofsalvation",
           process: _pipe(
-            modifiers.multiplyCooldown(0.7),
+            modifiers.multiplyCooldown(0.85),
           )
         }
       ],
@@ -256,28 +256,14 @@ const abilities: {
       modifiers: [],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=265202/holy-word-salvation",
-      name: "Holy Word: Salvation",
-      spellId: 265202,
-      shortName: "Salvation",
+      wowheadLink: "https://www.wowhead.com/spell=200183/apotheosis",
+      name: "Apotheosis",
+      spellId: 200183,
+      shortName: "Apotheosis",
       spec: "holy",
-      cooldown: 60 * 4,
-      icon: "ability_priest_archangel",
-      modifiers: [
-        {
-          icon: "ability_priest_ascension",
-          process: _pipe(
-            modifiers.setCooldown(60 * 2),
-            modifiers.setIcon("ability_priest_ascension"),
-            modifiers.setSpellId(200183),
-            modifiers.setName("Apotheosis"),
-            modifiers.setShortName("Apotheosis"),
-            modifiers.setWowheadLink(
-              "https://www.wowhead.com/spell=200183/apotheosis"
-            )
-          ),
-        },
-      ],
+      cooldown: 60 * 2,
+      icon: "ability_priest_ascension",
+      modifiers: [],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=372835/lightwell",
@@ -321,26 +307,23 @@ const abilities: {
             )
           ),
         },
+        {
+          icon: "spell_shadow_shadowfiend",
+          wowheadLink: "https://www.wowhead.com/spell=390770/void-summoner",
+          process: _pipe(
+            modifiers.multiplyCooldown(0.5),
+          ),
+        },
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=246287/evangelism",
+      wowheadLink: "https://www.wowhead.com/spell=472433/evangelism",
       name: "Evangelism",
-      spellId: 246287,
+      spellId: 472433,
       shortName: "Evang",
       spec: "discipline",
       cooldown: 60 * 1.5,
       icon: "spell_holy_divineillumination",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=47536/rapture",
-      name: "Rapture",
-      spellId: 47536,
-      shortName: "Rapture",
-      spec: "discipline",
-      cooldown: 60 * 1.5,
-      icon: "spell_holy_rapture",
       modifiers: [],
     },
     {
@@ -351,14 +334,7 @@ const abilities: {
       spec: "discipline",
       cooldown: 60 * 4,
       icon: "ability_priest_ascendance",
-      modifiers: [
-        {
-          wowheadLink: "https://www.wowhead.com/spell=421558/heavens-wrath",
-          icon: "spell_holy_penance",
-          description: "Heaven's Wrath expected CD: 1m",
-          process: modifiers.addCooldown(-60),
-        }
-      ],
+      modifiers: [],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=62618/power-word-barrier",
@@ -480,15 +456,6 @@ const abilities: {
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=108281/ancestral-guidance",
-      name: "Ancestral Guidance",
-      spellId: 108281,
-      shortName: "Guidance",
-      cooldown: 60 * 2,
-      icon: "ability_shaman_ancestralguidance",
-      modifiers: [],
-    },
-    {
       name: "Spam!",
       spellId: 424650,
       shortName: "Spam!",
@@ -506,7 +473,7 @@ const abilities: {
       name: "Invoke Celestial",
       spellId: 325197,
       shortName: "Celestial",
-      cooldown: 60 * 3,
+      cooldown: 60 * 2,
       icon: "inv_pet_cranegod",
       modifiers: [
         {
@@ -514,15 +481,7 @@ const abilities: {
           description: "Gift of the Celestials",
           wowheadLink:
             "https://www.wowhead.com/spell=388212/gift-of-the-celestials",
-          process: modifiers.addCooldown(-60 * 2),
-          exclusiveWith: [1],
-        },
-        {
-          icon: "inv_inscription_deck_jadeserpent",
-          description: "Jade Bond",
-          wowheadLink: "https://www.wowhead.com/spell=388031/jade-bond",
           process: modifiers.addCooldown(-60),
-          exclusiveWith: [0],
         },
       ],
     },
@@ -546,9 +505,9 @@ const abilities: {
         {
           icon: "monk_stance_wiseserpent",
           description:
-            "Uplifted Spirits. Expected CDR: 1m",
+            "Uplifted Spirits. Expected CDR: 45s",
           wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
-          process: modifiers.addCooldown(-60),
+          process: modifiers.addCooldown(-45),
         },
       ],
     },
