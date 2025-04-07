@@ -253,7 +253,15 @@ const abilities: {
       spec: "holy",
       cooldown: 60 * 3,
       icon: "spell_holy_divinehymn",
-      modifiers: [],
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=419110/seraphic-crescendo",
+          icon: "spell_holy_divinehymn",
+          process: _pipe(
+            modifiers.addCooldown(-60),
+          )
+        },
+      ],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=200183/apotheosis",
@@ -271,7 +279,7 @@ const abilities: {
       spellId: 372835,
       shortName: "Well",
       spec: "holy",
-      cooldown: 60 * 1.5,
+      cooldown: 60 * 2 - (45 /* Expected CDR */),
       icon: "spell_holy_summonlightwell",
       modifiers: [],
     },
