@@ -49,7 +49,7 @@ function TimeBar() {
     <div>
       <motion.div
         className={classNames(
-          "absolute top-0 left-0 -z-10 h-full w-0 border-l-[1px] border-dashed border-slate-700/75 transition-opacity duration-100",
+          "absolute top-0 left-0 -z-10 h-full w-0 border-l-[1px] border-dashed border-slate-500 transition-opacity duration-100",
           { ["opacity-0 duration-500"]: !isGuideVisible }
         )}
         style={{ x }}
