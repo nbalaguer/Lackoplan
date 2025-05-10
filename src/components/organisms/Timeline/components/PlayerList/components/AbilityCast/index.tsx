@@ -5,7 +5,9 @@ import { getPlayerAbilityFromStore, useAppStore } from "store"
 import useTrackMouseOffset from "hooks/useMouseOffset"
 import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
 import _debounce from "lodash/debounce"
+import _isEqual from "lodash/isEqual"
 import TimestampHint from "./TimestampHint"
+import useDeep from "hooks/useDeep"
 
 function AbilityCast(props: {
   playerId: string
@@ -22,11 +24,20 @@ function AbilityCast(props: {
 
   const updateCastTime = useAppStore((state) => state.updateCastTime)
   const duration = useAppStore((state) => state.duration)
-  const abilityIcon = useAppStore((state) => {
-    const playerAbility = getPlayerAbilityFromStore(state, playerId, abilityId)
-    if (!playerAbility) return
-    return playerAbility.ability.icon
-  })
+  const { abilityIcon, abilityDuration } = useAppStore(
+    useDeep((state) => {
+      const playerAbility = getPlayerAbilityFromStore(
+        state,
+        playerId,
+        abilityId
+      )
+      if (!playerAbility) return {}
+      return {
+        abilityIcon: playerAbility.ability.icon,
+        abilityDuration: playerAbility.ability.duration,
+      }
+    })
+  )
 
   const x = useSpring(0, {
     bounce: 0,
@@ -128,11 +139,16 @@ function AbilityCast(props: {
           castIndex={castIndex}
         />
       </motion.div>
+      <div
+        className="bg-yellow-600/25 h-full absolute top-0 left-0"
+        style={{
+          width: `${(panelWidth ?? 0) * ((abilityDuration ?? 1) / duration)}px`,
+        }}
+      />
       <WowheadIcon
         name={abilityIcon || ""}
         size="small"
-        className="pointer-events-none aspect-[5/4] object-cover"
-
+        className="pointer-events-none aspect-[5/4] object-cover relative"
       />
     </motion.div>
   )

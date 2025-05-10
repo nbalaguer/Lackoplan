@@ -8,6 +8,7 @@ export type Ability = {
   spellId: number
   shortName: string
   cooldown: number // In seconds
+  duration?: number // In seconds
   icon: string
   modifiers: AbilityModifier[]
   spec?: string

@@ -21,6 +21,12 @@ const modifiers = {
       return ability
     }
   },
+  setDuration(duration: number) {
+    return (ability: Ability) => {
+      ability.duration = duration
+      return ability
+    }
+  },
   setIcon(icon: string) {
     return (ability: Ability) => {
       ability.icon = icon
@@ -113,6 +119,7 @@ const abilities: {
       spellId: 97462,
       shortName: "Rally",
       cooldown: 60 * 3,
+      duration: 10,
       icon: "ability_toughness",
       modifiers: [],
     },
@@ -124,12 +131,14 @@ const abilities: {
       spellId: 31884,
       shortName: "Wings",
       cooldown: 60 * 2,
+      duration: 20,
       icon: "spell_holy_avenginewrath",
       modifiers: [
         {
           icon: "ability_paladin_veneration",
           process: _pipe(
             modifiers.setCooldown(60),
+            modifiers.setDuration(15),
             modifiers.setIcon("ability_paladin_veneration"),
             modifiers.setSpellId(216331),
             modifiers.setName("Avenging Crusader"),
@@ -172,6 +181,7 @@ const abilities: {
       spellId: 31821,
       shortName: "Mastery",
       cooldown: 60 * 3,
+      duration: 8,
       icon: "spell_holy_auramastery",
       modifiers: [
         {
@@ -270,6 +280,7 @@ const abilities: {
       shortName: "Apotheosis",
       spec: "holy",
       cooldown: 60 * 2,
+      duration: 35,
       icon: "ability_priest_ascension",
       modifiers: [],
     },
@@ -331,6 +342,7 @@ const abilities: {
       shortName: "Evang",
       spec: "discipline",
       cooldown: 60 * 1.5,
+      duration: 10,
       icon: "spell_holy_divineillumination",
       modifiers: [],
     },
@@ -351,6 +363,7 @@ const abilities: {
       shortName: "Barrier",
       spec: "discipline",
       cooldown: 60 * 3,
+      duration: 10,
       icon: "spell_holy_powerwordbarrier",
       modifiers: [],
     },
@@ -389,6 +402,7 @@ const abilities: {
       spellId: 114052,
       shortName: "Asc",
       cooldown: 60 * 3,
+      duration: 15,
       icon: "spell_fire_elementaldevastation",
       modifiers: [
         {
@@ -405,6 +419,7 @@ const abilities: {
       spellId: 108280,
       shortName: "Tide",
       cooldown: 60 * 2.75, // CDR from Water Totem Mastery talent ~15sec
+      duration: 10,
       icon: "ability_shaman_healingtide",
       modifiers: [
         {
@@ -444,6 +459,7 @@ const abilities: {
       spellId: 98008,
       shortName: "Link",
       cooldown: 60 * 3,
+      duration: 6,
       icon: "spell_shaman_spiritlink",
       modifiers: [],
     },
@@ -482,6 +498,7 @@ const abilities: {
       spellId: 325197,
       shortName: "Celestial",
       cooldown: 60 * 2,
+      duration: 25,
       icon: "inv_pet_cranegod",
       modifiers: [
         {
@@ -489,7 +506,10 @@ const abilities: {
           description: "Gift of the Celestials",
           wowheadLink:
             "https://www.wowhead.com/spell=388212/gift-of-the-celestials",
-          process: modifiers.addCooldown(-60),
+          process: _pipe(
+            modifiers.addCooldown(-60),
+            modifiers.setDuration(12),
+          ),
         },
       ],
     },
@@ -551,6 +571,7 @@ const abilities: {
       spellId: 33891,
       shortName: "Tree",
       cooldown: 60 * 3,
+      duration: 30,
       icon: "ability_druid_improvedtreeform",
       modifiers: [
         {
@@ -583,6 +604,7 @@ const abilities: {
       spellId: 197721,
       shortName: "Flourish",
       cooldown: 60,
+      duration: 10,
       icon: "spell_druid_wildburst",
       modifiers: [],
     },
@@ -644,6 +666,7 @@ const abilities: {
       spellId: 196718,
       shortName: "Dark",
       cooldown: 60 * 3,
+      duration: 8,
       icon: "ability_demonhunter_darkness",
       modifiers: [],
     },
@@ -655,6 +678,7 @@ const abilities: {
       spellId: 51052,
       shortName: "AMZ",
       cooldown: 60 * 2,
+      duration: 8,
       icon: "spell_deathknight_antimagiczone",
       modifiers: [],
     },
