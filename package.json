@@ -10,7 +10,8 @@
     "format": "prettier --write src",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "generateTheme": "node ./bin/generate-tailwind-theme.js",
-    "clean": "rm -rf node_modules dist package-lock.json"
+    "clean": "rm -rf node_modules dist package-lock.json",
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@apollo/client": "^3.8.8",

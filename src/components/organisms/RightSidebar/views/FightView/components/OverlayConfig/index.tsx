@@ -5,6 +5,8 @@ import { useShallow } from "zustand/react/shallow"
 
 function OverlayConfig() {
   const setOverlay = useAppStore((state) => state.setOverlay)
+  const setOverlayCrop = useAppStore((state) => state.setOverlayCrop)
+  const setOverlayOpacity = useAppStore((state) => state.setOverlayOpacity)
   const overlays = useAppStore(useShallow((state) => state.overlays))
 
   return (
@@ -14,10 +16,12 @@ function OverlayConfig() {
         {overlays.map((overlay, index) => {
           return (
             <React.Fragment key={index}>
-              {index === 1 && <div className="border-b-2 border-slate-600" />}
+              {index === 2 && <div className="border-b-2 border-slate-600" />}
               <Overlay
-                src={overlay}
-                onOverlay={(src) => setOverlay(index, src)}
+                overlay={overlay}
+                onOverlayChange={(src) => setOverlay(index, src)}
+                onOverlayCropChange={(crop) => setOverlayCrop(index, crop)}
+                onOverlayOpacityChange={(opacity) => setOverlayOpacity(index, opacity)}
               />
             </React.Fragment>
           )

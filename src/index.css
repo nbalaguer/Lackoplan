@@ -54,3 +54,41 @@ main {
 .markdown a {
   @apply text-sky-400;
 }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+/* Removes default focus */
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  @apply bg-slate-400;
+  border-radius: 100em;
+  height: 2px;
+  @apply transition-colors duration-100;
+}
+
+input[type="range"]::-webkit-slider-runnable-track:hover {
+  @apply bg-slate-300;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  @apply bg-yellow-500;
+  border-radius: 10em;
+  height: 8px;
+  width: 8px;
+  margin-top: -3px;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb {
+  outline: 1px solid;
+  @apply outline-slate-100;
+  outline-offset: 2px;
+}

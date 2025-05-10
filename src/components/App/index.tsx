@@ -9,7 +9,7 @@ function App() {
   return (
     <FileContextProvider>
       <Header />
-      <main className="grid grid-cols-[auto_minmax(0px,1fr)_auto] grid-rows-[minmax(0px,auto)] min-h-[1200px]">
+      <main className="grid grid-cols-[auto_minmax(0px,1fr)_auto] grid-rows-[minmax(0px,auto)] min-h-[900px]">
         <LeftSidebar />
         <Timeline />
         <RightSidebar />

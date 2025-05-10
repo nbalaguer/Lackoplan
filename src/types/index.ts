@@ -40,7 +40,28 @@ export type Player = {
   isActive: boolean
 }
 
-export type ExportableProps = {
+type ExportablePropsV0 = {
+  version: undefined
+  duration: number
+  userNote: undefined
+  markers: undefined
+  markersEnabled: undefined
+  players: {
+    name: string
+    class: Class
+    isActive: boolean
+    abilities: {
+      name: string
+      isActive: boolean
+      activeModifiers: boolean[]
+      castTimes: number[]
+    }[]
+  }[]
+  overlays?: string[]
+}
+
+type ExportablePropsV1 = {
+  version: undefined
   duration: number
   userNote: string
   markers: Marker[]
@@ -58,6 +79,31 @@ export type ExportableProps = {
   }[]
   overlays?: string[]
 }
+
+type ExportablePropsV2 = {
+  version: 2
+  duration: number
+  userNote: string
+  markers: Marker[]
+  markersEnabled: boolean
+  players: {
+    name: string
+    class: Class
+    isActive: boolean
+    abilities: {
+      name: string
+      isActive: boolean
+      activeModifiers: boolean[]
+      castTimes: number[]
+    }[]
+  }[]
+  overlays?: Overlay[]
+}
+
+export type ExportableProps =
+  | ExportablePropsV0
+  | ExportablePropsV1
+  | ExportablePropsV2
 
 type PhaseMarker = {
   id: string
@@ -80,3 +126,17 @@ export type Marker = PhaseMarker | EventMarker
 export type MarkerUpdate =
   | Pick<PhaseMarker, "type"> & Partial<Pick<PhaseMarker, "time" | "phase">>
   | Pick<EventMarker, "type"> & Partial<Pick<EventMarker, "time" | "event" | "spell" | "counter">>
+
+
+export type Crop = {
+  startX: number;
+  startY: number;
+  endX: number;
+  endY: number;
+}
+
+export type Overlay = {
+  imgSrc: string;
+  crop: Crop;
+  opacity: number;
+}

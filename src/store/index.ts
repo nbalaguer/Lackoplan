@@ -6,6 +6,8 @@ import type {
   ExportableProps,
   Marker,
   MarkerUpdate,
+  Overlay,
+  Crop,
 } from "types"
 import { applyModifiers, createPlayer, getCastTimes } from "utils"
 import { create } from "zustand"
@@ -19,12 +21,20 @@ Click on the edit button to add your own notes.
 Use **all** the [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) you want!.
 `
 
+/**
+ * Version changes
+ *
+ * v2
+ *
+ * Updated overlay type from string[] to Overlay[]
+ */
 type AppStore = {
+  version: 2
   duration: number // seconds
   userNote: string
   players: Player[]
   casts: PlayerAbility[]
-  overlays: string[]
+  overlays: Overlay[]
   markers: Marker[]
   markersEnabled: boolean
   exportState: (includeOverlays?: boolean) => ExportableProps
@@ -52,249 +62,289 @@ type AppStore = {
   setDuration: (duration: number) => void
   setUserNote: (userNote: string) => void
   setOverlay: (index: number, url: string) => void
+  setOverlayCrop: (index: number, crop: Crop) => void
+  setOverlayOpacity: (index: number, opacity: number) => void
   toggleMarkers: (active?: boolean) => void
   addMarker: (type: Marker["type"]) => void
   updateMarker: (markerId: Marker["id"], partialMarker: MarkerUpdate) => void
   removeMarker: (markerId: Marker["id"]) => void
 }
 
-export const useAppStore = create<AppStore>()(immer((set, get) => ({
-  duration: 60 * 9 + 17,
-  userNote: initialUserNote,
-  players: [],
-  casts: [],
-  overlays: ["", "", ""],
-  markers: [],
-  markersEnabled: true,
+export const useAppStore = create<AppStore>()(
+  immer((set, get) => ({
+    version: 2,
+    duration: 60 * 9 + 17,
+    userNote: initialUserNote,
+    players: [],
+    casts: [],
+    overlays: [
+      {
+        imgSrc: "",
+        crop: { startX: 0, startY: 0, endX: 100, endY: 100 },
+        opacity: 0.2,
+      },
+      {
+        imgSrc: "",
+        crop: { startX: 0, startY: 0, endX: 100, endY: 100 },
+        opacity: 0.2,
+      },
+      {
+        imgSrc: "",
+        crop: { startX: 0, startY: 0, endX: 100, endY: 100 },
+        opacity: 0.2,
+      },
+      {
+        imgSrc: "",
+        crop: { startX: 0, startY: 0, endX: 100, endY: 100 },
+        opacity: 0.2,
+      },
+    ],
+    markers: [],
+    markersEnabled: true,
 
-  exportState: (includeOverlays = false) => {
-    const currentState = get()
-    return getExportData(currentState, includeOverlays)
-  },
+    exportState: (includeOverlays = false) => {
+      const currentState = get()
+      return getExportData(currentState, includeOverlays)
+    },
 
-  importState: (stateConfig: ExportableProps) =>
-    set((state) => {
-      constructState(state, stateConfig)
-    }),
+    importState: (stateConfig: ExportableProps) =>
+      set((state) => {
+        constructState(state, stateConfig)
+      }),
 
-  setDuration: (duration: number) =>
-    set((state) => {
-      state.duration = duration
-    }),
+    setDuration: (duration: number) =>
+      set((state) => {
+        state.duration = duration
+      }),
 
-  setUserNote: (userNote: string) =>
-    set((state) => {
-      state.userNote = userNote
-    }),
+    setUserNote: (userNote: string) =>
+      set((state) => {
+        state.userNote = userNote
+      }),
 
-  setOverlay: (index: number, url: string) =>
-    set((state) => {
-      state.overlays[index] = url
-    }),
+    setOverlay: (index: number, url: string) =>
+      set((state) => {
+        state.overlays[index].imgSrc = url
+      }),
 
-  addPlayer: (player: Player) =>
-    set((state) => {
-      state.players.push(player)
-    }),
+    setOverlayCrop: (index: number, crop: Crop) =>
+      set((state) => {
+        state.overlays[index].crop = crop
+      }),
 
-  duplicatePlayer: (playerId: string) =>
-    set((state) => {
-      const playerIndex = state.players.findIndex(
-        (player) => player.id === playerId
-      )
+    setOverlayOpacity: (index: number, opacity: number) =>
+      set((state) => {
+        state.overlays[index].opacity = opacity
+      }),
 
-      if (playerIndex != -1) {
-        const playerClone = _cloneDeep(state.players[playerIndex])
-        playerClone.id = uuid()
+    addPlayer: (player: Player) =>
+      set((state) => {
+        state.players.push(player)
+      }),
 
-        state.players.splice(playerIndex, 0, playerClone)
-      }
-    }),
+    duplicatePlayer: (playerId: string) =>
+      set((state) => {
+        const playerIndex = state.players.findIndex(
+          (player) => player.id === playerId
+        )
 
-  removePlayer: (playerId: string) =>
-    set((state) => {
-      const playerIndex = state.players.findIndex(
-        (player) => player.id === playerId
-      )
+        if (playerIndex != -1) {
+          const playerClone = _cloneDeep(state.players[playerIndex])
+          playerClone.id = uuid()
 
-      if (playerIndex !== -1) {
-        state.players.splice(playerIndex, 1)
-      }
-    }),
+          state.players.splice(playerIndex, 0, playerClone)
+        }
+      }),
 
-  togglePlayer: (playerId: string) =>
-    set((state) => {
-      const player = getPlayerFromStore(state, playerId)
-      if (player) {
-        player.isActive = !player.isActive
-      }
-    }),
+    removePlayer: (playerId: string) =>
+      set((state) => {
+        const playerIndex = state.players.findIndex(
+          (player) => player.id === playerId
+        )
 
-  movePlayer: (playerId: string, amount: number) =>
-    set((state) => {
-      const playerPosition = state.players.findIndex(
-        (player) => player.id === playerId
-      )
+        if (playerIndex !== -1) {
+          state.players.splice(playerIndex, 1)
+        }
+      }),
 
-      if (playerPosition !== -1) {
-        const player = state.players[playerPosition]
-        const newPlayerPosition = Math.max(0, playerPosition + amount)
+    togglePlayer: (playerId: string) =>
+      set((state) => {
+        const player = getPlayerFromStore(state, playerId)
+        if (player) {
+          player.isActive = !player.isActive
+        }
+      }),
 
-        state.players.splice(playerPosition, 1)
-        state.players.splice(newPlayerPosition, 0, player)
-      }
-    }),
+    movePlayer: (playerId: string, amount: number) =>
+      set((state) => {
+        const playerPosition = state.players.findIndex(
+          (player) => player.id === playerId
+        )
 
-  toggleAbility: (playerId: string, abilityId: string) =>
-    set((state) => {
-      const playerAbility = getPlayerAbilityFromStore(
-        state,
-        playerId,
-        abilityId
-      )
-      if (!playerAbility) return
+        if (playerPosition !== -1) {
+          const player = state.players[playerPosition]
+          const newPlayerPosition = Math.max(0, playerPosition + amount)
 
-      playerAbility.isActive = !playerAbility.isActive
-      if (playerAbility.isActive) {
+          state.players.splice(playerPosition, 1)
+          state.players.splice(newPlayerPosition, 0, player)
+        }
+      }),
+
+    toggleAbility: (playerId: string, abilityId: string) =>
+      set((state) => {
+        const playerAbility = getPlayerAbilityFromStore(
+          state,
+          playerId,
+          abilityId
+        )
+        if (!playerAbility) return
+
+        playerAbility.isActive = !playerAbility.isActive
+        if (playerAbility.isActive) {
+          applyModifiers(playerAbility)
+          playerAbility.castTimes = getCastTimes(
+            playerAbility.ability.cooldown,
+            state.duration
+          )
+        }
+      }),
+
+    changePlayerName: (playerId: string, name: string) =>
+      set((state) => {
+        const player = getPlayerFromStore(state, playerId)
+        if (!player) return
+
+        player.name = name
+      }),
+
+    toggleAbilityModifier: (
+      playerId: string,
+      abilityId: string,
+      modifierIndex: number
+    ) =>
+      set((state) => {
+        const playerAbility = getPlayerAbilityFromStore(
+          state,
+          playerId,
+          abilityId
+        )
+        if (!playerAbility) return
+
+        // If the modifier depends on another modifier, check if that modifier is active
+        if (
+          playerAbility.ability.modifiers[modifierIndex].dependsOn
+            ?.map((modIndex) => playerAbility.activeModifiers[modIndex])
+            .some((mod) => !mod)
+        )
+          return
+
+        playerAbility.activeModifiers[modifierIndex] =
+          !playerAbility.activeModifiers[modifierIndex]
+
+        updateModifiers(playerAbility, modifierIndex)
         applyModifiers(playerAbility)
+
         playerAbility.castTimes = getCastTimes(
           playerAbility.ability.cooldown,
           state.duration
         )
-      }
-    }),
+      }),
 
-  changePlayerName: (playerId: string, name: string) =>
-    set((state) => {
-      const player = getPlayerFromStore(state, playerId)
-      if (!player) return
+    updateCastTime: ({
+      playerId,
+      abilityId,
+      castIndex,
+      newCastTime,
+      constrain = false,
+      replicateLeft = false,
+    }) =>
+      set((state) => {
+        const playerAbility = getPlayerAbilityFromStore(
+          state,
+          playerId,
+          abilityId
+        )
+        if (!playerAbility) return
 
-      player.name = name
-    }),
+        const duration = state.duration
+        updateCastTime(
+          playerAbility,
+          castIndex,
+          newCastTime,
+          duration,
+          constrain
+        )
+        adjustLeft(playerAbility, castIndex)
+        adjustRight(playerAbility, castIndex, duration, replicateLeft)
+      }),
 
-  toggleAbilityModifier: (
-    playerId: string,
-    abilityId: string,
-    modifierIndex: number
-  ) =>
-    set((state) => {
-      const playerAbility = getPlayerAbilityFromStore(
-        state,
-        playerId,
-        abilityId
-      )
-      if (!playerAbility) return
+    toggleMarkers: (active) =>
+      set((state) => {
+        state.markersEnabled = active ?? !state.markersEnabled
+      }),
 
-      // If the modifier depends on another modifier, check if that modifier is active
-      if (
-        playerAbility.ability.modifiers[modifierIndex].dependsOn
-          ?.map((modIndex) => playerAbility.activeModifiers[modIndex])
-          .some((mod) => !mod)
-      )
-        return
+    addMarker: (type) =>
+      set((state) => {
+        let marker: Marker
 
-      playerAbility.activeModifiers[modifierIndex] =
-        !playerAbility.activeModifiers[modifierIndex]
+        switch (type) {
+          case "phase":
+            marker = {
+              id: uuid(),
+              type: "phase",
+              time: 0,
+              phase: 1,
+            }
+            break
+          case "event":
+            marker = {
+              id: uuid(),
+              type: "event",
+              time: 0,
+              counter: 1,
+              event: "SCS",
+              spell: 0,
+            }
+            break
+        }
 
-      updateModifiers(playerAbility, modifierIndex)
-      applyModifiers(playerAbility)
+        state.markers.push(marker)
+      }),
 
-      playerAbility.castTimes = getCastTimes(
-        playerAbility.ability.cooldown,
-        state.duration
-      )
-    }),
+    updateMarker: (markerId, markerUpdate) =>
+      set((state) => {
+        const marker = state.markers.find((marker) => marker.id === markerId)
+        if (!marker) return
 
-  updateCastTime: ({
-    playerId,
-    abilityId,
-    castIndex,
-    newCastTime,
-    constrain = false,
-    replicateLeft = false,
-  }) =>
-    set((state) => {
-      const playerAbility = getPlayerAbilityFromStore(
-        state,
-        playerId,
-        abilityId
-      )
-      if (!playerAbility) return
+        const newTime = Math.max(
+          0,
+          Math.min(markerUpdate.time ?? marker.time, state.duration)
+        )
 
-      const duration = state.duration
-      updateCastTime(playerAbility, castIndex, newCastTime, duration, constrain)
-      adjustLeft(playerAbility, castIndex)
-      adjustRight(playerAbility, castIndex, duration, replicateLeft)
-    }),
+        marker.time = newTime
 
-  toggleMarkers: (active) =>
-    set((state) => {
-      state.markersEnabled = active ?? !state.markersEnabled
-    }),
+        if (marker.type === "phase" && markerUpdate.type === "phase") {
+          marker.phase = markerUpdate.phase ?? marker.phase
+        }
+        if (marker.type === "event" && markerUpdate.type === "event") {
+          marker.event = markerUpdate.event ?? marker.event
+          marker.spell = markerUpdate.spell ?? marker.spell
+          marker.counter = markerUpdate.counter ?? marker.counter
+        }
+      }),
 
-  addMarker: (type) =>
-    set((state) => {
-      let marker: Marker
+    removeMarker: (markerId) =>
+      set((state) => {
+        const markerIndex = state.markers.findIndex(
+          (marker) => marker.id === markerId
+        )
 
-      switch (type) {
-        case "phase":
-          marker = {
-            id: uuid(),
-            type: "phase",
-            time: 0,
-            phase: 1,
-          }
-          break
-        case "event":
-          marker = {
-            id: uuid(),
-            type: "event",
-            time: 0,
-            counter: 1,
-            event: "SCS",
-            spell: 0,
-          }
-          break
-      }
-
-      state.markers.push(marker)
-    }),
-
-  updateMarker: (markerId, markerUpdate) =>
-    set((state) => {
-      const marker = state.markers.find(
-        (marker) => marker.id === markerId
-      )
-      if (!marker) return
-
-      const newTime = Math.max(
-        0,
-        Math.min(markerUpdate.time ?? marker.time, state.duration)
-      )
-
-      marker.time = newTime
-
-      if (marker.type === "phase" && markerUpdate.type === "phase") {
-        marker.phase = markerUpdate.phase ?? marker.phase
-      }
-      if (marker.type === "event" && markerUpdate.type === "event") {
-        marker.event = markerUpdate.event ?? marker.event
-        marker.spell = markerUpdate.spell ?? marker.spell
-        marker.counter = markerUpdate.counter ?? marker.counter
-      }
-    }),
-
-  removeMarker: (markerId) =>
-    set((state) => {
-      const markerIndex = state.markers.findIndex(
-        (marker) => marker.id === markerId
-      )
-
-      if (markerIndex !== -1) {
-        state.markers.splice(markerIndex, 1)
-      }
-    }),
-})))
+        if (markerIndex !== -1) {
+          state.markers.splice(markerIndex, 1)
+        }
+      }),
+  }))
+)
 
 function updateCastTime(
   playerAbility: PlayerAbility,
@@ -397,6 +447,7 @@ function getExportData(
   }))
 
   const exportData: ExportableProps = {
+    version: state.version,
     duration: state.duration,
     markers: state.markers,
     markersEnabled: state.markersEnabled,
@@ -409,13 +460,28 @@ function getExportData(
   return exportData
 }
 
-function constructState(
-  state: AppStore,
-  stateConfig: ExportableProps
-) {
-
+function constructState(state: AppStore, stateConfig: ExportableProps) {
   // Allow for importing data with no overlays without overwriting existing overlays
-  if (stateConfig.overlays) state.overlays = stateConfig.overlays
+  if (stateConfig.version === undefined) {
+    if (stateConfig.overlays) {
+      const mappedOverlays = [
+        stateConfig.overlays[0],
+        "",
+        stateConfig.overlays[1],
+        stateConfig.overlays[2],
+      ]
+      state.overlays = mappedOverlays.map((overlay) => ({
+        imgSrc: overlay,
+        crop: { startX: 0, startY: 0, endX: 100, endY: 100 },
+        opacity: 0.2,
+      }))
+    }
+  }
+  if (stateConfig.version === 2) {
+    if (stateConfig.overlays) {
+      state.overlays = stateConfig.overlays
+    }
+  }
 
   state.duration = stateConfig.duration
 
