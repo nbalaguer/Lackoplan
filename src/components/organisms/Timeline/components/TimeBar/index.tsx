@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useAppStore } from "store"
 import { getCastTimes } from "utils"
 import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
-import { motion, useSpring } from "framer-motion"
+import { motion, useMotionValue } from "framer-motion"
 import classNames from "classnames"
 
 function TimeBar() {
@@ -12,12 +12,7 @@ function TimeBar() {
   const [isGuideVisible, setIsGuideVisible] = useState<boolean>(false)
 
   const { panelRef } = useTimelineContext()
-  const x = useSpring(0, {
-    bounce: 0,
-    stiffness: 8000,
-    damping: 100,
-    mass: 1,
-  })
+  const x = useMotionValue(0)
 
   useEffect(() => {
     if (!panelRef.current) return

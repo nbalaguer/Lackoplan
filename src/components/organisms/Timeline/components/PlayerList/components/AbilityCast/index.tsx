@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
 import WowheadIcon from "components/atoms/WowheadIcon"
-import { motion, useSpring } from "framer-motion"
+import { motion, useMotionValue } from "framer-motion"
 import { getPlayerAbilityFromStore, useAppStore } from "store"
 import useTrackMouseOffset from "hooks/useMouseOffset"
 import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
@@ -39,11 +39,7 @@ function AbilityCast(props: {
     })
   )
 
-  const x = useSpring(0, {
-    bounce: 0,
-    stiffness: 1000,
-    damping: 50,
-  })
+  const x = useMotionValue(0)
 
   useEffect(() => {
     const playerAbility = getPlayerAbilityFromStore(

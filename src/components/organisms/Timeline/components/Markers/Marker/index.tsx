@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import useTrackMouseOffset from "hooks/useMouseOffset"
 import type { Marker } from "types"
-import { motion, useSpring } from "framer-motion"
+import { motion, useMotionValue } from "framer-motion"
 import { useAppStore } from "store"
 import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
 import classNames from "classnames"
@@ -15,11 +15,7 @@ function Marker(props: { marker: Marker; disabled?: boolean }) {
   const duration = useAppStore((state) => state.duration)
   const updateMarker = useAppStore((state) => state.updateMarker)
 
-  const x = useSpring(0, {
-    bounce: 0,
-    stiffness: 1000,
-    damping: 50,
-  })
+  const x = useMotionValue(0)
 
   useEffect(() => {
     if (!panelWidth || !marker) return
