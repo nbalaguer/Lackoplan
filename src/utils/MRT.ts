@@ -34,7 +34,7 @@ export function MRTWrapStringWithClassColor(
  * String output compatible with https://wago.io/n7l5uN3YM
  */
 export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
-  const { castTimeGroupThreshold = 3, groupBy = "none" } = config
+  const { castTimeGroupThreshold = 1, groupBy = "none" } = config
 
   const currentState = useAppStore.getState()
   const castEvents = currentState.players
@@ -179,7 +179,7 @@ function MRTGroupCastEvents(
   castEvents.forEach((castEvent) => {
     const lastGroup = castEventGroups[castEventGroups.length - 1]
 
-    if (castEvent.castTime - lastGroup.castTime <= castTimeThreshold) {
+    if (castEvent.castTime - lastGroup.castTime < castTimeThreshold) {
       lastGroup.castEvents.push(castEvent)
     } else {
       castEventGroups.push({
