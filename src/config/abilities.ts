@@ -533,9 +533,18 @@ const abilities: {
         {
           icon: "monk_stance_wiseserpent",
           description:
-            "Uplifted Spirits. Expected CDR: 45s",
+            "Uplifted Spirits. Expected CDR: 1m",
           wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
-          process: modifiers.addCooldown(-45),
+          process: modifiers.addCooldown(-60),
+          exclusiveWith: [1],
+        },
+        {
+          icon: "monk_stance_wiseserpent",
+          description:
+            "Vivify spam. Expected CDR: 1m 30s",
+          wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
+          process: modifiers.addCooldown(-60 * 1.5),
+          exclusiveWith: [0],
         },
       ],
     },
