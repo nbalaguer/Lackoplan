@@ -9,7 +9,7 @@ import { MdKeyboardArrowUp as UpIcon } from "react-icons/md"
 import { MdKeyboardArrowDown as DownIcon } from "react-icons/md"
 import { BiImport as ImportIcon } from "react-icons/bi"
 import { BiExport as ExportIcon } from "react-icons/bi"
-import { TbNotes as MRTNoteIcon } from "react-icons/tb"
+import { TbNotes as NSNoteIcon } from "react-icons/tb"
 import { IoSettingsSharp as SettingsIcon } from "react-icons/io5"
 import { RiStickyNoteFill as NoteIcon } from "react-icons/ri"
 import { MdAreaChart as FightIcon } from "react-icons/md"
@@ -32,7 +32,7 @@ const icons = {
   down: <DownIcon size={defaultSize} />,
   import: <ImportIcon size={defaultSize} />,
   export: <ExportIcon size={defaultSize} />,
-  mrtnote: <MRTNoteIcon size={defaultSize} />,
+  nsnote: <NSNoteIcon size={defaultSize} />,
   settings: <SettingsIcon size={defaultSize} />,
   note: <NoteIcon size={defaultSize} />,
   fight: <FightIcon size={defaultSize} />,

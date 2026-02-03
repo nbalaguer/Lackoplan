@@ -13,7 +13,7 @@ function Class(props: { classKey: Class }) {
 
   return (
     <button
-      className="group flex transition-[outline-color] duration-100 rounded-full overflow-hidden border-4"
+      className="flex transition-[outline-color] duration-100 rounded-full overflow-hidden border-4"
       style={{
         borderColor: theme.colors[classKey],
       } as CSSProperties}
@@ -22,7 +22,7 @@ function Class(props: { classKey: Class }) {
         addPlayer(newPlayer)
       }}
     >
-      <WowheadIcon name={classIcons[classKey]} size="medium" className="group-hover:scale-110 transition-transform" />
+      <WowheadIcon name={classIcons[classKey]} size="medium" />
     </button>
   )
 }

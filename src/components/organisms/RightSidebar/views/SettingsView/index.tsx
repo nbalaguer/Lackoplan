@@ -4,7 +4,7 @@ import ImportString from "./components/ImportString"
 import LoadFile from "./components/LoadFile"
 import SaveFile from "./components/SaveFile"
 import SaveFileAs from "./components/SaveFileAs"
-import ExportMRTString from "./components/ExportMRTString"
+import ExportNSString from "./components/ExportNSString"
 
 function SettingsView() {
   return (
@@ -15,7 +15,7 @@ function SettingsView() {
         <SaveFile />
         <ExportString />
         <SaveFileAs />
-        <ExportMRTString />
+        <ExportNSString />
       </div>
     </div>
   )

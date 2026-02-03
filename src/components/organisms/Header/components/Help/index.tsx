@@ -3,6 +3,7 @@ import Markdown from "components/atoms/Markdown"
 import Modal from "components/templates/Modal"
 import React, { useState } from "react"
 
+
 const helpText = `## Timeline controls
 
 - Move ability instances by dragging them
@@ -17,10 +18,19 @@ const helpText = `## Timeline controls
 ## Tips
 
 - You can load and save notes if you have a [compatible browser](https://caniuse.com/?search=showopenfilepicker)
-- The exported MRT string is compatible with [Kaze ERT Timers Icons Wekaura](https://wago.io/n7l5uN3YM)
+- The exported NS string is compatible with [Northers Sky Raid Tools](https://www.curseforge.com/wow/addons/northern-sky-raid-tools)
 - Use the overlays section to paste in captures from your fight logs, I'm using damage taken and casts in this example :)
 
 ![alt text](/img/lackoplan-screenshot.png)
+
+## NS Syntax
+
+Player names can also be these keywords:
+
+- \`everyone\`
+- \`group1\` \`group2\` \`group3\` \`group4\` \`group5\` \`group6\` \`group7\` \`group8\`
+- \`tank\` \`melee\` \`ranged\` \`healer\`
+- \`warrior\` \`paladin\` \`hunter\` \`rogue\` \`priest\` \`shaman\` \`mage\` \`warlock\` \`monk\` \`druid\` \`dh\` \`dk\` \`evoker\`
 `
 
 function Help() {

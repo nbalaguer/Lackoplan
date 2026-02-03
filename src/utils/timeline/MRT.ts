@@ -1,37 +1,14 @@
-import theme from "config/theme"
 import { useAppStore } from "store"
-import type { Class, Player, PlayerAbility } from "types"
-import { getConditionString, getTimeString } from "utils"
+import type { Marker } from "types"
 import _groupBy from "lodash/groupBy"
-
-type TimelineStringConfig = {
-  castTimeGroupThreshold?: number
-  groupBy?: "player" | "none"
-}
-
-type CastEvent = {
-  player: Player
-  ability: PlayerAbility
-  castTime: number
-}
-
-type CastEventGroup = {
-  castTime: number
-  castEvents: CastEvent[]
-}
-
-export function MRTWrapStringWithClassColor(
-  playerClass: Class,
-  string: string
-) {
-  const MRTColorString = theme.colors[playerClass]
-    .toLowerCase()
-    .replace("#", "ff")
-  return `|c${MRTColorString}${string}|r`
-}
+import type { CastEvent, TimelineStringConfig } from "utils/timeline/types"
+import { groupCastEvents, wrapStringWithClassColor } from "utils/timeline/utils"
+import { getTimeString } from "utils"
 
 /**
  * String output compatible with https://wago.io/n7l5uN3YM
+ *
+ * @deprecated Use `NSGetTimelineString` instead
  */
 export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
   const { castTimeGroupThreshold = 1, groupBy = "none" } = config
@@ -54,7 +31,7 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
     .sort((cast1, cast2) => cast1.castTime - cast2.castTime)
 
   if (groupBy === "none") {
-    return MRTGroupCastEvents(castEvents, castTimeGroupThreshold)
+    return groupCastEvents(castEvents, castTimeGroupThreshold)
       .map((castEventGroup) => {
         const castEventsByPlayerId = _groupBy<CastEvent>(
           castEventGroup.castEvents,
@@ -67,14 +44,14 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
             const playerName = firstCast.player.name
 
             return [
-              MRTWrapStringWithClassColor(playerClass, playerName),
-              MRTWrapStringWithClassColor(
+              wrapStringWithClassColor(playerClass, playerName),
+              wrapStringWithClassColor(
                 playerClass,
                 firstCast.ability.ability.shortName
               ),
               ...restCasts.flatMap((castEvent) => [
                 `{spell:${castEvent.ability.ability.spellId}}`,
-                MRTWrapStringWithClassColor(
+                wrapStringWithClassColor(
                   playerClass,
                   castEvent.ability.ability.shortName
                 ),
@@ -92,7 +69,7 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
             (marker) => marker.time <= castEventGroup.castTime
           )
           condition = relatedMarker
-            ? "," + getConditionString(relatedMarker)
+            ? "," + getMarkerString(relatedMarker)
             : ""
           groupCastTime = getTimeString(
             castEventGroup.castTime - (relatedMarker?.time || 0)
@@ -114,24 +91,24 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
         const playerClass = playerCastEvents[0].player.class
         const playerName = playerCastEvents[0].player.name
 
-        const groupedCastEvents = MRTGroupCastEvents(
+        const groupedCastEvents = groupCastEvents(
           playerCastEvents,
           castTimeGroupThreshold
         )
 
         return [
-          MRTWrapStringWithClassColor(playerClass, playerName),
+          wrapStringWithClassColor(playerClass, playerName),
           ...groupedCastEvents.map((castEventGroup) => {
             const [firstCast, ...restCasts] = castEventGroup.castEvents
 
             const playerCastString = [
-              MRTWrapStringWithClassColor(
+              wrapStringWithClassColor(
                 playerClass,
                 firstCast.ability.ability.shortName
               ),
               ...restCasts.flatMap((castEvent) => [
                 `{spell:${castEvent.ability.ability.spellId}}`,
-                MRTWrapStringWithClassColor(
+                wrapStringWithClassColor(
                   playerClass,
                   castEvent.ability.ability.shortName
                 ),
@@ -147,7 +124,7 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
                 (marker) => marker.time <= castEventGroup.castTime
               )
               condition = relatedMarker
-                ? "," + getConditionString(relatedMarker)
+                ? "," + getMarkerString(relatedMarker)
                 : ""
               groupCastTime = getTimeString(
                 castEventGroup.castTime - (relatedMarker?.time || 0)
@@ -164,30 +141,11 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
   return ""
 }
 
-function MRTGroupCastEvents(
-  castEvents: CastEvent[],
-  castTimeThreshold: number
-) {
-  const castEventGroups: CastEventGroup[] = []
-  if (!castEvents.length) return castEventGroups
-
-  castEventGroups.push({
-    castTime: castEvents[0].castTime,
-    castEvents: [],
-  })
-
-  castEvents.forEach((castEvent) => {
-    const lastGroup = castEventGroups[castEventGroups.length - 1]
-
-    if (castEvent.castTime - lastGroup.castTime < castTimeThreshold) {
-      lastGroup.castEvents.push(castEvent)
-    } else {
-      castEventGroups.push({
-        castTime: castEvent.castTime,
-        castEvents: [castEvent],
-      })
-    }
-  })
-
-  return castEventGroups
+function getMarkerString(marker: Marker) {
+  switch (marker.type) {
+    case "phase":
+      return `p${marker.phase}`
+    case "event":
+      return `${marker.event}:${marker.spell}:${marker.counter}`
+  }
 }

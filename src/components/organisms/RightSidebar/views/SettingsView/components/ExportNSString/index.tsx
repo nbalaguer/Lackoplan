@@ -1,13 +1,13 @@
 import Modal from "components/templates/Modal"
 import React, { useCallback, useState, useRef, useEffect } from "react"
-import { MRTGetTimelineString } from "utils/MRT"
+import { NSGetTimelineString } from "utils/timeline/NS"
 import Switch from "components/inputs/Switch"
 import Button from "components/atoms/Button"
 import IconButton from "components/atoms/IconButton"
 
-function ExportMRTString() {
+function ExportNSString() {
   const [isModalOpen, setIsModalOpen] = useState(false)
-  const [MRTString, setMRTString] = useState("")
+  const [NSString, setNSString] = useState("")
   const [checked, setChecked] = useState(false)
   const inputRef = useRef<HTMLTextAreaElement>(null)
 
@@ -15,23 +15,23 @@ function ExportMRTString() {
     React.ChangeEventHandler<HTMLInputElement>
   >((event) => {
     const groupByConfig = event.target.checked ? "player" : "none"
-    setMRTString(MRTGetTimelineString({ groupBy: groupByConfig }))
+    setNSString(NSGetTimelineString({ groupBy: groupByConfig }))
     setChecked(event.target.checked)
   }, [])
 
   useEffect(() => {
     if (!isModalOpen || !inputRef.current) return
     inputRef.current.select()
-  }, [isModalOpen, MRTString])
+  }, [isModalOpen, NSString])
 
   return (
     <>
       <Button
-        text="Export MRT"
+        text="Export NS"
         onClick={() => {
           setIsModalOpen(true)
-          setMRTString(
-            MRTGetTimelineString({ groupBy: checked ? "player" : "none" })
+          setNSString(
+            NSGetTimelineString({ groupBy: checked ? "player" : "none" })
           )
         }}
       />
@@ -54,7 +54,7 @@ function ExportMRTString() {
         </div>
         <textarea
           className="h-full resize-none bg-slate-900/60 px-3 py-2 text-sm outline-none"
-          value={MRTString}
+          value={NSString}
           readOnly
           ref={inputRef}
         />
@@ -63,4 +63,4 @@ function ExportMRTString() {
   )
 }
 
-export default ExportMRTString
+export default ExportNSString

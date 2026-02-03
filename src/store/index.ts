@@ -33,7 +33,6 @@ type AppStore = {
   duration: number // seconds
   userNote: string
   players: Player[]
-  casts: PlayerAbility[]
   overlays: Overlay[]
   markers: Marker[]
   markersEnabled: boolean
@@ -76,7 +75,6 @@ export const useAppStore = create<AppStore>()(
     duration: 60 * 9 + 17,
     userNote: initialUserNote,
     players: [],
-    casts: [],
     overlays: [
       {
         imgSrc: "",

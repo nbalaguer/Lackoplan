@@ -1,6 +1,6 @@
 import Color from "color"
 import { v4 as uuid } from "uuid"
-import type { PlayerAbility, Class, Player, Marker } from "types"
+import type { PlayerAbility, Class, Player } from "types"
 import abilities from "config/abilities"
 import _cloneDeep from "lodash/cloneDeep"
 
@@ -58,11 +58,6 @@ export function getCastTimes(timeSlice: number, totalTime: number) {
   )
 }
 
-export function parseTimeString(timeString: string) {
-  const [minutes, seconds] = timeString.split(":")
-  return (parseInt(minutes) || 0) * 60 + (parseInt(seconds) || 0)
-}
-
 export function getTimeString(time: number) {
   return `${Math.floor(time / 60)}:${String(Math.floor(time % 60)).padStart(
     2,
@@ -70,11 +65,7 @@ export function getTimeString(time: number) {
   )}`
 }
 
-export function getConditionString(marker: Marker) {
-  switch (marker.type) {
-    case "phase":
-      return `p${marker.phase}`
-    case "event":
-      return `${marker.event}:${marker.spell}:${marker.counter}`
-  }
+export function parseTimeString(timeString: string) {
+  const [minutes, seconds] = timeString.split(":")
+  return (parseInt(minutes) || 0) * 60 + (parseInt(seconds) || 0)
 }
