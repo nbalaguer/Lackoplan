@@ -39,16 +39,17 @@ const Button = React.forwardRef(function Button(
   )
 })
 
-function ButtonGroup(props: { className?: string; children: React.ReactNode }) {
-  const { className, children } = props
+function ButtonGroup(props: {
+  className?: string
+  label?: string
+  children: React.ReactNode
+}) {
+  const { className, label, children } = props
 
   return (
-    <div
-      className={twMerge(
-        classNames(className, "flex border-2", "border-slate-500")
-      )}
-    >
-      {children}
+    <div className={twMerge(classNames(className, "space-y-1"))}>
+      {label && <span className="text-xs">{label}</span>}
+      <div className="flex border-2 border-slate-500">{children}</div>
     </div>
   )
 }

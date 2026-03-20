@@ -8,6 +8,11 @@ import type {
   MarkerUpdate,
   Overlay,
   Crop,
+  Difficulty,
+  ExportablePropsV0,
+  ExportablePropsV1,
+  ExportablePropsV2,
+  ExportablePropsV3,
 } from "types"
 import { applyModifiers, createPlayer, getCastTimes } from "utils"
 import { create } from "zustand"
@@ -29,8 +34,11 @@ Use **all** the [markdown](https://github.com/adam-p/markdown-here/wiki/Markdown
  * Updated overlay type from string[] to Overlay[]
  */
 type AppStore = {
-  version: 2
+  version: 3
   duration: number // seconds
+  encounterId: number
+  difficulty: Difficulty
+  boss: string
   userNote: string
   players: Player[]
   overlays: Overlay[]
@@ -59,6 +67,9 @@ type AppStore = {
     replicateLeft?: boolean
   }) => void
   setDuration: (duration: number) => void
+  setEncounterId: (encounterId: number) => void
+  setDifficulty: (difficulty: Difficulty) => void
+  setBoss: (boss: string) => void
   setUserNote: (userNote: string) => void
   setOverlay: (index: number, url: string) => void
   setOverlayCrop: (index: number, crop: Crop) => void
@@ -71,8 +82,11 @@ type AppStore = {
 
 export const useAppStore = create<AppStore>()(
   immer((set, get) => ({
-    version: 2,
+    version: 3,
     duration: 60 * 9 + 17,
+    encounterId: 999,
+    difficulty: "heroic",
+    boss: "quack",
     userNote: initialUserNote,
     players: [],
     overlays: [
@@ -107,12 +121,27 @@ export const useAppStore = create<AppStore>()(
 
     importState: (stateConfig: ExportableProps) =>
       set((state) => {
-        constructState(state, stateConfig)
+        importStateConfig(state, constructState(stateConfig))
       }),
 
     setDuration: (duration: number) =>
       set((state) => {
         state.duration = duration
+      }),
+
+    setEncounterId: (encounterId: number) =>
+      set((state) => {
+        state.encounterId = encounterId
+      }),
+
+    setDifficulty: (difficulty: Difficulty) =>
+      set((state) => {
+        state.difficulty = difficulty
+      }),
+
+    setBoss: (boss: string) =>
+      set((state) => {
+        state.boss = boss
       }),
 
     setUserNote: (userNote: string) =>
@@ -447,6 +476,9 @@ function getExportData(
   const exportData: ExportableProps = {
     version: state.version,
     duration: state.duration,
+    encounterId: state.encounterId,
+    difficulty: state.difficulty,
+    boss: state.boss,
     markers: state.markers,
     markersEnabled: state.markersEnabled,
     userNote: state.userNote,
@@ -458,39 +490,106 @@ function getExportData(
   return exportData
 }
 
-function constructState(state: AppStore, stateConfig: ExportableProps) {
-  // Allow for importing data with no overlays without overwriting existing overlays
-  if (stateConfig.version === undefined) {
-    if (stateConfig.overlays) {
-      const mappedOverlays = [
-        stateConfig.overlays[0],
-        "",
-        stateConfig.overlays[1],
-        stateConfig.overlays[2],
-      ]
-      state.overlays = mappedOverlays.map((overlay) => ({
-        imgSrc: overlay,
-        crop: { startX: 0, startY: 0, endX: 100, endY: 100 },
-        opacity: 0.2,
-      }))
-    }
-  }
-  if (stateConfig.version === 2) {
-    if (stateConfig.overlays) {
-      state.overlays = stateConfig.overlays
-    }
+function importFromV0(stateConfig: ExportablePropsV0): ExportablePropsV3 {
+  let overlays: ExportablePropsV3["overlays"] = undefined
+
+  if (stateConfig.overlays) {
+    const mappedOverlays = [
+      stateConfig.overlays[0],
+      "",
+      stateConfig.overlays[1],
+      stateConfig.overlays[2],
+    ]
+    overlays = mappedOverlays.map((overlay) => ({
+      imgSrc: overlay,
+      crop: { startX: 0, startY: 0, endX: 100, endY: 100 },
+      opacity: 0.2,
+    }))
   }
 
+  return {
+    version: 3,
+    boss: "Empty",
+    difficulty: "heroic",
+    duration: stateConfig.duration,
+    encounterId: 999,
+    markers: [],
+    markersEnabled: false,
+    players: stateConfig.players,
+    userNote: "",
+    overlays,
+  }
+}
+
+function importFromV1(stateConfig: ExportablePropsV1): ExportablePropsV3 {
+  let overlays: ExportablePropsV3["overlays"] = undefined
+
+  if (stateConfig.overlays) {
+    const mappedOverlays = [
+      stateConfig.overlays[0],
+      "",
+      stateConfig.overlays[1],
+      stateConfig.overlays[2],
+    ]
+    overlays = mappedOverlays.map((overlay) => ({
+      imgSrc: overlay,
+      crop: { startX: 0, startY: 0, endX: 100, endY: 100 },
+      opacity: 0.2,
+    }))
+  }
+
+  return {
+    version: 3,
+    boss: "Empty",
+    difficulty: "heroic",
+    duration: stateConfig.duration,
+    encounterId: 999,
+    markers: stateConfig.markers,
+    markersEnabled: stateConfig.markersEnabled,
+    players: stateConfig.players,
+    userNote: stateConfig.userNote,
+    overlays,
+  }
+}
+
+function importFromV2(stateConfig: ExportablePropsV2): ExportablePropsV3 {
+  return {
+    version: 3,
+    boss: "Empty",
+    difficulty: "heroic",
+    duration: stateConfig.duration,
+    encounterId: 999,
+    markers: stateConfig.markers,
+    markersEnabled: stateConfig.markersEnabled,
+    players: stateConfig.players,
+    userNote: stateConfig.userNote,
+    overlays: stateConfig.overlays,
+  }
+}
+
+function importFromV3(stateConfig: ExportablePropsV3): ExportablePropsV3 {
+  return {
+    version: 3,
+    boss: stateConfig.boss,
+    difficulty: stateConfig.difficulty,
+    duration: stateConfig.duration,
+    encounterId: stateConfig.encounterId,
+    markers: stateConfig.markers,
+    markersEnabled: stateConfig.markersEnabled,
+    players: stateConfig.players,
+    userNote: stateConfig.userNote,
+    overlays: stateConfig.overlays,
+  }
+}
+
+function importStateConfig(state: AppStore, stateConfig: ExportablePropsV3) {
+  state.boss = stateConfig.boss
+  state.difficulty = stateConfig.difficulty
   state.duration = stateConfig.duration
-
-  // Properties added after initial release.
-  // Check if they exist before importing for backwards compatibility
-  if (stateConfig.userNote) state.userNote = stateConfig.userNote
-  if (stateConfig.markers) state.markers = stateConfig.markers
-  if (stateConfig.markersEnabled)
-    state.markersEnabled = stateConfig.markersEnabled
-  // ----------------------------------------------------------------
-
+  state.encounterId = stateConfig.encounterId
+  state.markers  = stateConfig.markers
+  state.markersEnabled = stateConfig.markersEnabled
+  state.overlays = stateConfig.overlays || []
   state.players = stateConfig.players.map((playerConfig) => {
     const player = createPlayer(playerConfig.class)
     player.name = playerConfig.name
@@ -508,6 +607,27 @@ function constructState(state: AppStore, stateConfig: ExportableProps) {
     })
     return player
   })
+  state.userNote = stateConfig.userNote
+}
+
+function constructState(stateConfig: ExportableProps) {
+  // Allow for importing data with no overlays without overwriting existing overlays
+  if (!("version" in stateConfig)) {
+    if (!("userNote" in stateConfig)) {
+      return importFromV0(stateConfig)
+    }
+    else {
+      return importFromV1(stateConfig)
+    }
+  }
+  else {
+    switch (stateConfig.version) {
+      case 2:
+        return importFromV2(stateConfig)
+      case 3:
+        return importFromV3(stateConfig)
+    }
+  }
 }
 
 function deactivateDependentModifiers(

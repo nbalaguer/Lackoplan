@@ -27,11 +27,11 @@ function MarkerConfig() {
           onClick={() => addMarker("phase")}
           text="Add phase marker"
         />
-        <Button
+        {/* <Button
           className="w-full"
           onClick={() => addMarker("event")}
           text="Add event marker"
-        />
+        /> */}
       </div>
       <div className="overflow-auto space-y-2">
         {markerIds.map((markerId) => (

@@ -41,12 +41,8 @@ export type Player = {
   isActive: boolean
 }
 
-type ExportablePropsV0 = {
-  version: undefined
+export type ExportablePropsV0 = {
   duration: number
-  userNote: undefined
-  markers: undefined
-  markersEnabled: undefined
   players: {
     name: string
     class: Class
@@ -61,8 +57,7 @@ type ExportablePropsV0 = {
   overlays?: string[]
 }
 
-type ExportablePropsV1 = {
-  version: undefined
+export type ExportablePropsV1 = {
   duration: number
   userNote: string
   markers: Marker[]
@@ -81,9 +76,32 @@ type ExportablePropsV1 = {
   overlays?: string[]
 }
 
-type ExportablePropsV2 = {
+export type ExportablePropsV2 = {
   version: 2
   duration: number
+  userNote: string
+  markers: Marker[]
+  markersEnabled: boolean
+  players: {
+    name: string
+    class: Class
+    isActive: boolean
+    abilities: {
+      name: string
+      isActive: boolean
+      activeModifiers: boolean[]
+      castTimes: number[]
+    }[]
+  }[]
+  overlays?: Overlay[]
+}
+
+export type ExportablePropsV3 = {
+  version: 3
+  duration: number
+  encounterId: number
+  difficulty: Difficulty
+  boss: string
   userNote: string
   markers: Marker[]
   markersEnabled: boolean
@@ -105,6 +123,7 @@ export type ExportableProps =
   | ExportablePropsV0
   | ExportablePropsV1
   | ExportablePropsV2
+  | ExportablePropsV3
 
 type PhaseMarker = {
   id: string
@@ -141,3 +160,5 @@ export type Overlay = {
   crop: Crop;
   opacity: number;
 }
+
+export type Difficulty = "normal" | "heroic" | "mythic"

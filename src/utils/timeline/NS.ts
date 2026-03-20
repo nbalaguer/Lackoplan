@@ -1,8 +1,9 @@
 import { useAppStore } from "store"
 import type { Marker } from "types"
 import _groupBy from "lodash/groupBy"
+import _capitalize from "lodash/capitalize"
 import type { CastEvent, TimelineStringConfig } from "utils/timeline/types"
-import { groupCastEvents/* , wrapStringWithClassColor */ } from "utils/timeline/utils"
+import { groupCastEvents } from "utils/timeline/utils"
 
 class TimelineStringBuilder {
   private _entries: string[] = []
@@ -20,7 +21,7 @@ class TimelineEntryBuilder {
   private _entry: string = ""
 
   addTime(time: number) {
-    this._entry += `time:${time};`
+    this._entry += `time:${Math.round(time)};`
   }
 
   addPhase(marker: string) {
@@ -72,42 +73,49 @@ export function NSGetTimelineString(config: TimelineStringConfig = {}) {
     .sort((cast1, cast2) => cast1.castTime - cast2.castTime)
 
   const timelineStringBuilder = new TimelineStringBuilder()
+  timelineStringBuilder.addEntry(
+    `EncounterID:${currentState.encounterId};Difficulty:${_capitalize(
+      currentState.difficulty
+    )};Name:${_capitalize(currentState.boss)}`
+  )
 
   if (groupBy === "none") {
-    groupCastEvents(castEvents, castTimeGroupThreshold).forEach((castEventGroup) => {
-      const castEventsByPlayerId = _groupBy<CastEvent>(
-        castEventGroup.castEvents,
-        (castEvent) => castEvent.player.id
-      )
-
-      let castTime = castEventGroup.castTime
-      let marker = ""
-
-      if (currentState.markersEnabled) {
-        const relatedMarker = currentState.markers.findLast(
-          (marker) => marker.time <= castEventGroup.castTime
+    groupCastEvents(castEvents, castTimeGroupThreshold).forEach(
+      (castEventGroup) => {
+        const castEventsByPlayerId = _groupBy<CastEvent>(
+          castEventGroup.castEvents,
+          (castEvent) => castEvent.player.id
         )
 
-        if (relatedMarker) {
-          marker = getMarkerString(relatedMarker)
-          castTime = castEventGroup.castTime - relatedMarker.time
-        }
-      }
+        let castTime = castEventGroup.castTime
+        let marker = ""
 
-      Object.values(castEventsByPlayerId).forEach((playerCastEvents) => {
-        for (const castEvent of playerCastEvents) {
-          const timelineEntryBuilder = new TimelineEntryBuilder()
-          timelineEntryBuilder.addTime(castTime)
-          if (marker) {
-            timelineEntryBuilder.addPhase(marker)
+        if (currentState.markersEnabled) {
+          const relatedMarker = currentState.markers.findLast(
+            (marker) => marker.time <= castEventGroup.castTime
+          )
+
+          if (relatedMarker) {
+            marker = getMarkerString(relatedMarker)
+            castTime = castEventGroup.castTime - relatedMarker.time
           }
-          timelineEntryBuilder.addTag(castEvent.player.name)
-          timelineEntryBuilder.addSpell(castEvent.ability.ability.spellId)
-
-          timelineStringBuilder.addEntry(timelineEntryBuilder.getString())
         }
-      })
-    })
+
+        Object.values(castEventsByPlayerId).forEach((playerCastEvents) => {
+          for (const castEvent of playerCastEvents) {
+            const timelineEntryBuilder = new TimelineEntryBuilder()
+            timelineEntryBuilder.addTime(castTime)
+            if (marker) {
+              timelineEntryBuilder.addPhase(marker)
+            }
+            timelineEntryBuilder.addTag(castEvent.player.name)
+            timelineEntryBuilder.addSpell(castEvent.ability.ability.spellId)
+
+            timelineStringBuilder.addEntry(timelineEntryBuilder.getString())
+          }
+        })
+      }
+    )
 
     return timelineStringBuilder.getString()
   }
@@ -119,7 +127,6 @@ export function NSGetTimelineString(config: TimelineStringConfig = {}) {
     )
 
     Object.values(castEventsByPlayerId).forEach((playerCastEvents) => {
-      // const playerClass = playerCastEvents[0].player.class
       const playerName = playerCastEvents[0].player.name
 
       const groupedCastEvents = groupCastEvents(
@@ -166,7 +173,6 @@ export function NSGetTimelineString(config: TimelineStringConfig = {}) {
 
   return ""
 }
-
 
 function getMarkerString(marker: Marker) {
   switch (marker.type) {

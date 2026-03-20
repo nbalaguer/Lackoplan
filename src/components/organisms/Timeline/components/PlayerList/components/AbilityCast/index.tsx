@@ -1,4 +1,8 @@
-import React, { useEffect, useState } from "react"
+import React, {
+  useEffect,
+  useState,
+  type MouseEvent as ReactMouseEvent,
+} from "react"
 import WowheadIcon from "components/atoms/WowheadIcon"
 import { motion, useMotionValue } from "framer-motion"
 import { getPlayerAbilityFromStore, useAppStore } from "store"
@@ -8,6 +12,10 @@ import _debounce from "lodash/debounce"
 import _isEqual from "lodash/isEqual"
 import TimestampHint from "./TimestampHint"
 import useDeep from "hooks/useDeep"
+import Modal from "components/templates/Modal"
+import Button from "components/atoms/Button"
+import { useForm } from "react-hook-form"
+import TextInput from "components/inputs/TextInput"
 
 function AbilityCast(props: {
   playerId: string
@@ -105,48 +113,100 @@ function AbilityCast(props: {
     onEnd: () => setIsDragging(false),
   })
 
+  const [isOpen, setIsOpen] = useState(false)
+  const openModal = () => setIsOpen(true)
+  const closeModal = () => setIsOpen(false)
+
   return (
-    <motion.div
-      className="absolute top-0 left-0"
-      onMouseDown={startTracking}
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      transition={{
-        duration: 0.2,
-      }}
-      style={{
-        x,
-      }}
-      onHoverStart={() => setIsHovering(true)}
-      onHoverEnd={() => setIsHovering(false)}
-    >
+    <>
       <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: showTimestamp ? 1 : 0 }}
-        className="absolute bottom-[120%] left-1/2 -translate-x-1/2 pointer-events-none"
+        className="absolute top-0 left-0"
+        onMouseDown={startTracking}
+        initial={{
+          opacity: 0,
+        }}
+        animate={{
+          opacity: 1,
+        }}
+        transition={{
+          duration: 0.2,
+        }}
+        style={{
+          x,
+        }}
+        onHoverStart={() => setIsHovering(true)}
+        onHoverEnd={() => setIsHovering(false)}
+        onMouseUp={(e: ReactMouseEvent) => {
+          if (e.button === 1) {
+            openModal()
+          }
+        }}
       >
-        <TimestampHint
-          playerId={playerId}
-          abilityId={abilityId}
-          castIndex={castIndex}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: showTimestamp ? 1 : 0 }}
+          className="absolute bottom-[120%] left-1/2 -translate-x-1/2 pointer-events-none"
+        >
+          <TimestampHint
+            playerId={playerId}
+            abilityId={abilityId}
+            castIndex={castIndex}
+          />
+        </motion.div>
+        <div
+          className="bg-yellow-600/25 h-full absolute top-0 left-0"
+          style={{
+            width: `${
+              (panelWidth ?? 0) * ((abilityDuration ?? 1) / duration)
+            }px`,
+          }}
+        />
+        <WowheadIcon
+          name={abilityIcon || ""}
+          size="small"
+          className="pointer-events-none aspect-[5/4] object-cover relative"
         />
       </motion.div>
-      <div
-        className="bg-yellow-600/25 h-full absolute top-0 left-0"
-        style={{
-          width: `${(panelWidth ?? 0) * ((abilityDuration ?? 1) / duration)}px`,
-        }}
-      />
-      <WowheadIcon
-        name={abilityIcon || ""}
-        size="small"
-        className="pointer-events-none aspect-[5/4] object-cover relative"
-      />
-    </motion.div>
+      <Modal isOpen={isOpen} onCloseRequest={closeModal}>
+        <AbilityCastForm
+          defaultValues={{
+            // text: abilityData?.ability.name ?? "",
+            // glow: abilityData?.ability.spellId ?? "",
+            text: "",
+            glow: "",
+          }}
+          onSubmit={(values: AbilityCastForm) => {
+            console.log(values)
+            closeModal()
+          }}
+        />
+      </Modal>
+    </>
+  )
+}
+
+type AbilityCastForm = {
+  text: string
+  glow: string
+}
+
+function AbilityCastForm(props: {
+  defaultValues: AbilityCastForm;
+  onSubmit: (values: AbilityCastForm) => void;
+}) {
+  const { defaultValues, onSubmit } = props
+
+  const { register, handleSubmit } = useForm<AbilityCastForm>({
+    defaultValues,
+  })
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-3 p-3">
+      <h3 className="text-md font-bold">Cast Config</h3>
+      <TextInput label="Text" {...register("text")} />
+      <TextInput label="Glow Unit" {...register("glow")} />
+      <Button htmlType="submit" text="Update" className="mt-3" />
+    </form>
   )
 }
 

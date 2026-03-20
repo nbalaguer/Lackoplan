@@ -531,20 +531,11 @@ const abilities: {
       icon: "spell_monk_revival",
       modifiers: [
         {
-          icon: "monk_stance_wiseserpent",
+          icon: "inv_helm_leather_raidmonkgoblin_d_01",
           description:
-            "Uplifted Spirits. Expected CDR: 1m",
+            "Uplifted Spirits",
           wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
-          process: modifiers.addCooldown(-60),
-          exclusiveWith: [1],
-        },
-        {
-          icon: "monk_stance_wiseserpent",
-          description:
-            "Vivify spam. Expected CDR: 1m 30s",
-          wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
-          process: modifiers.addCooldown(-60 * 1.5),
-          exclusiveWith: [0],
+          process: modifiers.addCooldown(-30),
         },
       ],
     },
