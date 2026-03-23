@@ -24,8 +24,16 @@ class TimelineEntryBuilder {
     this._entry += `time:${Math.round(time)};`
   }
 
-  addPhase(marker: string) {
-    this._entry += `ph:${marker};`
+  addMarker(marker: Marker) {
+    switch (marker.type) {
+      case "phase":
+        this._entry += `ph:${marker.phase};`
+        break;
+      // NS note doesn't support event markers
+      case "event":
+        this._entry += ""
+        break;
+    }
   }
 
   addTag(tag: string) {
@@ -88,16 +96,15 @@ export function NSGetTimelineString(config: TimelineStringConfig = {}) {
         )
 
         let castTime = castEventGroup.castTime
-        let marker = ""
+        let marker: Marker | undefined
 
         if (currentState.markersEnabled) {
-          const relatedMarker = currentState.markers.findLast(
-            (marker) => marker.time <= castEventGroup.castTime
+          marker = currentState.markers.findLast(
+            (m) => m.time <= castEventGroup.castTime
           )
 
-          if (relatedMarker) {
-            marker = getMarkerString(relatedMarker)
-            castTime = castEventGroup.castTime - relatedMarker.time
+          if (marker) {
+            castTime = castEventGroup.castTime - marker.time
           }
         }
 
@@ -106,7 +113,7 @@ export function NSGetTimelineString(config: TimelineStringConfig = {}) {
             const timelineEntryBuilder = new TimelineEntryBuilder()
             timelineEntryBuilder.addTime(castTime)
             if (marker) {
-              timelineEntryBuilder.addPhase(marker)
+              timelineEntryBuilder.addMarker(marker)
             }
             timelineEntryBuilder.addTag(castEvent.player.name)
             timelineEntryBuilder.addSpell(castEvent.ability.ability.spellId)
@@ -141,22 +148,21 @@ export function NSGetTimelineString(config: TimelineStringConfig = {}) {
           const timelineEntryBuilder = new TimelineEntryBuilder()
 
           let castTime = castEventGroup.castTime
-          let marker = ""
+          let marker: Marker | undefined
 
           if (currentState.markersEnabled) {
-            const relatedMarker = currentState.markers.findLast(
-              (marker) => marker.time <= castEventGroup.castTime
+            marker = currentState.markers.findLast(
+              (m) => m.time <= castEventGroup.castTime
             )
 
-            if (relatedMarker) {
-              marker = getMarkerString(relatedMarker)
-              castTime = castEventGroup.castTime - relatedMarker.time
+            if (marker) {
+              castTime = castEventGroup.castTime - marker.time
             }
           }
 
           timelineEntryBuilder.addTime(castTime)
           if (marker) {
-            timelineEntryBuilder.addPhase(marker)
+            timelineEntryBuilder.addMarker(marker)
           }
           timelineEntryBuilder.addTag(castEvent.player.name)
           timelineEntryBuilder.addSpell(castEvent.ability.ability.spellId)
@@ -172,14 +178,4 @@ export function NSGetTimelineString(config: TimelineStringConfig = {}) {
   }
 
   return ""
-}
-
-function getMarkerString(marker: Marker) {
-  switch (marker.type) {
-    case "phase":
-      return `ph:${marker.phase};`
-    // NS note doesn't support event markers
-    case "event":
-      return ""
-  }
 }
