@@ -1,7 +1,7 @@
 import React from "react"
 import Marker from "./Marker"
-import { useAppStore } from "store"
-import {useShallow} from "zustand/react/shallow"
+import { useAppStore } from "@/store"
+import { useShallow } from "zustand/react/shallow"
 
 function Markers() {
   const markers = useAppStore(useShallow((state) => state.markers))

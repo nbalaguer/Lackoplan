@@ -1,8 +1,7 @@
-import IconButton from "components/atoms/IconButton"
-import Markdown from "components/atoms/Markdown"
-import Modal from "components/templates/Modal"
+import IconButton from "@/components/atoms/IconButton"
+import Markdown from "@/components/atoms/Markdown"
+import Modal from "@/components/templates/Modal"
 import React, { useState } from "react"
-
 
 const helpText = `## Timeline controls
 

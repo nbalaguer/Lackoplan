@@ -1,4 +1,4 @@
-import { CLASSES } from "config/constants"
+import { CLASSES } from "@/config/constants"
 
 export type Class = (typeof CLASSES)[keyof typeof CLASSES]
 
@@ -144,21 +144,21 @@ type EventMarker = {
 export type Marker = PhaseMarker | EventMarker
 
 export type MarkerUpdate =
-  | Pick<PhaseMarker, "type"> & Partial<Pick<PhaseMarker, "time" | "phase">>
-  | Pick<EventMarker, "type"> & Partial<Pick<EventMarker, "time" | "event" | "spell" | "counter">>
-
+  | (Pick<PhaseMarker, "type"> & Partial<Pick<PhaseMarker, "time" | "phase">>)
+  | (Pick<EventMarker, "type"> &
+      Partial<Pick<EventMarker, "time" | "event" | "spell" | "counter">>)
 
 export type Crop = {
-  startX: number;
-  startY: number;
-  endX: number;
-  endY: number;
+  startX: number
+  startY: number
+  endX: number
+  endY: number
 }
 
 export type Overlay = {
-  imgSrc: string;
-  crop: Crop;
-  opacity: number;
+  imgSrc: string
+  crop: Crop
+  opacity: number
 }
 
 export type Difficulty = "normal" | "heroic" | "mythic"

@@ -1,11 +1,13 @@
 import React from "react"
 import Player from "./components/Player"
-import { useAppStore } from "store"
+import { useAppStore } from "@/store"
 import { AnimatePresence } from "framer-motion"
 import { useShallow } from "zustand/react/shallow"
 
 function PlayerList() {
-  const playerIds = useAppStore(useShallow((state) => state.players.map((player) => player.id)))
+  const playerIds = useAppStore(
+    useShallow((state) => state.players.map((player) => player.id))
+  )
 
   return (
     <div className="overflow-auto p-2 space-y-2">

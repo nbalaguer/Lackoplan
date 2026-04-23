@@ -1,5 +1,5 @@
 import React from "react"
-import { useAppStore } from "store"
+import { useAppStore } from "@/store"
 import Player from "./components/Player"
 import { LayoutGroup } from "framer-motion"
 import { useShallow } from "zustand/react/shallow"

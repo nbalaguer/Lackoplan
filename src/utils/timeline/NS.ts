@@ -1,9 +1,9 @@
-import { useAppStore } from "store"
-import type { Marker } from "types"
+import { useAppStore } from "@/store"
+import type { Marker } from "@/types"
 import _groupBy from "lodash/groupBy"
 import _capitalize from "lodash/capitalize"
-import type { CastEvent, TimelineStringConfig } from "utils/timeline/types"
-import { groupCastEvents } from "utils/timeline/utils"
+import type { CastEvent, TimelineStringConfig } from "@/utils/timeline/types"
+import { groupCastEvents } from "@/utils/timeline/utils"
 
 class TimelineStringBuilder {
   private _entries: string[] = []
@@ -28,11 +28,11 @@ class TimelineEntryBuilder {
     switch (marker.type) {
       case "phase":
         this._entry += `ph:${marker.phase};`
-        break;
+        break
       // NS note doesn't support event markers
       case "event":
         this._entry += ""
-        break;
+        break
     }
   }
 

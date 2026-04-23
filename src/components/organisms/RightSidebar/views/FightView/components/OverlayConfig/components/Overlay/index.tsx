@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef } from "react"
 import { clamp, motion, useMotionValue } from "framer-motion"
 import classNames from "classnames"
-import type { Crop, Overlay } from "types"
-import useLatestRef from "hooks/useLatestRef"
-import useEvent from "hooks/useEvent"
+import type { Crop, Overlay } from "@/types"
+import useLatestRef from "@/hooks/useLatestRef"
+import useEvent from "@/hooks/useEvent"
 import _throttle from "lodash/throttle"
 
 type OverlayComponentProps = {

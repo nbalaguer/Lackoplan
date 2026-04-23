@@ -1,9 +1,12 @@
-import { useAppStore } from "store"
-import type { Marker } from "types"
+import { useAppStore } from "@/store"
+import type { Marker } from "@/types"
 import _groupBy from "lodash/groupBy"
-import type { CastEvent, TimelineStringConfig } from "utils/timeline/types"
-import { groupCastEvents, wrapStringWithClassColor } from "utils/timeline/utils"
-import { getTimeString } from "utils"
+import type { CastEvent, TimelineStringConfig } from "@/utils/timeline/types"
+import {
+  groupCastEvents,
+  wrapStringWithClassColor,
+} from "@/utils/timeline/utils"
+import { getTimeString } from "@/utils"
 
 /**
  * String output compatible with https://wago.io/n7l5uN3YM
@@ -68,9 +71,7 @@ export function MRTGetTimelineString(config: TimelineStringConfig = {}) {
           const relatedMarker = currentState.markers.findLast(
             (marker) => marker.time <= castEventGroup.castTime
           )
-          condition = relatedMarker
-            ? "," + getMarkerString(relatedMarker)
-            : ""
+          condition = relatedMarker ? "," + getMarkerString(relatedMarker) : ""
           groupCastTime = getTimeString(
             castEventGroup.castTime - (relatedMarker?.time || 0)
           )

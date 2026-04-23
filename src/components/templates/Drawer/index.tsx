@@ -1,6 +1,6 @@
 import React from "react"
 import { motion, AnimatePresence, Variants } from "framer-motion"
-import Portal from "components/templates/Portal"
+import Portal from "@/components/templates/Portal"
 import classNames from "classnames"
 
 const overlayVariants: Variants = {

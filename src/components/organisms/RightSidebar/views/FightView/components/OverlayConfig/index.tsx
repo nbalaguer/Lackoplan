@@ -1,5 +1,5 @@
 import React from "react"
-import { useAppStore } from "store"
+import { useAppStore } from "@/store"
 import Overlay from "./components/Overlay"
 import { useShallow } from "zustand/react/shallow"
 
@@ -21,7 +21,9 @@ function OverlayConfig() {
                 overlay={overlay}
                 onOverlayChange={(src) => setOverlay(index, src)}
                 onOverlayCropChange={(crop) => setOverlayCrop(index, crop)}
-                onOverlayOpacityChange={(opacity) => setOverlayOpacity(index, opacity)}
+                onOverlayOpacityChange={(opacity) =>
+                  setOverlayOpacity(index, opacity)
+                }
               />
             </React.Fragment>
           )

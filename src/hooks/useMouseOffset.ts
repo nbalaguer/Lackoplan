@@ -10,7 +10,6 @@ function useTrackMouseOffset<T = HTMLDivElement>({
   onChange: (event: MouseEvent, offset: number) => void
   onEnd?: () => void
 }) {
-
   const onStartRef = useLatestRef(onStart)
   const onChangeRef = useLatestRef(onChange)
   const onEndRef = useLatestRef(onEnd)

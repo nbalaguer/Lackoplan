@@ -1,14 +1,9 @@
-import theme from "config/theme"
-import type { Class } from "types"
-import type { CastEvent, CastEventGroup } from "utils/timeline/types"
+import theme from "@/config/theme"
+import type { Class } from "@/types"
+import type { CastEvent, CastEventGroup } from "@/utils/timeline/types"
 
-export function wrapStringWithClassColor(
-  playerClass: Class,
-  string: string
-) {
-  const colorString = theme.colors[playerClass]
-    .toLowerCase()
-    .replace("#", "ff")
+export function wrapStringWithClassColor(playerClass: Class, string: string) {
+  const colorString = theme.colors[playerClass].toLowerCase().replace("#", "ff")
   return `|c${colorString}${string}|r`
 }
 

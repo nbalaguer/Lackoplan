@@ -1,5 +1,5 @@
 import React from "react"
-import { useAppStore } from "store"
+import { useAppStore } from "@/store"
 import { useShallow } from "zustand/react/shallow"
 
 function FightPanel() {
@@ -14,7 +14,10 @@ function FightPanel() {
           const zoomY = 100 / (overlay.crop.endY - overlay.crop.startY)
 
           return (
-            <div key={index} className="absolute top-0 left-0 w-full h-full overflow-hidden">
+            <div
+              key={index}
+              className="absolute top-0 left-0 w-full h-full overflow-hidden"
+            >
               <img
                 src={overlay.imgSrc}
                 alt=""

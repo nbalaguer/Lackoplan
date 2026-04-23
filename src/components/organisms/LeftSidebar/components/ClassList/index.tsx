@@ -1,9 +1,9 @@
 import React from "react"
-import { CLASSES } from "config/constants"
+import { CLASSES } from "@/config/constants"
 import Class from "./components/Class"
-import abilities from "config/abilities"
-import { classIcons } from "config/classes"
-import WowheadIcon from "components/atoms/WowheadIcon"
+import abilities from "@/config/abilities"
+import { classIcons } from "@/config/classes"
+import WowheadIcon from "@/components/atoms/WowheadIcon"
 
 function ClassList() {
   return (

@@ -1,9 +1,9 @@
-import Button from "components/atoms/Button"
-import useFileContext from "context/FileContext"
-import { requestSaveFileAs } from "context/FileContext/utils"
+import Button from "@/components/atoms/Button"
+import useFileContext from "@/context/FileContext"
+import { requestSaveFileAs } from "@/context/FileContext/utils"
 import { Base64 } from "js-base64"
 import React, { useCallback } from "react"
-import { useAppStore } from "store"
+import { useAppStore } from "@/store"
 
 function SaveFileAs() {
   const exportState = useAppStore((state) => state.exportState)

@@ -1,6 +1,6 @@
 import React from "react"
-import WowheadIcon from "components/atoms/WowheadIcon"
-import { useAppStore } from "store"
+import WowheadIcon from "@/components/atoms/WowheadIcon"
+import { useAppStore } from "@/store"
 import AbilityCast from "../AbilityCast"
 import { motion } from "framer-motion"
 import { useShallow } from "zustand/react/shallow"
@@ -8,18 +8,20 @@ import { useShallow } from "zustand/react/shallow"
 function AbilitySequence(props: { playerId: string; abilityId: string }) {
   const { playerId, abilityId } = props
 
-  const abilityData = useAppStore(useShallow((state) => {
-    const player = state.players.find((player) => player.id === playerId)
-    if (!player) return
-    const playerAbility = player.abilities.find(
-      (ability) => ability.id === abilityId
-    )
-    if (!playerAbility) return
-    return {
-      icon: playerAbility.ability.icon,
-      numCasts: playerAbility.castTimes.length,
-    }
-  }))
+  const abilityData = useAppStore(
+    useShallow((state) => {
+      const player = state.players.find((player) => player.id === playerId)
+      if (!player) return
+      const playerAbility = player.abilities.find(
+        (ability) => ability.id === abilityId
+      )
+      if (!playerAbility) return
+      return {
+        icon: playerAbility.ability.icon,
+        numCasts: playerAbility.castTimes.length,
+      }
+    })
+  )
 
   if (!abilityData) return null
 

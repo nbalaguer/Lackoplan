@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react"
-import IconButton from "components/atoms/IconButton"
+import IconButton from "@/components/atoms/IconButton"
 import FightView from "./views/FightView"
 import NoteView from "./views/NoteView"
 import SettingsView from "./views/SettingsView"
@@ -39,9 +39,12 @@ function RightSidebar() {
 
   return (
     <div
-      className={classNames("grid grid-cols-[repeat(2,minmax(0px,auto))] grid-rows-[minmax(0px,auto)]", {
-        ["border-l-2 border-slate-700"]: !!ViewComponent,
-      })}
+      className={classNames(
+        "grid grid-cols-[repeat(2,minmax(0px,auto))] grid-rows-[minmax(0px,auto)]",
+        {
+          ["border-l-2 border-slate-700"]: !!ViewComponent,
+        }
+      )}
     >
       {ViewComponent && <ViewComponent />}
       <div className="col-start-2 flex flex-col divide-y-2 divide-slate-700 border-l-2 border-slate-700">

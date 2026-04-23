@@ -1,21 +1,22 @@
 import React from "react"
-import type { PlayerAbility } from "types"
-import WowheadIcon from "components/atoms/WowheadIcon"
+import type { PlayerAbility } from "@/types"
+import WowheadIcon from "@/components/atoms/WowheadIcon"
 import classNames from "classnames"
-import { getPlayerAbilityFromStore, useAppStore } from "store"
+import { getPlayerAbilityFromStore, useAppStore } from "@/store"
 import { useShallow } from "zustand/react/shallow"
 import _omit from "lodash/omit"
-import useLatestValue from "hooks/useLatestValue"
+import useLatestValue from "@/hooks/useLatestValue"
 
-function PlayerAbility(props: {
-  playerId: string
-  playerAbilityId: string
-}) {
+function PlayerAbility(props: { playerId: string; playerAbilityId: string }) {
   const { playerId, playerAbilityId } = props
 
   const storePlayerAbility = useAppStore(
     useShallow((state) => {
-      const playerAbility = getPlayerAbilityFromStore(state, playerId, playerAbilityId)
+      const playerAbility = getPlayerAbilityFromStore(
+        state,
+        playerId,
+        playerAbilityId
+      )
       if (!playerAbility) return
       return {
         id: playerAbility.id,

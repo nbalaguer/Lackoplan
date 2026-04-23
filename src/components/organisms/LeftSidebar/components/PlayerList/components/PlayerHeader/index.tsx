@@ -1,9 +1,9 @@
 import React, { useState, useCallback, useRef, useEffect } from "react"
 import { motion } from "framer-motion"
-import IconButton from "components/atoms/IconButton"
+import IconButton from "@/components/atoms/IconButton"
 import { useForm } from "react-hook-form"
 import composeRefs from "@seznam/compose-react-refs"
-import { useAppStore } from "store"
+import { useAppStore } from "@/store"
 
 type Form = {
   name: string
@@ -55,7 +55,11 @@ function PlayerHeader(props: {
 
   return (
     <div className="flex items-center justify-between">
-      <IconButton icon="close" onClick={onRemove} className="text-xs -ml-2 mt-1" />
+      <IconButton
+        icon="close"
+        onClick={onRemove}
+        className="text-xs -ml-2 mt-1"
+      />
       <div className="flex min-w-[18ch] flex-grow items-center gap-2 pl-1">
         {isEditing ? (
           <form
@@ -98,9 +102,23 @@ function PlayerHeader(props: {
           )}
         </motion.span>
       </div>
-      <IconButton icon="duplicate" onClick={() => duplicatePlayer(playerId)} className="text-xs" />
-      <IconButton icon="up" onClick={() => movePlayer(playerId, -1)} disabled={disableUp} className="text-xs" />
-      <IconButton icon="down" onClick={() => movePlayer(playerId, 1)} disabled={disableDown} className="text-xs" />
+      <IconButton
+        icon="duplicate"
+        onClick={() => duplicatePlayer(playerId)}
+        className="text-xs"
+      />
+      <IconButton
+        icon="up"
+        onClick={() => movePlayer(playerId, -1)}
+        disabled={disableUp}
+        className="text-xs"
+      />
+      <IconButton
+        icon="down"
+        onClick={() => movePlayer(playerId, 1)}
+        disabled={disableDown}
+        className="text-xs"
+      />
       {isActive ? (
         <IconButton icon="show" onClick={handleToggle} className="text-xs" />
       ) : (

@@ -1,4 +1,4 @@
-import { CLASSES } from "config/constants"
+import { CLASSES } from "@/config/constants"
 
 export const classIcons: {
   [s in (typeof CLASSES)[keyof typeof CLASSES]]: string

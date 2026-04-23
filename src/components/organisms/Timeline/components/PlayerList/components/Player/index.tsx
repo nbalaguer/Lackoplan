@@ -1,11 +1,11 @@
 import React from "react"
 import Color from "color"
-import theme from "config/theme"
-import { useAppStore } from "store"
+import theme from "@/config/theme"
+import { useAppStore } from "@/store"
 import _isEqual from "lodash/isEqual"
 import AbilitySequence from "../AbilitySequence"
 import { AnimatePresence, motion } from "framer-motion"
-import useDeep from "hooks/useDeep"
+import useDeep from "@/hooks/useDeep"
 
 function Player(props: { playerId: string }) {
   const { playerId } = props

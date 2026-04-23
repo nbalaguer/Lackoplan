@@ -1,10 +1,10 @@
 import React, { type CSSProperties } from "react"
-import WowheadIcon from "components/atoms/WowheadIcon"
-import { classIcons } from "config/classes"
-import { useAppStore } from "store"
-import type { Class } from "types"
-import { createPlayer } from "utils"
-import theme from "config/theme"
+import WowheadIcon from "@/components/atoms/WowheadIcon"
+import { classIcons } from "@/config/classes"
+import { useAppStore } from "@/store"
+import type { Class } from "@/types"
+import { createPlayer } from "@/utils"
+import theme from "@/config/theme"
 
 function Class(props: { classKey: Class }) {
   const { classKey } = props
@@ -14,9 +14,11 @@ function Class(props: { classKey: Class }) {
   return (
     <button
       className="flex transition-[outline-color] duration-100 rounded-full overflow-hidden border-4"
-      style={{
-        borderColor: theme.colors[classKey],
-      } as CSSProperties}
+      style={
+        {
+          borderColor: theme.colors[classKey],
+        } as CSSProperties
+      }
       onClick={() => {
         const newPlayer = createPlayer(classKey)
         addPlayer(newPlayer)

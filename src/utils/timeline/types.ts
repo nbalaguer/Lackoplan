@@ -1,4 +1,4 @@
-import type { Player, PlayerAbility } from "types"
+import type { Player, PlayerAbility } from "@/types"
 
 export type TimelineStringConfig = {
   castTimeGroupThreshold?: number

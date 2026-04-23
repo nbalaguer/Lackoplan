@@ -1,13 +1,13 @@
 import React, { useCallback, forwardRef } from "react"
-import type { Player } from "types"
-import { getPlayerFromStore, useAppStore } from "store"
+import type { Player } from "@/types"
+import { getPlayerFromStore, useAppStore } from "@/store"
 import PlayerAbility from "../PlayerAbility"
 import { motion } from "framer-motion"
 import PlayerHeader from "../PlayerHeader"
-import theme from "config/theme"
+import theme from "@/config/theme"
 import _omit from "lodash/omit"
-import useLatestValue from "hooks/useLatestValue"
-import useDeep from "hooks/useDeep"
+import useLatestValue from "@/hooks/useLatestValue"
+import useDeep from "@/hooks/useDeep"
 
 type PlayerProps = {
   playerId: string

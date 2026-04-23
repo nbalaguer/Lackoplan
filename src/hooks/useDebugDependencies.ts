@@ -14,17 +14,18 @@ function getChangeType(arg1: unknown, arg2: unknown): "🔥" | "⚠️" | "☕" 
   return "☕"
 }
 
-function getChanges(value: Record<string, unknown>, compareTo: Record<string, unknown>) {
+function getChanges(
+  value: Record<string, unknown>,
+  compareTo: Record<string, unknown>
+) {
   const changes = {}
 
   Object.entries(value).forEach(([k, v]) => {
     const change = getChangeType(v, compareTo[k])
 
-    changes[
-      `${k} ${change}`
-    ] = {
-      "Last": compareTo[k],
-      "Current": value,
+    changes[`${k} ${change}`] = {
+      Last: compareTo[k],
+      Current: value,
     }
   })
 

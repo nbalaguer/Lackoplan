@@ -1,10 +1,10 @@
 import React, { useState, useCallback } from "react"
-import Modal from "components/templates/Modal"
-import { useAppStore } from "store"
+import Modal from "@/components/templates/Modal"
+import { useAppStore } from "@/store"
 import { Base64 } from "js-base64"
 import { useForm } from "react-hook-form"
-import Button from "components/atoms/Button"
-import IconButton from "components/atoms/IconButton"
+import Button from "@/components/atoms/Button"
+import IconButton from "@/components/atoms/IconButton"
 
 type FormData = {
   importString: string

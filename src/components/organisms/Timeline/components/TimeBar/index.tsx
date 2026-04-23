@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react"
-import { useAppStore } from "store"
-import { getCastTimes } from "utils"
-import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
+import { useAppStore } from "@/store"
+import { getCastTimes } from "@/utils"
+import useTimelineContext from "@/components/organisms/Timeline/context/useTimelineContext"
 import { motion, useMotionValue } from "framer-motion"
 import classNames from "classnames"
 

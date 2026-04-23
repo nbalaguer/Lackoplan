@@ -1,9 +1,9 @@
-import Modal from "components/templates/Modal"
+import Modal from "@/components/templates/Modal"
 import React, { useCallback, useState, useRef, useEffect } from "react"
-import { NSGetTimelineString } from "utils/timeline/NS"
-import Switch from "components/inputs/Switch"
-import Button from "components/atoms/Button"
-import IconButton from "components/atoms/IconButton"
+import { NSGetTimelineString } from "@/utils/timeline/NS"
+import Switch from "@/components/inputs/Switch"
+import Button from "@/components/atoms/Button"
+import IconButton from "@/components/atoms/IconButton"
 
 function ExportNSString() {
   const [isModalOpen, setIsModalOpen] = useState(false)

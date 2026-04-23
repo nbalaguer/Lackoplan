@@ -16,15 +16,7 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@/*": ["./src/*"],
-      "components/*": ["./src/components/*"],
-      "config/*": ["./src/config/*"],
-      "context/*": ["./src/context/*"],
-      "hooks/*": ["./src/hooks/*"],
-      "store": ["./src/store"],
-      "utils": ["./src/utils"],
-      "utils/*": ["./src/utils/*"],
-      "types": ["./src/types"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"],

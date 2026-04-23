@@ -1,11 +1,11 @@
 import React, { useCallback } from "react"
-import { useAppStore } from "store"
-import type { Marker, MarkerUpdate } from "types"
+import { useAppStore } from "@/store"
+import type { Marker, MarkerUpdate } from "@/types"
 import { FormProvider, useForm, useFormContext } from "react-hook-form"
-import IconButton from "components/atoms/IconButton"
+import IconButton from "@/components/atoms/IconButton"
 import { useShallow } from "zustand/react/shallow"
 import type { Except } from "type-fest"
-import ButtonGroup from "components/inputs/ButtonGroup"
+import ButtonGroup from "@/components/inputs/ButtonGroup"
 
 function PhaseMarkerFormView() {
   const { register } = useFormContext()

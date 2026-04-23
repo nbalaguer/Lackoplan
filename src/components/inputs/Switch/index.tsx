@@ -37,7 +37,7 @@ const Switch = React.forwardRef(function Switch(
           "border-slate-500 bg-slate-700",
           "peer-checked:justify-end",
           "peer-checked:bg-slate-600",
-          "transition-colors duration-100",
+          "transition-colors duration-100"
         )}
       >
         <motion.div

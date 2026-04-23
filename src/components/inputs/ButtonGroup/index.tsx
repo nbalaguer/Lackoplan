@@ -1,5 +1,5 @@
 import classNames from "classnames"
-import Icon from "components/atoms/Icon"
+import Icon from "@/components/atoms/Icon"
 import React from "react"
 import type { UseFormRegisterReturn } from "react-hook-form"
 import { twMerge } from "tailwind-merge"

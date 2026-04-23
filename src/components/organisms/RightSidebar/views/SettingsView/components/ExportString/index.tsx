@@ -1,10 +1,10 @@
-import Modal from "components/templates/Modal"
+import Modal from "@/components/templates/Modal"
 import React, { useState, useCallback, useEffect, useRef } from "react"
-import { useAppStore } from "store"
+import { useAppStore } from "@/store"
 import { Base64 } from "js-base64"
-import Switch from "components/inputs/Switch"
-import Button from "components/atoms/Button"
-import IconButton from "components/atoms/IconButton"
+import Switch from "@/components/inputs/Switch"
+import Button from "@/components/atoms/Button"
+import IconButton from "@/components/atoms/IconButton"
 
 function ExportString() {
   const inputRef = useRef<HTMLTextAreaElement>(null)

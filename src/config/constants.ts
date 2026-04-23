@@ -84,8 +84,7 @@ export const SPECS = {
   },
 } as const
 
-
-type SpecIntersection = UnionToIntersection<typeof SPECS[keyof typeof SPECS]>
+type SpecIntersection = UnionToIntersection<(typeof SPECS)[keyof typeof SPECS]>
 type Spec = SpecIntersection[keyof SpecIntersection]
 
 const _a: Spec = SPECS[CLASSES.WARRIOR].ARMS

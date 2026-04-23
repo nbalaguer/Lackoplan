@@ -1,6 +1,6 @@
-import React from 'react'
-import { getPlayerAbilityFromStore, useAppStore } from 'store'
-import { getTimeString } from 'utils'
+import React from "react"
+import { getPlayerAbilityFromStore, useAppStore } from "@/store"
+import { getTimeString } from "@/utils"
 
 function TimestampHint(props: {
   playerId: string

@@ -1,7 +1,7 @@
 import React from "react"
 import classNames from "classnames"
-import { useAppStore } from "store"
-import { getCastTimes } from "utils"
+import { useAppStore } from "@/store"
+import { getCastTimes } from "@/utils"
 
 function TimeGrid() {
   const duration = useAppStore((state) => state.duration)

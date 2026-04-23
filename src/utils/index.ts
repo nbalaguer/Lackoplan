@@ -1,7 +1,7 @@
 import Color from "color"
 import { v4 as uuid } from "uuid"
-import type { PlayerAbility, Class, Player } from "types"
-import abilities from "config/abilities"
+import type { PlayerAbility, Class, Player } from "@/types"
+import abilities from "@/config/abilities"
 import _cloneDeep from "lodash/cloneDeep"
 
 export const canUseDOM = !!(

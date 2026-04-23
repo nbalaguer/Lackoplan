@@ -1,5 +1,5 @@
-import { CLASSES } from "config/constants"
-import type { Ability, Class } from "types"
+import { CLASSES } from "@/config/constants"
+import type { Ability, Class } from "@/types"
 import _pipe from "lodash/flow"
 
 const modifiers = {
@@ -160,10 +160,11 @@ const abilities: {
       modifiers: [
         {
           icon: "spell_holy_pureofheart",
-          wowheadLink: "https://www.wowhead.com/spell=379391/quickened-invocation",
+          wowheadLink:
+            "https://www.wowhead.com/spell=379391/quickened-invocation",
           description: "Quickened Invocation",
           process: modifiers.addCooldown(-15),
-        }
+        },
       ],
     },
     {
@@ -180,7 +181,7 @@ const abilities: {
           wowheadLink: "https://www.wowhead.com/spell=392911/unwavering-spirit",
           description: "Unwavering Spirit",
           process: modifiers.addCooldown(-30),
-        }
+        },
       ],
     },
 
@@ -193,16 +194,16 @@ const abilities: {
       icon: "spell_holy_sealofprotection",
       modifiers: [
         {
-          wowheadLink: "https://www.wowhead.com/spell=384909/improved-blessing-of-protection",
+          wowheadLink:
+            "https://www.wowhead.com/spell=384909/improved-blessing-of-protection",
           icon: "spell_holy_sealofprotection",
-          process: _pipe(
-            modifiers.addCooldown(-60),
-          )
+          process: _pipe(modifiers.addCooldown(-60)),
         },
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=204018/blessing-of-spellwarding",
+      wowheadLink:
+        "https://www.wowhead.com/spell=204018/blessing-of-spellwarding",
       name: "Blessing of Spellwarding",
       spellId: 204018,
       shortName: "Spellwarding",
@@ -210,19 +211,16 @@ const abilities: {
       icon: "spell_holy_blessingofprotection",
       modifiers: [
         {
-          wowheadLink: "https://www.wowhead.com/spell=384909/improved-blessing-of-protection",
+          wowheadLink:
+            "https://www.wowhead.com/spell=384909/improved-blessing-of-protection",
           icon: "spell_holy_sealofprotection",
-          process: _pipe(
-            modifiers.addCooldown(-60),
-          )
+          process: _pipe(modifiers.addCooldown(-60)),
         },
         {
           wowheadLink: "https://www.wowhead.com/spell=378425/uthers-counsel",
           icon: "spell_holy_greaterblessingofsalvation",
-          process: _pipe(
-            modifiers.multiplyCooldown(0.85),
-          )
-        }
+          process: _pipe(modifiers.multiplyCooldown(0.85)),
+        },
       ],
     },
     {
@@ -256,11 +254,10 @@ const abilities: {
       icon: "spell_holy_divinehymn",
       modifiers: [
         {
-          wowheadLink: "https://www.wowhead.com/spell=419110/seraphic-crescendo",
+          wowheadLink:
+            "https://www.wowhead.com/spell=419110/seraphic-crescendo",
           icon: "spell_holy_divinehymn",
-          process: _pipe(
-            modifiers.addCooldown(-60),
-          )
+          process: _pipe(modifiers.addCooldown(-60)),
         },
       ],
     },
@@ -341,7 +338,7 @@ const abilities: {
           icon: "spell_shaman_astralshift",
           description: "First Ascendant",
           process: modifiers.addCooldown(-60),
-        }
+        },
       ],
     },
     {
@@ -358,7 +355,7 @@ const abilities: {
           icon: "ability_shaman_healingtide",
           description: "Current Control",
           process: modifiers.addCooldown(-45),
-        }
+        },
       ],
     },
     {
@@ -407,7 +404,7 @@ const abilities: {
           icon: "achievement_raidprimalist_windelemental",
           description: "Ascending Air",
           process: modifiers.addCooldown(-30),
-        }
+        },
       ],
     },
     {
@@ -431,9 +428,9 @@ const abilities: {
           icon: "spell_nature_agitatingtotem",
           description: "-5s on Totem",
           process: modifiers.addCooldown(-5),
-        }
-      ]
-    }
+        },
+      ],
+    },
   ],
   [CLASSES.MAGE]: [],
   [CLASSES.WARLOCK]: [],
@@ -453,15 +450,13 @@ const abilities: {
           description: "Gift of the Celestials",
           wowheadLink:
             "https://www.wowhead.com/spell=388212/gift-of-the-celestials",
-          process: _pipe(
-            modifiers.addCooldown(-60),
-            modifiers.setDuration(12),
-          ),
+          process: _pipe(modifiers.addCooldown(-60), modifiers.setDuration(12)),
         },
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=443028/celestial-conduit?spellModifier=137024",
+      wowheadLink:
+        "https://www.wowhead.com/spell=443028/celestial-conduit?spellModifier=137024",
       name: "Celestial Conduit",
       spellId: 443028,
       shortName: "Conduit",
@@ -479,8 +474,7 @@ const abilities: {
       modifiers: [
         {
           icon: "inv_helm_leather_raidmonkgoblin_d_01",
-          description:
-            "Uplifted Spirits",
+          description: "Uplifted Spirits",
           wowheadLink: "https://www.wowhead.com/spell=388551/uplifted-spirits",
           process: modifiers.addCooldown(-30),
         },
@@ -498,7 +492,7 @@ const abilities: {
           icon: "ability_monk_domeofmist",
           wowheadLink: "https://www.wowhead.com/spell=202424/chrysalis",
           process: modifiers.addCooldown(-45),
-        }
+        },
       ],
     },
     {
@@ -508,7 +502,7 @@ const abilities: {
       cooldown: 60,
       icon: "spell_nzinsanity_panicattack",
       modifiers: [],
-    }
+    },
   ],
   [CLASSES.DRUID]: [
     {
@@ -526,7 +520,7 @@ const abilities: {
           description: "Cenarius' Guidance Expected CDR",
           wowheadLink: "https://www.wowhead.com/spell=393371/cenarius-guidance",
           process: modifiers.addCooldown(-60),
-        }
+        },
       ],
     },
     {
@@ -594,7 +588,7 @@ const abilities: {
       cooldown: 60,
       icon: "spell_nzinsanity_panicattack",
       modifiers: [],
-    }
+    },
   ],
   [CLASSES.DEMONHUNTER]: [
     {
@@ -725,7 +719,7 @@ const abilities: {
       cooldown: 60,
       icon: "spell_nzinsanity_panicattack",
       modifiers: [],
-    }
+    },
   ],
 }
 

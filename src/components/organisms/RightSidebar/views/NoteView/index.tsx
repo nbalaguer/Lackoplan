@@ -1,8 +1,8 @@
-import IconButton from "components/atoms/IconButton"
-import Markdown from "components/atoms/Markdown"
+import IconButton from "@/components/atoms/IconButton"
+import Markdown from "@/components/atoms/Markdown"
 import React, { useCallback, useState } from "react"
 import { useForm } from "react-hook-form"
-import { useAppStore } from "store"
+import { useAppStore } from "@/store"
 
 type FormData = {
   userNote: string

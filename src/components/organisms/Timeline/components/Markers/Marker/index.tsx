@@ -1,11 +1,11 @@
 import React, { useEffect } from "react"
-import useTrackMouseOffset from "hooks/useMouseOffset"
-import type { Marker } from "types"
+import useTrackMouseOffset from "@/hooks/useMouseOffset"
+import type { Marker } from "@/types"
 import { motion, useMotionValue } from "framer-motion"
-import { useAppStore } from "store"
-import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
+import { useAppStore } from "@/store"
+import useTimelineContext from "@/components/organisms/Timeline/context/useTimelineContext"
 import classNames from "classnames"
-import { getTimeString } from "utils"
+import { getTimeString } from "@/utils"
 
 function Marker(props: { marker: Marker; disabled?: boolean }) {
   const { marker, disabled } = props
@@ -44,7 +44,7 @@ function Marker(props: { marker: Marker; disabled?: boolean }) {
         type: marker.type,
         time: marker.time + duration * (offsetX / panelWidth) * multiplier,
       })
-    }
+    },
   })
 
   return (

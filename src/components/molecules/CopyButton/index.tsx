@@ -1,4 +1,4 @@
-import IconButton from "components/atoms/IconButton"
+import IconButton from "@/components/atoms/IconButton"
 import React, { useCallback } from "react"
 
 function CopyButton(props: {

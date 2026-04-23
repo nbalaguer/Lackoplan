@@ -13,8 +13,8 @@ import type {
   ExportablePropsV1,
   ExportablePropsV2,
   ExportablePropsV3,
-} from "types"
-import { applyModifiers, createPlayer, getCastTimes } from "utils"
+} from "@/types"
+import { applyModifiers, createPlayer, getCastTimes } from "@/utils"
 import { create } from "zustand"
 import { immer } from "zustand/middleware/immer"
 
@@ -587,7 +587,7 @@ function importStateConfig(state: AppStore, stateConfig: ExportablePropsV3) {
   state.difficulty = stateConfig.difficulty
   state.duration = stateConfig.duration
   state.encounterId = stateConfig.encounterId
-  state.markers  = stateConfig.markers
+  state.markers = stateConfig.markers
   state.markersEnabled = stateConfig.markersEnabled
   state.overlays = stateConfig.overlays || []
   state.players = stateConfig.players.map((playerConfig) => {
@@ -615,12 +615,10 @@ function constructState(stateConfig: ExportableProps) {
   if (!("version" in stateConfig)) {
     if (!("userNote" in stateConfig)) {
       return importFromV0(stateConfig)
-    }
-    else {
+    } else {
       return importFromV1(stateConfig)
     }
-  }
-  else {
+  } else {
     switch (stateConfig.version) {
       case 2:
         return importFromV2(stateConfig)

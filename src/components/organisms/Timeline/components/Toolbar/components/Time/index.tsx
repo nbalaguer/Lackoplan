@@ -1,7 +1,7 @@
-import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
+import useTimelineContext from "@/components/organisms/Timeline/context/useTimelineContext"
 import React, { useEffect, useState } from "react"
-import { useAppStore } from "store"
-import { getTimeString } from "utils"
+import { useAppStore } from "@/store"
+import { getTimeString } from "@/utils"
 
 function Time() {
   const duration = useAppStore((state) => state.duration)

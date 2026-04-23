@@ -3,19 +3,19 @@ import React, {
   useState,
   type MouseEvent as ReactMouseEvent,
 } from "react"
-import WowheadIcon from "components/atoms/WowheadIcon"
+import WowheadIcon from "@/components/atoms/WowheadIcon"
 import { motion, useMotionValue } from "framer-motion"
-import { getPlayerAbilityFromStore, useAppStore } from "store"
-import useTrackMouseOffset from "hooks/useMouseOffset"
-import useTimelineContext from "components/organisms/Timeline/context/useTimelineContext"
+import { getPlayerAbilityFromStore, useAppStore } from "@/store"
+import useTrackMouseOffset from "@/hooks/useMouseOffset"
+import useTimelineContext from "@/components/organisms/Timeline/context/useTimelineContext"
 import _debounce from "lodash/debounce"
 import _isEqual from "lodash/isEqual"
 import TimestampHint from "./TimestampHint"
-import useDeep from "hooks/useDeep"
-import Modal from "components/templates/Modal"
-import Button from "components/atoms/Button"
+import useDeep from "@/hooks/useDeep"
+import Modal from "@/components/templates/Modal"
+import Button from "@/components/atoms/Button"
 import { useForm } from "react-hook-form"
-import TextInput from "components/inputs/TextInput"
+import TextInput from "@/components/inputs/TextInput"
 
 function AbilityCast(props: {
   playerId: string
@@ -191,8 +191,8 @@ type AbilityCastForm = {
 }
 
 function AbilityCastForm(props: {
-  defaultValues: AbilityCastForm;
-  onSubmit: (values: AbilityCastForm) => void;
+  defaultValues: AbilityCastForm
+  onSubmit: (values: AbilityCastForm) => void
 }) {
   const { defaultValues, onSubmit } = props
 
