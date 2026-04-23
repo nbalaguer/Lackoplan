@@ -167,15 +167,6 @@ const abilities: {
       ],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=200652/tyrs-deliverance",
-      name: "Tyr's Deliverance",
-      spellId: 200652,
-      shortName: "Tyr's Deliverance",
-      cooldown: 60 * 1.5,
-      icon: "inv_mace_2h_artifactsilverhand_d_01",
-      modifiers: [],
-    },
-    {
       wowheadLink: "https://www.wowhead.com/spell=31821/aura-mastery",
       name: "Aura Mastery",
       spellId: 31821,
@@ -285,57 +276,6 @@ const abilities: {
       modifiers: [],
     },
     {
-      wowheadLink: "https://www.wowhead.com/spell=372835/lightwell",
-      name: "Lightwell",
-      spellId: 372835,
-      shortName: "Well",
-      spec: "holy",
-      cooldown: 60 * 2 - (45 /* Expected CDR */),
-      icon: "spell_holy_summonlightwell",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=64901/symbol-of-hope",
-      name: "Symbol of Hope",
-      spellId: 64901,
-      shortName: "Hope",
-      spec: "holy",
-      cooldown: 60 * 3,
-      icon: "spell_holy_symbolofhope",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=34433/shadowfiend?spellModifier=137032",
-      name: "Shadowfiend",
-      spellId: 34433,
-      shortName: "Shadowfiend",
-      spec: "discipline",
-      cooldown: 60 * 3,
-      icon: "spell_shadow_shadowfiend",
-      modifiers: [
-        {
-          icon: "spell_shadow_soulleech_3",
-          process: _pipe(
-            modifiers.setCooldown(60),
-            modifiers.setIcon("spell_shadow_soulleech_3"),
-            modifiers.setSpellId(123040),
-            modifiers.setName("Mindbender"),
-            modifiers.setShortName("Mindbender"),
-            modifiers.setWowheadLink(
-              "https://www.wowhead.com/spell=123040/mindbender"
-            )
-          ),
-        },
-        {
-          icon: "spell_shadow_shadowfiend",
-          wowheadLink: "https://www.wowhead.com/spell=390770/void-summoner",
-          process: _pipe(
-            modifiers.multiplyCooldown(0.5),
-          ),
-        },
-      ],
-    },
-    {
       wowheadLink: "https://www.wowhead.com/spell=472433/evangelism",
       name: "Evangelism",
       spellId: 472433,
@@ -358,7 +298,7 @@ const abilities: {
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=62618/power-word-barrier",
-      name: "Power Work: Barrier",
+      name: "Power Word: Barrier",
       spellId: 62618,
       shortName: "Barrier",
       spec: "discipline",
@@ -375,15 +315,6 @@ const abilities: {
       spec: "discipline",
       cooldown: 60 * 3,
       icon: "spell_holy_painsupression",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=15286/vampiric-embrace",
-      name: "Vampiric Embrace",
-      spellId: 15286,
-      shortName: "Embrace",
-      cooldown: 60 * 2,
-      icon: "spell_shadow_unsummonbuilding",
       modifiers: [],
     },
     {
@@ -486,6 +417,22 @@ const abilities: {
       cooldown: 60,
       icon: "spell_nzinsanity_panicattack",
       modifiers: [],
+    },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=8143/tremor-totem",
+      name: "Tremor totem",
+      spellId: 8143,
+      shortName: "Tremor",
+      cooldown: 60,
+      icon: "spell_nature_tremortotem",
+      modifiers: [
+        {
+          wowheadLink: "https://www.wowhead.com/spell=381867/totemic-surge",
+          icon: "spell_nature_agitatingtotem",
+          description: "-5s on Totem",
+          process: modifiers.addCooldown(-5),
+        }
+      ]
     }
   ],
   [CLASSES.MAGE]: [],
@@ -576,7 +523,7 @@ const abilities: {
       modifiers: [
         {
           icon: "ability_druid_treeoflife",
-          description: "Cenarius' Guidance",
+          description: "Cenarius' Guidance Expected CDR",
           wowheadLink: "https://www.wowhead.com/spell=393371/cenarius-guidance",
           process: modifiers.addCooldown(-60),
         }
@@ -597,16 +544,6 @@ const abilities: {
           process: modifiers.addCooldown(-30),
         },
       ],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=197721/flourish",
-      name: "Flourish",
-      spellId: 197721,
-      shortName: "Flourish",
-      cooldown: 60,
-      duration: 10,
-      icon: "spell_druid_wildburst",
-      modifiers: [],
     },
     {
       wowheadLink: "https://www.wowhead.com/spell=391528/convoke-the-spirits",
@@ -682,6 +619,15 @@ const abilities: {
       icon: "spell_deathknight_antimagiczone",
       modifiers: [],
     },
+    {
+      wowheadLink: "https://www.wowhead.com/spell=108199/gorefiends-grasp",
+      name: "Gorefiend's Grasp",
+      spellId: 108199,
+      shortName: "Mass grip",
+      cooldown: 60 * 1.5,
+      icon: "ability_deathknight_aoedeathgrip",
+      modifiers: [],
+    },
   ],
   [CLASSES.EVOKER]: [
     {
@@ -708,15 +654,6 @@ const abilities: {
       shortName: "Stasis",
       cooldown: 60 * 1.5,
       icon: "ability_evoker_stasis",
-      modifiers: [],
-    },
-    {
-      wowheadLink: "https://www.wowhead.com/spell=370960/emerald-communion",
-      name: "Emerald Communion",
-      spellId: 370960,
-      shortName: "Communion",
-      cooldown: 60 * 3,
-      icon: "ability_evoker_green_01",
       modifiers: [],
     },
     {
